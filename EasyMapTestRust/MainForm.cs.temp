@@ -1,0 +1,1205 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Text.Json;
+using System.IO;
+using Bunifu.UI.WinForms;
+using System.Net.NetworkInformation;
+using System.Diagnostics;
+using System.Net.Http;
+using System.IO.Compression;
+
+
+namespace EasyMapTestRust
+{
+
+	
+
+	// 30, 32, 40     main back color
+	// 28,27,31       darker panels
+
+	// 178,183,191    white text
+	// 122,149,227    blue main accent
+
+	public partial class MainForm : Form
+	{
+	
+		private bool configLoaded = false;
+		
+		private FileSystemWatcher watcher;
+		private DateTime lastChange = DateTime.MinValue;
+		private readonly TimeSpan debounceTime = TimeSpan.FromMilliseconds(500);
+
+		private string SteamCmdDirPath;
+		private string mapDirPath;
+		private string ServerFilesDirPath;
+
+		private string UpdatedMapName;
+
+		public MainForm()
+		{
+			InitializeComponent();
+			InitializeNotification();
+			// Enable drag & drop for the form.
+			this.AllowDrop = true;
+			this.DragEnter += MainForm_DragEnter;
+			this.DragDrop += MainForm_DragDrop;
+		}
+
+
+		private void MainForm_Load(object sender, EventArgs e)
+		{
+			Booting();
+
+			LogMixed("INFO: ","Application started.",Color.Blue);
+		}
+
+		
+		public void LogMixed(string category, string message, Color mcolor)
+		{
+			if (ConsoleTextbox.InvokeRequired)
+			{
+				ConsoleTextbox.Invoke(new Action(() => LogMixed(category, message, mcolor)));
+				return;
+			}
+
+			ConsoleTextbox.SelectionStart = ConsoleTextbox.TextLength;
+			ConsoleTextbox.SelectionLength = 0;
+			// Add timestamp in blue
+			ConsoleTextbox.SelectionFont = new Font(ConsoleTextbox.Font, FontStyle.Bold);
+			ConsoleTextbox.SelectionColor = Color.Black;
+			ConsoleTextbox.AppendText($"[{DateTime.Now.ToString("HH:mm:ss")}] ");
+			// Add category in bold
+			ConsoleTextbox.SelectionColor = mcolor;
+			ConsoleTextbox.SelectionFont = new Font(ConsoleTextbox.Font, FontStyle.Bold);
+			ConsoleTextbox.AppendText(category);
+			// Add message in normal font
+			ConsoleTextbox.SelectionColor = Color.Black;
+			ConsoleTextbox.SelectionFont = ConsoleTextbox.Font;
+			ConsoleTextbox.AppendText(message + Environment.NewLine);
+			ConsoleTextbox.ScrollToCaret();
+		}
+
+		private string GetSteamCMDPath()
+		{
+			string appDirectory = Application.StartupPath;
+
+			// Check same directory
+			string steamCmdPath = Path.Combine(appDirectory, "steamcmd.exe");
+			if (File.Exists(steamCmdPath))
+			{
+				return steamCmdPath;
+			}
+
+			// Check steamcmd folder
+			string steamCmdInFolderPath = Path.Combine(appDirectory, "steamcmd", "steamcmd.exe");
+			if (File.Exists(steamCmdInFolderPath))
+			{
+				return steamCmdInFolderPath;
+			}
+
+			return null;
+		}
+
+		private void UpdateDirectories()
+		{
+			SteamCmdDirPath = GetSteamCMDPath();
+		}
+
+
+
+		#region Config file
+
+
+		private string[] ReadConfigFile()
+		{
+			string configFilePath = Path.Combine(Application.StartupPath, "config.ini");
+			return File.ReadAllLines(configFilePath);
+		}
+
+	
+		public void LoadConfigFile()
+		{
+			string[] lines = ReadConfigFile();
+
+			try
+			{
+				string configFilePath = Path.Combine(Application.StartupPath, "config.ini");
+				if (File.Exists(configFilePath))
+				{
+
+					// Load your server directory - make sure this is setting ServerFilesDirbox.Text
+					ServerFilesDirbox.Text = lines[0]; // Adjust based on your config structure
+
+					configLoaded = true;
+
+				}
+				else
+				{
+					HandleError(new FileNotFoundException("Config file not found!"), "loading config");
+				}
+			}
+			catch (Exception ex)
+			{
+				HandleError(ex, "loading config");
+			}
+		}
+		#endregion
+
+		#region App firs run functions
+
+		//This function is called when the program is booting. Check for first run to make the process as simple as posible.
+		public void Booting()
+		{
+			
+			string configFilePath = Path.Combine(Application.StartupPath, "config.ini");
+
+			LogMixed("FILES: ", "Trying to load config file...", Color.Goldenrod);
+			// Check if this is the first run
+
+
+				if (!File.Exists(configFilePath))
+				{
+				LogMixed("INFO: ", "Config file not found.", Color.Blue);
+				LogMixed("FILES: ", "Creating config file.", Color.Goldenrod);
+				CreateConfigFile();
+
+				return;
+
+				}
+				else
+				{
+				if (configLoaded == false)
+				{
+					//load config file
+					string configData = File.ReadAllText(configFilePath);
+
+					if (configData.Contains("FirstRun=False"))
+					{
+						LogMixed("INFO: ", "Config Found", Color.Blue);
+						LogMixed("INFO: ", "Loading config file.", Color.Blue);
+
+					}
+					configLoaded = true;
+					string[] lines2 = ReadConfigFile();
+
+					if (CheckboxFileWatch.Checked == true)
+					{
+						SetupFolderWatcher(lines2[2]);
+					}
+				}
+
+				string[] lines = ReadConfigFile();
+				//read second line of config file and set server files directory
+
+				if (lines.Length > 1)
+				{
+					ServerFilesDirbox.Text = lines[1];
+					MapDirBox.Text = lines[2];
+					SteamCMDBox.Text = lines[3];
+					LogMixed("INFO: ", "Loaded directories.", Color.Blue);
+					
+				}
+				else
+				{
+					LogMixed("ERROR: ", "Config file is missing required data.", Color.Red);					
+				}
+
+					LoadMapFilesToDataGridView(MapDirBox.Text, MapsDataGridView);
+
+					if (MapsDataGridView.Rows.Count == 0)
+					{
+					LogMixed("ERROR: ", "No map files found, update your map directory.", Color.Red);
+					}			
+				}
+
+			
+		}
+
+		//used to show a message to the user on first run.
+		public void FirstRunSnackbar()
+		{
+			MainSnackbar.Show(this, "First Run detected, download server files.", BunifuSnackbar.MessageTypes.Warning, 5000, "Download Server Files",
+			  BunifuSnackbar.Positions.TopCenter).Then((result) =>
+			  {
+				  if (result == BunifuSnackbar.SnackbarResult.ActionClicked)
+				  {
+					  //go to main page
+					  MainPages.SetPage(2);
+					  SetupServerTextbox.Text = Application.StartupPath + "\\ServerFiles";
+					  DropDownBranches.SelectedIndex = 0;
+				  }
+
+			  });
+		}
+
+		//used to select a directory for the server files, maps and steamcmd.
+		private void SelectDirectory(BunifuTextBox targetTextBox)
+		{
+			using (FolderBrowserDialog folderDialog = new FolderBrowserDialog())
+			{
+				folderDialog.Description = "Select a folder";
+				folderDialog.ShowNewFolderButton = true;
+
+				if (folderDialog.ShowDialog() == DialogResult.OK)
+				{
+					targetTextBox.Text = folderDialog.SelectedPath;
+				}
+			}
+		}
+
+		//used to create a config file if it does not exist.
+		public bool CreateConfigFile()
+		{
+			string configFilePath = Path.Combine(Application.StartupPath, "config.ini");
+
+			if (!File.Exists(configFilePath))
+			{
+				File.WriteAllText(configFilePath, "FirstRun=False" + Environment.NewLine + Application.StartupPath + Environment.NewLine + "X" + Environment.NewLine + Application.StartupPath + "\\steamcmd");
+
+				FirstRunSnackbar();
+
+				return true;
+			}
+
+			return false;
+		}
+		#endregion
+
+		#region Buttons
+		private void SetupCMDNextButton_Click(object sender, EventArgs e)
+		{
+			MainPages.SetPage(4);
+		}
+
+		private void SettingsBtn_Click(object sender, EventArgs e)
+		{
+			string[] lines = ReadConfigFile();
+
+			ServerFilesDirbox.Text = lines[1];
+			MapDirBox.Text = lines[2];
+			SteamCMDBox.Text = lines[3];
+
+			//go to settings page
+			MainPages.SetPage(1);
+		}
+
+		private void SettingsBackButton_Click(object sender, EventArgs e)
+		{
+			string[] lines = ReadConfigFile();
+
+			//check if server files directory are set, if so update config file
+			if (ServerFilesDirbox.Text != "" && ServerFilesDirbox.Text != lines[1])
+			{
+				SaveConfigSettings("Config file updated for server files.");
+			}
+
+			if (MapDirBox.Text != "" && MapDirBox.Text != lines[2])
+			{
+				SaveConfigSettings("Config file updated for map files.");
+			}
+
+			if (SteamCMDBox.Text != "" && SteamCMDBox.Text != lines[3])
+			{
+				SaveConfigSettings("Config file updated for SteamCMD.");
+			}
+
+			LoadMapFilesToDataGridView(MapDirBox.Text, MapsDataGridView);
+
+			//go to main page
+			MainPages.SetPage(0);
+		}
+		
+		private void SaveConfigSettings(string logMessage)
+		{
+			string configFilePath = Path.Combine(Application.StartupPath, "config.ini");
+			File.WriteAllText(configFilePath, "FirstRun=False" + Environment.NewLine + 
+				ServerFilesDirbox.Text + Environment.NewLine + 
+				MapDirBox.Text + Environment.NewLine + 
+				SteamCMDBox.Text);
+			
+			LogMixed("FILES: ", logMessage, Color.Goldenrod);
+		}
+
+		private void SetupDirBackButton_Click(object sender, EventArgs e)
+		{
+			//go to main page
+			MainPages.SetPage(1);
+		}
+
+		private void SetupServerTextbox_OnIconLeftClick(object sender, EventArgs e)
+		{
+			SelectDirectory(SetupServerTextbox);
+		}
+
+		private void MapDirBox_OnIconLeftClick(object sender, EventArgs e)
+		{
+			SelectDirectory(MapDirBox);
+		}
+
+		private void startServerWithMapToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			if (MapsDataGridView.SelectedRows.Count > 0)
+			{
+				string directory = MapsDataGridView.SelectedRows[0].Cells[1].Value.ToString();
+				// use directory value
+				MessageBox.Show(directory);
+			}
+		}
+
+		private void SteamCMDBox_OnIconLeftClick(object sender, EventArgs e)
+		{
+			SelectDirectory(SteamCMDBox);
+		}
+
+		private void ServerFilesDirbox_OnIconLeftClick(object sender, EventArgs e)
+		{
+			SelectDirectory(ServerFilesDirbox);
+		}
+
+		private async void SetupDirNextButton_Click(object sender, EventArgs e)
+		{
+			if (!ValidateInputAndUpdateConfig())
+				return;
+				
+			UpdateUIForDownload();
+			
+			// Check if steamcmd.exe exists in the specified directory
+			if (!await EnsureSteamCmdExists())
+				return;
+			
+			// Check for selected branch type and pass the correct branch name
+			if (DropDownBranches.SelectedIndex == 0)
+			{
+				// Main branch
+				await DownloadServerFiles(false, null);
+			}
+			else 
+			{
+				// Beta branch - pass the selected branch name
+				await DownloadServerFiles(true, DropDownBranches.SelectedItem.ToString());
+			}
+		}
+		
+		private async Task<bool> EnsureSteamCmdExists()
+		{
+			string steamCmdPath = Path.Combine(SetupCMDdir.Text, "steamcmd.exe");
+			
+			if (File.Exists(steamCmdPath))
+			{
+				LogMixed("INFO: ", "SteamCMD.exe found in specified directory.", Color.Blue);
+				return true;
+			}
+			
+			// Check if steamcmd exists in the application directory
+			string appSteamCmdDir = Path.Combine(Application.StartupPath, "steamcmd");
+			string appSteamCmdPath = Path.Combine(appSteamCmdDir, "steamcmd.exe");
+			
+			// If steamcmd.exe doesn't exist in the app directory either, download it
+			if (!File.Exists(appSteamCmdPath))
+			{
+				LogMixed("INFO: ", "SteamCMD not found. Downloading to application directory...", Color.Blue);
+				
+				try
+				{
+					string steamCmdUrl = "https://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip";
+					string zipPath = Path.Combine(Application.StartupPath, "steamcmd.zip");
+					
+					// Create steamcmd directory if it doesn't exist
+					Directory.CreateDirectory(appSteamCmdDir);
+					
+					// Download the file
+					using (var client = new HttpClient())
+					{
+						byte[] zipData = await client.GetByteArrayAsync(steamCmdUrl);
+						File.WriteAllBytes(zipPath, zipData);
+					}
+					
+					LogMixed("INFO: ", "Download complete. Extracting...", Color.Blue);
+					
+					// Extract using ZipArchive
+					using (var archive = new ZipArchive(File.OpenRead(zipPath)))
+					{
+						archive.ExtractToDirectory(appSteamCmdDir);
+					}
+					
+					// Delete the zip file after extraction
+					File.Delete(zipPath);
+					
+					LogMixed("SUCCESS: ", "SteamCMD installed successfully to application directory!", Color.Green);
+					
+					// Update the SetupCMDdir to use our newly created directory
+					SetupCMDdir.Text = appSteamCmdDir;
+					
+					// Also update the config value
+					SaveConfigSettings("Config file updated for SteamCMD location.");
+					
+					return true;
+				}
+				catch (Exception ex)
+				{
+					HandleError(ex, "downloading/extracting SteamCMD");
+					return false;
+				}
+			}
+			else
+			{
+				LogMixed("INFO: ", "SteamCMD found in application directory.", Color.Blue);
+				// Update the SetupCMDdir to use the existing app directory steamcmd
+				SetupCMDdir.Text = appSteamCmdDir;
+				
+				// Also update the config value
+				SaveConfigSettings("Config file updated for SteamCMD location.");
+				
+				return true;
+			}
+		}
+
+		private bool ValidateInputAndUpdateConfig()
+		{
+			// Check if server files directory are set
+			if (SetupServerTextbox.Text == "" || SetupCMDdir.Text == "")
+			{
+				MainSnackbar.Show(this, "A directory for the server files and SteamCMD is required to continue.", 
+					BunifuSnackbar.MessageTypes.Warning, 5000, "Close", BunifuSnackbar.Positions.TopCenter);
+				return false;
+			}
+			
+			// Set string for config file and write new values
+			string configFilePath = Path.Combine(Application.StartupPath, "config.ini");
+			File.WriteAllText(configFilePath, "FirstRun=False" + Environment.NewLine + 
+				SetupServerTextbox.Text + Environment.NewLine + 
+				SetupMapsDirectory.Text + Environment.NewLine + 
+				SetupCMDdir.Text);
+			
+			return true;
+		}
+
+		private void UpdateUIForDownload()
+		{
+			MainPages.SetPage(3);
+			SetupCMDNextButton.Enabled = false;
+			CMDStatusLabel.Text = "Please wait for the download to finish.";
+			
+			string configFilePath = Path.Combine(Application.StartupPath, "config.ini");
+			string[] lines = File.ReadAllLines(configFilePath);
+			
+			ServerFilesDirbox.Text = lines[1];
+			MapDirBox.Text = lines[2];
+			SteamCMDBox.Text = lines[3];
+		}
+
+		private async Task DownloadServerFiles(bool isBeta, string branchName)
+		{
+			try
+			{
+				string steamCmdPath = ValidateSteamCmdPath();
+				if (steamCmdPath == null)
+					return;
+					
+				Process process = SetupDownloadProcess(steamCmdPath, isBeta, branchName);
+				
+				await RunDownloadProcess(process);
+			}
+			catch (Exception ex)
+			{
+				HandleDownloadError(ex);
+			}
+		}
+
+		private async Task DownloadMainBranchFiles()
+		{
+			await DownloadServerFiles(false, null);
+		}
+
+		private async Task DownloadBetaBranchFiles()
+		{
+			await DownloadServerFiles(true, DropDownBranches.SelectedItem.ToString());
+		}
+
+		private string ValidateSteamCmdPath()
+		{
+			string steamCmdPath = Path.Combine(SetupCMDdir.Text, "steamcmd.exe");
+			
+			if (!File.Exists(steamCmdPath))
+			{
+				MessageBox.Show("steamcmd.exe not found in the specified directory.", "Error",
+					MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MainPages.SetPage(2);
+				return null;
+			}
+			
+			return steamCmdPath;
+		}
+
+		private Process SetupDownloadProcess(string steamCmdPath, bool isBetaBranch, string branchName)
+		{
+			Process process = new Process();
+			ProcessStartInfo startInfo = new ProcessStartInfo();
+			
+			startInfo.FileName = steamCmdPath;
+			
+			if (isBetaBranch)
+			{
+				// Use the provided branch name to create flexible branch arguments
+				startInfo.Arguments = "+force_install_dir " + SetupServerTextbox.Text + 
+					" +login anonymous +app_update 258550 -beta " + branchName + " +quit";
+			}
+			else
+			{
+				startInfo.Arguments = "+force_install_dir " + SetupServerTextbox.Text + 
+					" +login anonymous +app_update 258550 +quit";
+			}
+			
+			startInfo.RedirectStandardOutput = true;
+			startInfo.RedirectStandardError = true;
+			startInfo.UseShellExecute = false;
+			startInfo.CreateNoWindow = true;
+			startInfo.WorkingDirectory = SetupCMDdir.Text;
+			
+			process.StartInfo = startInfo;
+			
+			// Setup output handling
+			SetupProcessOutputHandlers(process);
+			
+			return process;
+		}
+
+		private void SetupProcessOutputHandlers(Process process)
+		{
+			process.OutputDataReceived += (s, args) =>
+			{
+				if (args.Data != null)
+				{
+					CMDDownloadText.Invoke((MethodInvoker)delegate
+					{
+						CMDDownloadText.AppendText(args.Data + Environment.NewLine);
+						// Auto-scroll to the bottom
+						CMDDownloadText.SelectionStart = CMDDownloadText.Text.Length;
+						CMDDownloadText.ScrollToCaret();
+					});
+				}
+			};
+			
+			process.ErrorDataReceived += (s, args) =>
+			{
+				if (args.Data != null)
+				{
+					CMDDownloadText.Invoke((MethodInvoker)delegate
+					{
+						CMDDownloadText.AppendText("Error: " + args.Data + Environment.NewLine);
+						CMDDownloadText.SelectionStart = CMDDownloadText.Text.Length;
+						CMDDownloadText.ScrollToCaret();
+					});
+				}
+			};
+		}
+
+		private async Task RunDownloadProcess(Process process)
+		{
+			// Check for SteamCMD first
+			await CheckSteamCmdAndDownloadIfNeeded();
+			
+			process.Start();
+			process.BeginOutputReadLine();
+			process.BeginErrorReadLine();
+			
+			// Wait for the process to exit asynchronously
+			await Task.Run(() => process.WaitForExit());
+			
+			// Update UI after completion
+			CMDDownloadText.Invoke((MethodInvoker)delegate
+			{
+				CMDDownloadText.AppendText("Process completed!" + Environment.NewLine);
+				CMDStatusLabel.Text = "Process completed! Click next.";
+			});
+		}
+
+		private async Task CheckSteamCmdAndDownloadIfNeeded()
+		{
+			//try to detect steamcmd.exe in the specified directory
+			if (File.Exists(SteamCMDBox.Text + "\\steamcmd.exe"))
+			{
+				LogMixed("INFO: ", "SteamCMD.exe found.", Color.Blue);
+				LogMixed("INFO: ", "Starting SteamCMD please wait.", Color.Blue);
+			}
+			else
+			{
+				LogMixed("INFO: ", "SteamCMD not found. Downloading...", Color.Blue);
+				await DownloadAndExtractSteamCMD();
+			}
+		}
+		
+		private void HandleDownloadError(Exception ex)
+		{
+			HandleError(ex, "downloading server files");
+		}
+
+		private void SaveSettingsButton_Click(object sender, EventArgs e)
+		{
+			SetupServerTextbox.Text = ServerFilesDirbox.Text;
+			SetupCMDdir.Text = SteamCMDBox.Text;
+			SetupMapsDirectory.Text = MapDirBox.Text;
+
+			DropDownBranches.SelectedIndex = 0;
+
+			MainPages.SetPage(2);
+		}
+
+		private void SetupMapsDirectory_OnIconLeftClick(object sender, EventArgs e)
+		{
+			SelectDirectory(SetupMapsDirectory);
+		}
+
+		private void SetupCMDdir_OnIconLeftClick(object sender, EventArgs e)
+		{
+			SelectDirectory(SetupCMDdir);
+		}
+
+		private void SetupCMDBackButton_Click(object sender, EventArgs e)
+		{
+			MainPages.SetPage(2);
+		}
+
+		private void createStartFileToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			string[] lines = ReadConfigFile();
+
+			string Mapdirectory = MapsDataGridView.SelectedRows[0].Cells[1].Value.ToString();
+
+			WriteBatchFile(lines[1] + "\\" + MapsDataGridView.SelectedRows[0].Cells[0].Value.ToString().Replace(".map", "" + ".bat"), Mapdirectory);
+
+			LogMixed("FILES: ", "Start file created at: " + lines[1], Color.Goldenrod);
+		}
+
+		private void startServerWithMapToolStripMenuItem_Click_1(object sender, EventArgs e)
+		{
+			string[] lines = ReadConfigFile();
+
+			string Mapdirectory = MapsDataGridView.SelectedRows[0].Cells[1].Value.ToString();
+			string mapName = MapsDataGridView.SelectedRows[0].Cells[0].Value.ToString();
+			
+			CreateAndStartMapServer(mapName, Mapdirectory, lines[1]);
+		}
+		
+		private void CreateAndStartMapServer(string mapName, string mapPath, string serverDir)
+		{
+			string batchFilePath = Path.Combine(serverDir, mapName.Replace(".map", ".bat"));
+			WriteBatchFile(batchFilePath, mapPath);
+			LogMixed("FILES: ", "Start file created at: " + serverDir, Color.Goldenrod);
+			StartBatFile(batchFilePath);
+			LogMixed("INFO: ", "Server started with map: " + mapName, Color.Blue);
+		}
+
+
+		#endregion
+
+		#region FileWatcher
+		private void SetupFolderWatcher(string folderPath)
+		{
+			try
+			{
+				watcher = new FileSystemWatcher();
+				watcher.Path = folderPath;
+
+				// Watch for all types of changes
+				watcher.NotifyFilter = NotifyFilters.LastWrite
+								   | NotifyFilters.FileName
+								   | NotifyFilters.DirectoryName
+								   | NotifyFilters.Size;
+
+				// Add event handlers
+				watcher.Created += OnFileCreated;
+				watcher.Deleted += OnFileDeleted;
+				watcher.Changed += OnFileChanged;
+				watcher.Renamed += OnFileRenamed;
+				watcher.Filter = "*.map";
+				watcher.IncludeSubdirectories = true;
+
+				// Begin watching
+				watcher.EnableRaisingEvents = true;
+
+				LogMixed($"INFO: ", "Now watching folder: " + folderPath, Color.Blue);
+			}
+			catch (Exception ex)
+			{
+				LogMixed("ERROR: ", $"Error setting up folder watcher: {ex.Message}", Color.Red);
+			
+			}
+		}
+
+		private bool ShouldProcessFileEvent()
+		{
+			if (DateTime.Now - lastChange > debounceTime)
+			{
+				lastChange = DateTime.Now;
+				return true;
+			}
+			return false;
+		}
+
+		// Event handlers
+		private void OnFileCreated(object sender, FileSystemEventArgs e)
+		{
+			if (ShouldProcessFileEvent())
+			{
+				LogMixed("FILES: ", $"File created: {e.Name}", Color.Goldenrod);
+			}
+		}
+
+		private void OnFileDeleted(object sender, FileSystemEventArgs e)
+		{
+			if (ShouldProcessFileEvent())
+			{
+				LogMixed("FILES: ", $"File deleted: {e.Name}", Color.Goldenrod);
+			}
+		}
+
+		private void OnFileRenamed(object sender, RenamedEventArgs e)
+		{
+			if (ShouldProcessFileEvent())
+			{
+				LogMixed("FILES: ", $"File Renamed: {e.Name}", Color.Goldenrod);
+			}
+		}
+
+		private void OnFileChanged(object sender, FileSystemEventArgs e)
+		{
+			string[] lines = ReadConfigFile();
+
+			if (ShouldProcessFileEvent())
+			{
+				LogMixed("FILES: ", $"File changed: {e.Name}", Color.Goldenrod);
+				UpdatedMapName = e.Name;
+				ShowWindowsNotification("Map Updated", "Click here to run a server for this map.", lines[2]);
+			}
+		}
+
+		// close the watcher on app close
+		protected override void OnFormClosing(FormClosingEventArgs e)
+		{
+			if (watcher != null)
+			{
+				watcher.EnableRaisingEvents = false;
+				watcher.Dispose();
+			}
+
+			if (notifyIcon != null)
+			{
+				notifyIcon.Dispose();
+			}
+
+			base.OnFormClosing(e);
+		}
+		#endregion
+
+		#region Desktop Notify
+		private NotifyIcon notifyIcon;
+
+		private void InitializeNotification()
+		{
+			notifyIcon = new NotifyIcon()
+			{
+				Icon = SystemIcons.Information,
+				Visible = true
+			};
+
+			// Handle notification click
+			notifyIcon.BalloonTipClicked += NotifyIcon_BalloonTipClicked;
+			
+
+			// Handle right-click menu
+			ContextMenuStrip menu = new ContextMenuStrip();
+			menu.Items.Add("Open Map", null, OpenMap_Click);
+			menu.Items.Add("Show Details", null, ShowDetails_Click);
+			menu.Items.Add("-"); // Separator
+			menu.Items.Add("Close", null, (s, e) => Application.Exit());
+
+			notifyIcon.ContextMenuStrip = menu;
+		}
+
+		private void NotifyIcon_BalloonTipClicked(object sender, EventArgs e)
+		{
+			string[] lines = ReadConfigFile();
+			CreateAndStartMapServer(UpdatedMapName, lines[2], lines[1]);
+		}
+
+		private void OpenMap_Click(object sender, EventArgs e)
+		{
+			string[] lines = ReadConfigFile();
+			if (notifyIcon.Tag != null && File.Exists(notifyIcon.Tag.ToString()))
+			{
+				string mapDirectory = Path.GetDirectoryName(notifyIcon.Tag.ToString());
+				Process.Start("explorer.exe", mapDirectory);
+				LogMixed("INFO: ", "Map directory opened in explorer", Color.Blue);
+			}
+		}
+
+		private void ShowDetails_Click(object sender, EventArgs e)
+		{
+			if (notifyIcon.Tag != null && File.Exists(notifyIcon.Tag.ToString()))
+			{
+				string mapFile = notifyIcon.Tag.ToString();
+				FileInfo fileInfo = new FileInfo(mapFile);
+				string details = $"File: {Path.GetFileName(mapFile)}\nPath: {mapFile}\nSize: {fileInfo.Length / 1024} KB\nLast Modified: {fileInfo.LastWriteTime}";
+				MessageBox.Show(details, "Map Details", MessageBoxButtons.OK, MessageBoxIcon.Information);
+			}
+		}
+
+		public void ShowWindowsNotification(string title, string message, string mapPath = null)
+		{
+			notifyIcon.Tag = mapPath; // Store map path for use in click handlers
+			notifyIcon.BalloonTipTitle = title;
+			notifyIcon.BalloonTipText = message;
+			notifyIcon.ShowBalloonTip(3000);
+		}
+		#endregion
+
+		#region Dropped Files
+		private void MainForm_DragEnter(object sender, DragEventArgs e)
+		{
+			if (e.Data.GetDataPresent(DataFormats.FileDrop))
+			{
+				string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+				if (files.Length > 0 && Path.GetExtension(files[0]).ToLower() == ".map")
+				{
+					e.Effect = DragDropEffects.Copy;
+
+				}
+				else
+				{
+					e.Effect = DragDropEffects.None;
+				}
+			}
+		}
+
+		private void MainForm_DragDrop(object sender, DragEventArgs e)
+		{
+			string[] lines = ReadConfigFile();
+			string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+			string mapFile = files[0];
+
+			if (Path.GetExtension(mapFile).ToLower() == ".map")
+			{
+				try
+				{
+					LogMixed("FILES: ", mapFile + " drop detected.", Color.Goldenrod);
+					string mapdropped = Path.GetFileName(mapFile);
+					CreateAndStartMapServer(mapdropped, mapFile, ServerFilesDirbox.Text);
+				}
+				catch (Exception ex)
+				{
+					HandleError(ex, "creating batch file");
+				}
+			}
+		}
+		
+		private void HandleError(Exception ex, string operationDescription)
+		{
+			LogMixed("ERROR: ", $"Error {operationDescription}: {ex.Message}", Color.Red);
+			MessageBox.Show($"Error {operationDescription}: {ex.Message}", "Error",
+				MessageBoxButtons.OK, MessageBoxIcon.Error);
+		}
+
+		public void HandleDroppedMap(string mapFile)
+		{
+			string[] lines = ReadConfigFile();
+
+			try
+			{
+				LogMixed("FILES: ", mapFile + " drop detected.", Color.Goldenrod);
+				string mapdropped = Path.GetFileName(mapFile);
+				CreateAndStartMapServer(mapdropped, mapFile, lines[1]);
+			}
+			catch (Exception ex)
+			{
+				HandleError(ex, "creating batch file for dropped map");
+			}
+		}
+		#endregion
+
+		#region Start files
+		private void WriteBatchFile(string filePath, string MapPath)
+		{
+			try
+			{
+				StringBuilder batchContent = new StringBuilder();
+
+				batchContent.AppendLine("@echo off");
+				batchContent.AppendLine();
+				batchContent.AppendLine("RustDedicated.exe ^");
+				batchContent.AppendLine("-batchmode ^");
+				batchContent.AppendLine("+server.port 28015 ^");
+				batchContent.AppendLine("+server.levelurl " + "file:///" + MapPath);
+				batchContent.AppendLine("+server.maxplayers 10 ^");
+				batchContent.AppendLine("+server.hostname \"Name of Server as Shown on the Client Server List\" ^");
+				batchContent.AppendLine("+server.description \"Description shown on server connection window.\" ^");
+				batchContent.AppendLine("+server.url \"http://yourwebsite.com\" ^");
+				batchContent.AppendLine("+server.headerimage \"http://yourwebsite.com/serverimage.jpg\" ^");
+				batchContent.AppendLine("+server.identity \"server1\" ^");
+				batchContent.AppendLine("+rcon.port 28016 ^");
+				batchContent.AppendLine("+rcon.password letmein ^");
+				batchContent.AppendLine("+rcon.web 1 ^");
+				batchContent.AppendLine("-logfile rustserverlog.txt");
+
+				File.WriteAllText(filePath, batchContent.ToString());
+			}
+			catch (Exception ex)
+			{
+				HandleError(ex, "writing batch file");
+			}
+		}
+
+		private void StartBatFile(string batFilePath)
+		{
+			try
+			{
+				// Start the bat file
+				using (Process process = new Process())
+				{
+					ProcessStartInfo startInfo = new ProcessStartInfo
+					{
+						FileName = batFilePath,
+						WorkingDirectory = Path.GetDirectoryName(batFilePath),
+						UseShellExecute = true // Use shell execute for .bat files
+					};
+
+					process.StartInfo = startInfo;
+					process.Start();
+
+					// Add to history DataGridView
+					HistoryDataView.Rows.Add(
+						Path.GetFileName(batFilePath),           // Name
+						Path.GetDirectoryName(batFilePath),      // Location
+						DateTime.Now.ToString("dd/MM/yyyy")      // Date
+					);
+				}
+			}
+			catch (Exception ex)
+			{
+				HandleError(ex, "starting batch file");
+			}
+		}
+		#endregion
+
+
+		#region SteamCMD
+
+		private async Task DownloadAndExtractSteamCMD()
+		{
+			try
+			{
+				string steamCmdUrl = "https://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip";
+				string steamCmdFolder = Path.Combine(SetupCMDdir.Text, "steamcmd");
+				string zipPath = Path.Combine(steamCmdFolder, "steamcmd.zip");
+
+				// Create steamcmd directory if it doesn't exist
+				Directory.CreateDirectory(steamCmdFolder);
+
+				LogMixed("INFO: ", "Downloading SteamCMD...", Color.Blue);
+
+				// Download the file
+				using (var client = new HttpClient())
+				{
+					byte[] zipData = await client.GetByteArrayAsync(steamCmdUrl);
+					File.WriteAllBytes(zipPath, zipData);  // Using synchronous version
+				}
+
+				LogMixed("INFO: ", "Download complete. Extracting...", Color.Blue);
+
+				// Extract using ZipArchive
+				using (var archive = new ZipArchive(File.OpenRead(zipPath)))
+				{
+					archive.ExtractToDirectory(steamCmdFolder);
+				}
+
+				// Delete the zip file after extraction
+				File.Delete(zipPath);
+
+				LogMixed("SUCCESS: ", "SteamCMD installed successfully!", Color.Green);
+			}
+			catch (Exception ex)
+			{
+				HandleError(ex, "downloading/extracting SteamCMD");
+			}
+		}
+
+		#endregion
+
+		private void LoadMapFilesToDataGridView(string folderPath, Bunifu.UI.WinForms.BunifuDataGridView dataGridView, int pageSize = 100, int pageNumber = 1)
+		{
+			try
+			{
+				// Clear existing rows
+				dataGridView.Rows.Clear();
+				
+				// Get all .map files
+				string[] allMapFiles = Directory.GetFiles(folderPath, "*.map");
+				
+				// Calculate total pages
+				int totalFiles = allMapFiles.Length;
+				int totalPages = (int)Math.Ceiling((double)totalFiles / pageSize);
+				
+				// Validate page number
+				pageNumber = Math.Max(1, Math.Min(pageNumber, totalPages > 0 ? totalPages : 1));
+				
+				// Get files for current page
+				string[] pageMapFiles = allMapFiles
+					.Skip((pageNumber - 1) * pageSize)
+					.Take(pageSize)
+					.ToArray();
+
+				// Create columns if they don't exist
+				if (dataGridView.Columns.Count == 0)
+				{
+					// Add columns with Bunifu styling
+					dataGridView.ColumnCount = 3;
+					dataGridView.Columns[0].HeaderText = "Name";
+					dataGridView.Columns[1].HeaderText = "Directory";
+					dataGridView.Columns[2].HeaderText = "Date";
+
+					// Optional: Customize column appearance
+					foreach (DataGridViewColumn column in dataGridView.Columns)
+					{
+						column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+						column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+					}
+				}
+
+				// Add files to the grid
+				foreach (string file in pageMapFiles)
+				{
+					FileInfo fileInfo = new FileInfo(file);
+					dataGridView.Rows.Add(
+						Path.GetFileName(file),                    // Name
+						Path.GetFullPath(file),               // Directory
+						fileInfo.LastWriteTime.ToString("dd/MM/yyyy")  // Date
+					);
+				}
+
+				// Optional: Additional Bunifu-specific styling
+				dataGridView.AllowCustomTheming = true;
+				dataGridView.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(248, 251, 255);
+				dataGridView.DefaultCellStyle.SelectionBackColor = Color.FromArgb(87, 161, 192);
+				dataGridView.DefaultCellStyle.SelectionForeColor = Color.White;
+
+				// Enable sorting
+				dataGridView.AllowUserToOrderColumns = true;
+				dataGridView.Sort(dataGridView.Columns[2], System.ComponentModel.ListSortDirection.Descending);
+
+				if (totalPages > 1)
+				{
+					LogMixed("INFO: ", $"Map files added to list (Page {pageNumber} of {totalPages}, showing {pageMapFiles.Length} of {totalFiles} files)", Color.Blue);
+				}
+				else
+				{
+					LogMixed("INFO: ", "Map files added to list.", Color.Blue);
+				}
+			}
+			catch (Exception ex)
+			{
+				HandleError(ex, "loading map files");
+			}
+		}
+
+		private void CMDDownloadText_TextChanged(object sender, EventArgs e)
+		{
+			string[] lines = ReadConfigFile();
+
+			//if textbox contains "Process completed!" then enable next button
+			if (CMDDownloadText.Text.Contains("Process completed!"))
+			{
+				SetupCMDNextButton.Enabled = true;
+				SetupCMDNextButton.Visible = true;
+
+				if (DropDownBranches.SelectedIndex == 0)
+				{
+					LogMixed("FILES: ", "Downloaded main branch files to: " + lines[1], Color.Goldenrod);
+				}
+				else
+				{
+					LogMixed("FILES: ", "Downloaded beta branch files to: " + lines[1], Color.Goldenrod);
+				}
+			}
+		}
+
+		private void bunifuButton22_Click(object sender, EventArgs e)
+		{
+			string[] lines = ReadConfigFile();
+			LoadMapFilesToDataGridView(MapDirBox.Text, MapsDataGridView);
+			LogMixed("INFO: ", "Map list refreshed", Color.Blue);
+		}
+
+		private void openMapDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			try
+			{
+				string fullPath = MapsDataGridView.SelectedRows[0].Cells[1].Value.ToString();
+				string Mapdirectory = Path.GetDirectoryName(fullPath);
+
+				if (Directory.Exists(Mapdirectory))
+				{
+					LogMixed("INFO: ", "Path opened in explorer", Color.Blue);
+					Process.Start("explorer.exe", Mapdirectory);
+				}
+				else
+				{
+					HandleError(new DirectoryNotFoundException("Folder not found"), "opening map directory");
+				}
+			}
+			catch (Exception ex)
+			{
+				HandleError(ex, "opening map directory");
+			}
+		}
+
+		private void copyMapDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			try
+			{
+				string fullPath = MapsDataGridView.SelectedRows[0].Cells[1].Value.ToString();
+				string Mapdirectory = Path.GetDirectoryName(fullPath);
+
+				if (Directory.Exists(Mapdirectory))
+				{
+					Clipboard.SetText(Mapdirectory);
+					LogMixed("INFO: ", "Path copied to clipboard", Color.Blue);
+				}
+				else
+				{
+					HandleError(new DirectoryNotFoundException("Folder not found"), "copying map directory");
+				}
+			}
+			catch (Exception ex)
+			{
+				HandleError(ex, "copying map directory");
+			}
+		}
+
+		private void copyMapNameToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			try
+			{
+				string fullPath = MapsDataGridView.SelectedRows[0].Cells[1].Value.ToString();
+				string fileName = Path.GetFileName(fullPath);
+
+				Clipboard.SetText(fileName);
+				LogMixed("INFO: ", "Map name copied to clipboard", Color.Blue);
+			}
+			catch (Exception ex)
+			{
+				HandleError(ex, "copying map name");
+			}
+		}
+
+		private void MapsDataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+		{
+		}
+	}
+}
