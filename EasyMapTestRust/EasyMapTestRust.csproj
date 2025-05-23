@@ -188,6 +188,8 @@
     <None Include="Resources\icons8-update-64.png" />
     <None Include="Resources\icons8-red-circle-48.png" />
     <None Include="Resources\DIscord.png" />
+    <None Include="Resources\tedpommesl ogo1.jpg" />
+    <None Include="Resources\tedpommesl-ogo.ico" />
     <Content Include="WindowsBackup.ico" />
   </ItemGroup>
   <ItemGroup>

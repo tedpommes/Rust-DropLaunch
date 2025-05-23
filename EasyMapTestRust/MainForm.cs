@@ -417,7 +417,9 @@ namespace EasyMapTestRust
 			  {
 				  if (result == BunifuSnackbar.SnackbarResult.ActionClicked)
 				  {
-					  string path = Directory.GetCurrentDirectory();
+                      RadioCarbon.Checked = true;
+
+                      string path = Directory.GetCurrentDirectory();
 
 					  DropDownBranches.SelectedIndex = 0;
 					  SettingsBranchDropdown.SelectedIndex = 0;
@@ -1325,8 +1327,9 @@ namespace EasyMapTestRust
 
 		private void SaveSettingsButton_Click(object sender, EventArgs e)
 		{
+            RadioCarbon.Checked = true;
 
-			string path = Directory.GetCurrentDirectory();
+            string path = Directory.GetCurrentDirectory();
 
 			SetupServerTextbox.Text = ServerFilesDirbox.Text;
 			SetupCMDdir.Text = SteamCMDBox.Text;
@@ -1626,7 +1629,8 @@ namespace EasyMapTestRust
 		{
 			notifyIcon = new NotifyIcon()
 			{
-				Icon = SystemIcons.Information,
+				//Icon = SystemIcons.Information,
+				
 				Visible = true
 			};
 

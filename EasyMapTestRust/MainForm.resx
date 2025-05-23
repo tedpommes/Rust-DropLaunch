@@ -664,6 +664,26 @@ Can be disabled from the settings page.</value>
         1qm+AOijhH0BMjeLAAAAAElFTkSuQmCC
 </value>
   </data>
+  <data name="SetupCMDNextButton.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAAFsAAAAUCAYAAADiOEEgAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADnSURBVFhH7dkhDsIwFMbxSiQ3IOvjEEgkt0CRQAtBo0AT
+        3pvnAtwCyxFIEFxgYoQQDALSMUJScNue+pr8TNuZf6rejCnXmLs9L3bvhTIv9ITKstDTMQ0+jYvlOVl4
+        trnjnw+ggqInUz4V2r1Dp9R3YvP4ItTq4tY0Mk7s4c8h1MyxPRsndI8PoBkm3oDmILYixFaE2IoQWxFi
+        K0JsRYitCLEVIbaiEPsRb0IzjBd7jDehEZmZbGjmma5/DqEmju1jInZbzLTLMestvgTVhdBe6DRcdlrf
+        vzVpssK4tV6hZ3jR87TTDo1fbGPZ2DDQ7NEAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="SetupCMDBackButton.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAAEQAAAAUCAYAAAA0nZtFAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADQSURBVFhH7ZixDQIxDEVTUjIAzq1BSckilAxAxwZxWhpK
+        triWEZAoWIAChBDN6X5QAgjpr2Bbeo2dFH5y9UP4Vpcxjwm9KK5RS7FA2zWhn2Usfx5aScJGMm78wQpt
+        94zD5zJSWUS1K+OHaLnHhFWIiiMPrSIJlyrkxQPLBG5Yx4UQLoRwIYQLIVwI4UIIF0K4EMKFEEEUAzct
+        U4WcuGmVmo+EmLEWxYOH1pA0DqLYtUykRgCi45MfWaHJyDh3+zL5p2a5bG1GAXjVy+hSmVYPb3iwDind
+        5nEkAAAAAElFTkSuQmCC
+</value>
+  </data>
   <data name="bunifuSeparator7.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAcgAAAANCAYAAAAt8/5ZAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -690,26 +710,6 @@ Can be disabled from the settings page.</value>
         R3tXl7Ie3t3B4U3a3Ts9uN073ru+VOnm3e93QNgFfieQdA07Is26jG6sdC40lQ8NO4RdJ79T/G4JO2Za
         paPfOTBj7X5hBzVXO4Sd5HeT31HTy+3Dziqt2d3vsLDLmqvtpvrdViy3zXfdqjbDm1fsWNuBrf1O/O+e
         NAzDMAzDMAzDMAzDMAzDMAzDMAzDMAzDMAzDMAzDMIz/j38BiINVJFwCg88AAAAASUVORK5CYII=
-</value>
-  </data>
-  <data name="SetupCMDNextButton.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAAFsAAAAUCAYAAADiOEEgAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADnSURBVFhH7dkhDsIwFMbxSiQ3IOvjEEgkt0CRQAtBo0AT
-        3pvnAtwCyxFIEFxgYoQQDALSMUJScNue+pr8TNuZf6rejCnXmLs9L3bvhTIv9ITKstDTMQ0+jYvlOVl4
-        trnjnw+ggqInUz4V2r1Dp9R3YvP4ItTq4tY0Mk7s4c8h1MyxPRsndI8PoBkm3oDmILYixFaE2IoQWxFi
-        K0JsRYitCLEVIbaiEPsRb0IzjBd7jDehEZmZbGjmma5/DqEmju1jInZbzLTLMestvgTVhdBe6DRcdlrf
-        vzVpssK4tV6hZ3jR87TTDo1fbGPZ2DDQ7NEAAAAASUVORK5CYII=
-</value>
-  </data>
-  <data name="SetupCMDBackButton.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAAEQAAAAUCAYAAAA0nZtFAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADQSURBVFhH7ZixDQIxDEVTUjIAzq1BSckilAxAxwZxWhpK
-        triWEZAoWIAChBDN6X5QAgjpr2Bbeo2dFH5y9UP4Vpcxjwm9KK5RS7FA2zWhn2Usfx5aScJGMm78wQpt
-        94zD5zJSWUS1K+OHaLnHhFWIiiMPrSIJlyrkxQPLBG5Yx4UQLoRwIYQLIVwI4UIIF0K4EMKFEEEUAzct
-        U4WcuGmVmo+EmLEWxYOH1pA0DqLYtUykRgCi45MfWaHJyDh3+zL5p2a5bG1GAXjVy+hSmVYPb3iwDind
-        5nEkAAAAAElFTkSuQmCC
 </value>
   </data>
   <data name="CheckHelpTooltips.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
