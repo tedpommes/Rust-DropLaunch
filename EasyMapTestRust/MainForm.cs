@@ -25,9 +25,6 @@ using System.Windows.Forms;
 
 namespace EasyMapTestRust
 {
-	//
-
-
 	// 30, 32, 40     main back color
 	// 28,27,31       darker panels
 
@@ -65,14 +62,7 @@ namespace EasyMapTestRust
 			this.AllowDrop = true;
 			this.DragEnter += MainForm_DragEnter;
 			this.DragDrop += MainForm_DragDrop;
-
-
 		}
-
-
-		// To address the issue of the application hanging in debug mode, you can try enabling debugging for all exceptions.  
-		// This will help identify if there are any unhandled exceptions causing the hang.  
-		// Add the following code to the `MainForm_Load` method to catch and log unhandled exceptions:  
 
 		private void MainForm_Load(object sender, EventArgs e)
 		{
@@ -89,7 +79,10 @@ namespace EasyMapTestRust
 				LogMixed("ERROR: ", $"Thread exception: {ex.Exception.Message}", Color.Red);
 			};
 
-			Booting();
+			InitializeHelpTabAccordion();
+
+
+            Booting();
 
 
 			LogMixed("INFO: ", "Application started.", Color.Blue);
@@ -164,8 +157,58 @@ namespace EasyMapTestRust
 			return null;
 		}
 
+        private void InitializeHelpTabAccordion()
+        {
+            const int collapsedHeight = 40;
 
-		public void CheckCmdSimple()
+            foreach (var pnl in HelpPanelScroll.Controls.OfType<Bunifu.UI.WinForms.BunifuShadowPanel>())
+            {
+                // Store the original (expanded) height in Tag
+                pnl.Tag = pnl.Height;
+                pnl.Height = collapsedHeight;
+
+                // Wire up only the header label
+                var header = pnl.Controls
+                                .OfType<System.Windows.Forms.Label>()
+                                .FirstOrDefault(l => l.Name == "lblHeader");
+                if (header != null)
+                {
+                    header.Cursor = Cursors.Hand;
+                    header.Click += HelpPanelHeader_Click;
+                }
+            }
+        }
+
+
+        private void HelpPanelHeader_Click(object sender, EventArgs e)
+        {
+            const int collapsedHeight = 40;
+
+            // Find which panel was clicked
+            var header = (System.Windows.Forms.Label)sender;
+            var clickedPanel = (Bunifu.UI.WinForms.BunifuShadowPanel)header.Parent;
+
+            // Read back its stored “expanded” height
+            int expandedHeight = (int)(clickedPanel.Tag ?? collapsedHeight);
+
+            // If it’s already open, just collapse it and return
+            if (clickedPanel.Height > collapsedHeight)
+            {
+                clickedPanel.Height = collapsedHeight;
+                return;
+            }
+
+            // Otherwise, collapse all panels…
+            foreach (var pnl in HelpPanelScroll.Controls.OfType<Bunifu.UI.WinForms.BunifuShadowPanel>())
+            {
+                pnl.Height = collapsedHeight;			
+            }
+
+            // …and expand the one we clicked
+            clickedPanel.Height = expandedHeight;			
+        }
+
+        public void CheckCmdSimple()
 		{
 			string steamCmdPath = Path.Combine(Properties.Settings.Default.SteamCMDDir, "steamcmd.exe");
 
@@ -412,12 +455,13 @@ namespace EasyMapTestRust
 		//used to show a message to the user on first run.
 		public void FirstRunSnackbar()
 		{
-			MainSnackbar.Show(this, "App not ready, Setup required", BunifuSnackbar.MessageTypes.Warning, 20000, "Go to setup",
+			MainSnackbar.Show(this, "Initial setup required. One-click setup creates all folders in the app directory.", BunifuSnackbar.MessageTypes.Warning, 20000, "Run One-Click Setup",
 			  BunifuSnackbar.Positions.TopCenter).Then((result) =>
 			  {
 				  if (result == BunifuSnackbar.SnackbarResult.ActionClicked)
 				  {
                       RadioCarbon.Checked = true;
+					  RadioUmod.Checked = false;
 
                       string path = Directory.GetCurrentDirectory();
 
@@ -449,9 +493,17 @@ namespace EasyMapTestRust
 
 					  //go to main page
 					  MainPages.SetPage(2);
-				  }
 
-			  });
+
+                      //call SetupDirNextButton_Click to start the setup process
+					    SetupDirNextButton_Click(this, EventArgs.Empty);
+
+
+
+
+                  }
+
+              });
 		}
 
 		//used to select a directory for the server files, maps and steamcmd.
@@ -1328,6 +1380,7 @@ namespace EasyMapTestRust
 		private void SaveSettingsButton_Click(object sender, EventArgs e)
 		{
             RadioCarbon.Checked = true;
+            RadioUmod.Checked = false;
 
             string path = Directory.GetCurrentDirectory();
 
@@ -1629,9 +1682,9 @@ namespace EasyMapTestRust
 		{
 			notifyIcon = new NotifyIcon()
 			{
-				//Icon = SystemIcons.Information,
+				Icon = SystemIcons.Information,
 				
-				Visible = true
+                Visible = false
 			};
 
 			// Handle notification click
@@ -2866,6 +2919,80 @@ pause";
             if (RadioCarbon.Checked == false && RadioUmod.Checked == false)
             {
                 RadioCarbon.Checked = true;
+            }
+        }
+
+        private void SetupLabel_Click(object sender, EventArgs e)
+        {
+            HelpPanelHeader_Click(sender, e);
+        }
+
+        private void TestingMaplabel_Click(object sender, EventArgs e)
+        {
+            HelpPanelHeader_Click(sender, e);
+        }
+
+        private void FilewatcherLabel_Click(object sender, EventArgs e)
+        {
+            HelpPanelHeader_Click(sender, e);
+        }
+
+        private void CheckNoTesting_CheckedChanged(object sender, BunifuCheckBox.CheckedChangedEventArgs e)
+        {
+            if (CheckNoTesting.Checked == true)
+            {
+                CheckRunExampleStart.Checked = false;
+                CheckCopyConnect.Checked = false;
+            }
+        }
+
+        private void CheckRunExampleStart_Click(object sender, EventArgs e)
+        {
+            if (CheckRunExampleStart.Checked == true)
+            {
+                CheckNoTesting.Checked = false;
+            }
+        }
+
+        private void CheckCopyConnect_Click(object sender, EventArgs e)
+        {
+            if (CheckNoTesting.Checked == true)
+            {
+                CheckNoTesting.Checked = false;
+            }
+        }
+
+        private void CheckOpenReadme_Click(object sender, EventArgs e)
+        {
+            if (CheckNoHelp.Checked == true)
+            {
+                CheckNoHelp.Checked = false;
+            }
+        }
+
+        private void CheckHelpTooltips_Click(object sender, EventArgs e)
+        {
+            if (CheckNoHelp.Checked == true)
+            {
+                CheckNoHelp.Checked = false;
+            }
+        }
+
+        private void CheckNoHelp_CheckedChanged(object sender, BunifuCheckBox.CheckedChangedEventArgs e)
+        {
+            if (CheckNoHelp.Checked == true)
+            {
+                CheckOpenReadme.Checked = false;
+                CheckHelpTooltips.Checked = false;
+            }
+        }
+
+        private void CheckNoHelp_Click(object sender, EventArgs e)
+        {
+            if (CheckNoHelp.Checked == true)
+            {
+                CheckOpenReadme.Checked = false;
+                CheckHelpTooltips.Checked = false;
             }
         }
     }

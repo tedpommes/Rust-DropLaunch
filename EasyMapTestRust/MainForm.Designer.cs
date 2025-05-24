@@ -131,10 +131,12 @@
             this.HelpTab = new System.Windows.Forms.TabPage();
             this.panel9 = new System.Windows.Forms.Panel();
             this.HelpPanelScroll = new Bunifu.UI.WinForms.BunifuPanel();
-            this.bunifuShadowPanel7 = new Bunifu.UI.WinForms.BunifuShadowPanel();
-            this.label27 = new System.Windows.Forms.Label();
+            this.FileWatcherPanel = new Bunifu.UI.WinForms.BunifuShadowPanel();
+            this.FilewatcherLabel = new System.Windows.Forms.Label();
+            this.HelpMapStartPanel = new Bunifu.UI.WinForms.BunifuShadowPanel();
+            this.TestingMaplabel = new System.Windows.Forms.Label();
             this.HelpSetupPanel = new Bunifu.UI.WinForms.BunifuShadowPanel();
-            this.label26 = new System.Windows.Forms.Label();
+            this.SetupLabel = new System.Windows.Forms.Label();
             this.BottomConsolePanel = new System.Windows.Forms.Panel();
             this.ConsoleTextbox = new System.Windows.Forms.RichTextBox();
             this.SettingsBtn = new Bunifu.UI.WinForms.BunifuButton.BunifuButton2();
@@ -201,18 +203,20 @@
             this.panel7 = new System.Windows.Forms.Panel();
             this.CMDDownloadText = new System.Windows.Forms.RichTextBox();
             this.panel8 = new System.Windows.Forms.Panel();
+            this.SetupStepsLabel = new System.Windows.Forms.Label();
+            this.bunifuLoader1 = new Bunifu.UI.WinForms.BunifuLoader();
             this.AutoNextSetupCheck = new Bunifu.UI.WinForms.BunifuCheckBox();
             this.label14 = new System.Windows.Forms.Label();
-            this.SetupStepsLabel = new System.Windows.Forms.Label();
             this.CMDStatusLabel = new System.Windows.Forms.Label();
-            this.bunifuLoader1 = new Bunifu.UI.WinForms.BunifuLoader();
+            this.bunifuSeparator7 = new Bunifu.UI.WinForms.BunifuSeparator();
             this.bunifuShadowPanel4 = new Bunifu.UI.WinForms.BunifuShadowPanel();
             this.label3 = new System.Windows.Forms.Label();
             this.SetupCMDNextButton = new Bunifu.UI.WinForms.BunifuButton.BunifuButton2();
             this.SetupCMDBackButton = new Bunifu.UI.WinForms.BunifuButton.BunifuButton2();
-            this.bunifuSeparator7 = new Bunifu.UI.WinForms.BunifuSeparator();
             this.SetupEndPage = new System.Windows.Forms.TabPage();
             this.bunifuGroupBox4 = new Bunifu.UI.WinForms.BunifuGroupBox();
+            this.bunifuLabel3 = new Bunifu.UI.WinForms.BunifuLabel();
+            this.CheckNoHelp = new Bunifu.UI.WinForms.BunifuCheckBox();
             this.label25 = new System.Windows.Forms.Label();
             this.CheckHelpTooltips = new Bunifu.UI.WinForms.BunifuCheckBox();
             this.label23 = new System.Windows.Forms.Label();
@@ -227,6 +231,8 @@
             this.label24 = new System.Windows.Forms.Label();
             this.CheckRusteditDLL = new Bunifu.UI.WinForms.BunifuCheckBox();
             this.bunifuGroupBox2 = new Bunifu.UI.WinForms.BunifuGroupBox();
+            this.bunifuLabel2 = new Bunifu.UI.WinForms.BunifuLabel();
+            this.CheckNoTesting = new Bunifu.UI.WinForms.BunifuCheckBox();
             this.label16 = new System.Windows.Forms.Label();
             this.CheckRunExampleStart = new Bunifu.UI.WinForms.BunifuCheckBox();
             this.label22 = new System.Windows.Forms.Label();
@@ -255,7 +261,8 @@
             this.HelpTab.SuspendLayout();
             this.panel9.SuspendLayout();
             this.HelpPanelScroll.SuspendLayout();
-            this.bunifuShadowPanel7.SuspendLayout();
+            this.FileWatcherPanel.SuspendLayout();
+            this.HelpMapStartPanel.SuspendLayout();
             this.HelpSetupPanel.SuspendLayout();
             this.BottomConsolePanel.SuspendLayout();
             this.SettingsPage.SuspendLayout();
@@ -785,11 +792,13 @@
             this.HelpPanelScroll.BorderColor = System.Drawing.Color.Transparent;
             this.HelpPanelScroll.BorderRadius = 3;
             this.HelpPanelScroll.BorderThickness = 1;
-            this.HelpPanelScroll.Controls.Add(this.bunifuShadowPanel7);
+            this.HelpPanelScroll.Controls.Add(this.FileWatcherPanel);
+            this.HelpPanelScroll.Controls.Add(this.HelpMapStartPanel);
             this.HelpPanelScroll.Controls.Add(this.HelpSetupPanel);
             this.HelpPanelScroll.Dock = System.Windows.Forms.DockStyle.Fill;
             this.HelpPanelScroll.Location = new System.Drawing.Point(0, 0);
             this.HelpPanelScroll.Name = "HelpPanelScroll";
+            this.HelpPanelScroll.Padding = new System.Windows.Forms.Padding(5);
             this.HelpPanelScroll.ShowBorders = true;
             this.HelpPanelScroll.Size = new System.Drawing.Size(438, 286);
             this.HelpPanelScroll.TabIndex = 7;
@@ -797,87 +806,131 @@
             this.MainToolTip.SetToolTipIcon(this.HelpPanelScroll, null);
             this.MainToolTip.SetToolTipTitle(this.HelpPanelScroll, "");
             // 
-            // bunifuShadowPanel7
+            // FileWatcherPanel
             // 
-            this.bunifuShadowPanel7.BackColor = System.Drawing.Color.Transparent;
-            this.bunifuShadowPanel7.BorderColor = System.Drawing.Color.WhiteSmoke;
-            this.bunifuShadowPanel7.BorderRadius = 1;
-            this.bunifuShadowPanel7.BorderThickness = 1;
-            this.bunifuShadowPanel7.Controls.Add(this.label27);
-            this.bunifuShadowPanel7.Dock = System.Windows.Forms.DockStyle.Top;
-            this.bunifuShadowPanel7.FillStyle = Bunifu.UI.WinForms.BunifuShadowPanel.FillStyles.Solid;
-            this.bunifuShadowPanel7.GradientMode = Bunifu.UI.WinForms.BunifuShadowPanel.GradientModes.Vertical;
-            this.bunifuShadowPanel7.Location = new System.Drawing.Point(0, 258);
-            this.bunifuShadowPanel7.Name = "bunifuShadowPanel7";
-            this.bunifuShadowPanel7.Padding = new System.Windows.Forms.Padding(10);
-            this.bunifuShadowPanel7.PanelColor = System.Drawing.Color.WhiteSmoke;
-            this.bunifuShadowPanel7.PanelColor2 = System.Drawing.Color.WhiteSmoke;
-            this.bunifuShadowPanel7.ShadowColor = System.Drawing.Color.DarkGray;
-            this.bunifuShadowPanel7.ShadowDept = 2;
-            this.bunifuShadowPanel7.ShadowDepth = 5;
-            this.bunifuShadowPanel7.ShadowStyle = Bunifu.UI.WinForms.BunifuShadowPanel.ShadowStyles.Surrounded;
-            this.bunifuShadowPanel7.ShadowTopLeftVisible = false;
-            this.bunifuShadowPanel7.Size = new System.Drawing.Size(421, 258);
-            this.bunifuShadowPanel7.Style = Bunifu.UI.WinForms.BunifuShadowPanel.BevelStyles.Flat;
-            this.bunifuShadowPanel7.TabIndex = 1;
-            this.MainToolTip.SetToolTip(this.bunifuShadowPanel7, "");
-            this.MainToolTip.SetToolTipIcon(this.bunifuShadowPanel7, null);
-            this.MainToolTip.SetToolTipTitle(this.bunifuShadowPanel7, "");
+            this.FileWatcherPanel.BackColor = System.Drawing.Color.Transparent;
+            this.FileWatcherPanel.BorderColor = System.Drawing.Color.WhiteSmoke;
+            this.FileWatcherPanel.BorderRadius = 8;
+            this.FileWatcherPanel.BorderThickness = 1;
+            this.FileWatcherPanel.Controls.Add(this.FilewatcherLabel);
+            this.FileWatcherPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.FileWatcherPanel.FillStyle = Bunifu.UI.WinForms.BunifuShadowPanel.FillStyles.Solid;
+            this.FileWatcherPanel.GradientMode = Bunifu.UI.WinForms.BunifuShadowPanel.GradientModes.Vertical;
+            this.FileWatcherPanel.Location = new System.Drawing.Point(5, 505);
+            this.FileWatcherPanel.Name = "FileWatcherPanel";
+            this.FileWatcherPanel.Padding = new System.Windows.Forms.Padding(10);
+            this.FileWatcherPanel.PanelColor = System.Drawing.SystemColors.ScrollBar;
+            this.FileWatcherPanel.PanelColor2 = System.Drawing.SystemColors.ScrollBar;
+            this.FileWatcherPanel.ShadowColor = System.Drawing.Color.DarkGray;
+            this.FileWatcherPanel.ShadowDept = 2;
+            this.FileWatcherPanel.ShadowDepth = 5;
+            this.FileWatcherPanel.ShadowStyle = Bunifu.UI.WinForms.BunifuShadowPanel.ShadowStyles.Surrounded;
+            this.FileWatcherPanel.ShadowTopLeftVisible = false;
+            this.FileWatcherPanel.Size = new System.Drawing.Size(411, 250);
+            this.FileWatcherPanel.Style = Bunifu.UI.WinForms.BunifuShadowPanel.BevelStyles.Flat;
+            this.FileWatcherPanel.TabIndex = 2;
+            this.MainToolTip.SetToolTip(this.FileWatcherPanel, "");
+            this.MainToolTip.SetToolTipIcon(this.FileWatcherPanel, null);
+            this.MainToolTip.SetToolTipTitle(this.FileWatcherPanel, "");
             // 
-            // label27
+            // FilewatcherLabel
             // 
-            this.label27.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label27.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label27.Location = new System.Drawing.Point(10, 10);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(401, 20);
-            this.label27.TabIndex = 6;
-            this.label27.Text = "How to setup";
-            this.label27.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.MainToolTip.SetToolTip(this.label27, "");
-            this.MainToolTip.SetToolTipIcon(this.label27, null);
-            this.MainToolTip.SetToolTipTitle(this.label27, "");
+            this.FilewatcherLabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.FilewatcherLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FilewatcherLabel.Location = new System.Drawing.Point(10, 10);
+            this.FilewatcherLabel.Name = "FilewatcherLabel";
+            this.FilewatcherLabel.Size = new System.Drawing.Size(391, 20);
+            this.FilewatcherLabel.TabIndex = 6;
+            this.FilewatcherLabel.Text = "File Watcher";
+            this.FilewatcherLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.MainToolTip.SetToolTip(this.FilewatcherLabel, "");
+            this.MainToolTip.SetToolTipIcon(this.FilewatcherLabel, null);
+            this.MainToolTip.SetToolTipTitle(this.FilewatcherLabel, "");
+            this.FilewatcherLabel.Click += new System.EventHandler(this.FilewatcherLabel_Click);
+            // 
+            // HelpMapStartPanel
+            // 
+            this.HelpMapStartPanel.BackColor = System.Drawing.Color.Transparent;
+            this.HelpMapStartPanel.BorderColor = System.Drawing.Color.WhiteSmoke;
+            this.HelpMapStartPanel.BorderRadius = 8;
+            this.HelpMapStartPanel.BorderThickness = 1;
+            this.HelpMapStartPanel.Controls.Add(this.TestingMaplabel);
+            this.HelpMapStartPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.HelpMapStartPanel.FillStyle = Bunifu.UI.WinForms.BunifuShadowPanel.FillStyles.Solid;
+            this.HelpMapStartPanel.GradientMode = Bunifu.UI.WinForms.BunifuShadowPanel.GradientModes.Vertical;
+            this.HelpMapStartPanel.Location = new System.Drawing.Point(5, 255);
+            this.HelpMapStartPanel.Name = "HelpMapStartPanel";
+            this.HelpMapStartPanel.Padding = new System.Windows.Forms.Padding(10);
+            this.HelpMapStartPanel.PanelColor = System.Drawing.SystemColors.ScrollBar;
+            this.HelpMapStartPanel.PanelColor2 = System.Drawing.SystemColors.ScrollBar;
+            this.HelpMapStartPanel.ShadowColor = System.Drawing.Color.DarkGray;
+            this.HelpMapStartPanel.ShadowDept = 2;
+            this.HelpMapStartPanel.ShadowDepth = 5;
+            this.HelpMapStartPanel.ShadowStyle = Bunifu.UI.WinForms.BunifuShadowPanel.ShadowStyles.Surrounded;
+            this.HelpMapStartPanel.ShadowTopLeftVisible = false;
+            this.HelpMapStartPanel.Size = new System.Drawing.Size(411, 250);
+            this.HelpMapStartPanel.Style = Bunifu.UI.WinForms.BunifuShadowPanel.BevelStyles.Flat;
+            this.HelpMapStartPanel.TabIndex = 1;
+            this.MainToolTip.SetToolTip(this.HelpMapStartPanel, "");
+            this.MainToolTip.SetToolTipIcon(this.HelpMapStartPanel, null);
+            this.MainToolTip.SetToolTipTitle(this.HelpMapStartPanel, "");
+            // 
+            // TestingMaplabel
+            // 
+            this.TestingMaplabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.TestingMaplabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TestingMaplabel.Location = new System.Drawing.Point(10, 10);
+            this.TestingMaplabel.Name = "TestingMaplabel";
+            this.TestingMaplabel.Size = new System.Drawing.Size(391, 20);
+            this.TestingMaplabel.TabIndex = 6;
+            this.TestingMaplabel.Text = "Launch a map";
+            this.TestingMaplabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.MainToolTip.SetToolTip(this.TestingMaplabel, "");
+            this.MainToolTip.SetToolTipIcon(this.TestingMaplabel, null);
+            this.MainToolTip.SetToolTipTitle(this.TestingMaplabel, "");
+            this.TestingMaplabel.Click += new System.EventHandler(this.TestingMaplabel_Click);
             // 
             // HelpSetupPanel
             // 
             this.HelpSetupPanel.BackColor = System.Drawing.Color.Transparent;
             this.HelpSetupPanel.BorderColor = System.Drawing.Color.WhiteSmoke;
-            this.HelpSetupPanel.BorderRadius = 1;
+            this.HelpSetupPanel.BorderRadius = 8;
             this.HelpSetupPanel.BorderThickness = 1;
-            this.HelpSetupPanel.Controls.Add(this.label26);
+            this.HelpSetupPanel.Controls.Add(this.SetupLabel);
             this.HelpSetupPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.HelpSetupPanel.FillStyle = Bunifu.UI.WinForms.BunifuShadowPanel.FillStyles.Solid;
             this.HelpSetupPanel.GradientMode = Bunifu.UI.WinForms.BunifuShadowPanel.GradientModes.Vertical;
-            this.HelpSetupPanel.Location = new System.Drawing.Point(0, 0);
+            this.HelpSetupPanel.Location = new System.Drawing.Point(5, 5);
             this.HelpSetupPanel.Name = "HelpSetupPanel";
             this.HelpSetupPanel.Padding = new System.Windows.Forms.Padding(10);
-            this.HelpSetupPanel.PanelColor = System.Drawing.Color.WhiteSmoke;
-            this.HelpSetupPanel.PanelColor2 = System.Drawing.Color.WhiteSmoke;
+            this.HelpSetupPanel.PanelColor = System.Drawing.SystemColors.ScrollBar;
+            this.HelpSetupPanel.PanelColor2 = System.Drawing.SystemColors.ScrollBar;
             this.HelpSetupPanel.ShadowColor = System.Drawing.Color.DarkGray;
             this.HelpSetupPanel.ShadowDept = 2;
             this.HelpSetupPanel.ShadowDepth = 5;
             this.HelpSetupPanel.ShadowStyle = Bunifu.UI.WinForms.BunifuShadowPanel.ShadowStyles.Surrounded;
             this.HelpSetupPanel.ShadowTopLeftVisible = false;
-            this.HelpSetupPanel.Size = new System.Drawing.Size(421, 258);
+            this.HelpSetupPanel.Size = new System.Drawing.Size(411, 250);
             this.HelpSetupPanel.Style = Bunifu.UI.WinForms.BunifuShadowPanel.BevelStyles.Flat;
             this.HelpSetupPanel.TabIndex = 0;
             this.MainToolTip.SetToolTip(this.HelpSetupPanel, "");
             this.MainToolTip.SetToolTipIcon(this.HelpSetupPanel, null);
             this.MainToolTip.SetToolTipTitle(this.HelpSetupPanel, "");
             // 
-            // label26
+            // SetupLabel
             // 
-            this.label26.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label26.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label26.Location = new System.Drawing.Point(10, 10);
-            this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(401, 20);
-            this.label26.TabIndex = 6;
-            this.label26.Text = "How to setup";
-            this.label26.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.MainToolTip.SetToolTip(this.label26, "");
-            this.MainToolTip.SetToolTipIcon(this.label26, null);
-            this.MainToolTip.SetToolTipTitle(this.label26, "");
+            this.SetupLabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.SetupLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SetupLabel.Location = new System.Drawing.Point(10, 10);
+            this.SetupLabel.Name = "SetupLabel";
+            this.SetupLabel.Size = new System.Drawing.Size(391, 20);
+            this.SetupLabel.TabIndex = 6;
+            this.SetupLabel.Text = "How to setup";
+            this.SetupLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.MainToolTip.SetToolTip(this.SetupLabel, "");
+            this.MainToolTip.SetToolTipIcon(this.SetupLabel, null);
+            this.MainToolTip.SetToolTipTitle(this.SetupLabel, "");
+            this.SetupLabel.Click += new System.EventHandler(this.SetupLabel_Click);
             // 
             // BottomConsolePanel
             // 
@@ -3330,8 +3383,8 @@
             this.SetupCMDPage.Controls.Add(this.panel7);
             this.SetupCMDPage.Controls.Add(this.CMDDownloadText);
             this.SetupCMDPage.Controls.Add(this.panel8);
-            this.SetupCMDPage.Controls.Add(this.bunifuShadowPanel4);
             this.SetupCMDPage.Controls.Add(this.bunifuSeparator7);
+            this.SetupCMDPage.Controls.Add(this.bunifuShadowPanel4);
             this.SetupCMDPage.Location = new System.Drawing.Point(4, 4);
             this.SetupCMDPage.Name = "SetupCMDPage";
             this.SetupCMDPage.Padding = new System.Windows.Forms.Padding(10, 5, 10, 10);
@@ -3371,11 +3424,11 @@
             // 
             // panel8
             // 
+            this.panel8.Controls.Add(this.SetupStepsLabel);
+            this.panel8.Controls.Add(this.bunifuLoader1);
             this.panel8.Controls.Add(this.AutoNextSetupCheck);
             this.panel8.Controls.Add(this.label14);
-            this.panel8.Controls.Add(this.SetupStepsLabel);
             this.panel8.Controls.Add(this.CMDStatusLabel);
-            this.panel8.Controls.Add(this.bunifuLoader1);
             this.panel8.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel8.Location = new System.Drawing.Point(10, 349);
             this.panel8.Name = "panel8";
@@ -3385,6 +3438,50 @@
             this.MainToolTip.SetToolTipIcon(this.panel8, null);
             this.MainToolTip.SetToolTipTitle(this.panel8, "");
             // 
+            // SetupStepsLabel
+            // 
+            this.SetupStepsLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.SetupStepsLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SetupStepsLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(178)))), ((int)(((byte)(183)))), ((int)(((byte)(191)))));
+            this.SetupStepsLabel.Location = new System.Drawing.Point(399, 25);
+            this.SetupStepsLabel.Name = "SetupStepsLabel";
+            this.SetupStepsLabel.Size = new System.Drawing.Size(36, 32);
+            this.SetupStepsLabel.TabIndex = 18;
+            this.SetupStepsLabel.Text = "Step\r\n1/8";
+            this.SetupStepsLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.MainToolTip.SetToolTip(this.SetupStepsLabel, "");
+            this.MainToolTip.SetToolTipIcon(this.SetupStepsLabel, null);
+            this.MainToolTip.SetToolTipTitle(this.SetupStepsLabel, "");
+            // 
+            // bunifuLoader1
+            // 
+            this.bunifuLoader1.AllowStylePresets = true;
+            this.bunifuLoader1.BackColor = System.Drawing.Color.Transparent;
+            this.bunifuLoader1.CapStyle = Bunifu.UI.WinForms.BunifuLoader.CapStyles.Triangle;
+            this.bunifuLoader1.Color = System.Drawing.Color.DodgerBlue;
+            this.bunifuLoader1.Colors = new Bunifu.UI.WinForms.Bloom[0];
+            this.bunifuLoader1.Customization = "";
+            this.bunifuLoader1.DashWidth = 0.5F;
+            this.bunifuLoader1.Dock = System.Windows.Forms.DockStyle.Right;
+            this.bunifuLoader1.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.bunifuLoader1.Image = null;
+            this.bunifuLoader1.Location = new System.Drawing.Point(376, 0);
+            this.bunifuLoader1.Name = "bunifuLoader1";
+            this.bunifuLoader1.NoRounding = false;
+            this.bunifuLoader1.Preset = Bunifu.UI.WinForms.BunifuLoader.StylePresets.Diamond;
+            this.bunifuLoader1.RingStyle = Bunifu.UI.WinForms.BunifuLoader.RingStyles.Dotted;
+            this.bunifuLoader1.ShowText = false;
+            this.bunifuLoader1.Size = new System.Drawing.Size(80, 81);
+            this.bunifuLoader1.Speed = 4;
+            this.bunifuLoader1.TabIndex = 16;
+            this.bunifuLoader1.Text = "bunifuLoader1";
+            this.bunifuLoader1.TextPadding = new System.Windows.Forms.Padding(0);
+            this.bunifuLoader1.Thickness = 5;
+            this.MainToolTip.SetToolTip(this.bunifuLoader1, "");
+            this.MainToolTip.SetToolTipIcon(this.bunifuLoader1, null);
+            this.MainToolTip.SetToolTipTitle(this.bunifuLoader1, "");
+            this.bunifuLoader1.Transparent = true;
+            // 
             // AutoNextSetupCheck
             // 
             this.AutoNextSetupCheck.AllowBindingControlAnimation = true;
@@ -3393,7 +3490,7 @@
             this.AutoNextSetupCheck.AllowCheckBoxAnimation = false;
             this.AutoNextSetupCheck.AllowCheckmarkAnimation = true;
             this.AutoNextSetupCheck.AllowOnHoverStates = true;
-            this.AutoNextSetupCheck.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.AutoNextSetupCheck.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.AutoNextSetupCheck.AutoCheck = true;
             this.AutoNextSetupCheck.BackColor = System.Drawing.Color.Transparent;
             this.AutoNextSetupCheck.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("AutoNextSetupCheck.BackgroundImage")));
@@ -3404,7 +3501,7 @@
             this.AutoNextSetupCheck.CheckState = Bunifu.UI.WinForms.BunifuCheckBox.CheckStates.Checked;
             this.AutoNextSetupCheck.Cursor = System.Windows.Forms.Cursors.Default;
             this.AutoNextSetupCheck.CustomCheckmarkImage = null;
-            this.AutoNextSetupCheck.Location = new System.Drawing.Point(81, 40);
+            this.AutoNextSetupCheck.Location = new System.Drawing.Point(121, 40);
             this.AutoNextSetupCheck.MinimumSize = new System.Drawing.Size(17, 17);
             this.AutoNextSetupCheck.Name = "AutoNextSetupCheck";
             this.AutoNextSetupCheck.OnCheck.BorderColor = System.Drawing.Color.DodgerBlue;
@@ -3450,28 +3547,13 @@
             this.label14.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(178)))), ((int)(((byte)(183)))), ((int)(((byte)(191)))));
             this.label14.Location = new System.Drawing.Point(6, 44);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(364, 13);
+            this.label14.Size = new System.Drawing.Size(450, 13);
             this.label14.TabIndex = 15;
             this.label14.Text = "Go to next page when completed";
             this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.MainToolTip.SetToolTip(this.label14, "");
             this.MainToolTip.SetToolTipIcon(this.label14, null);
             this.MainToolTip.SetToolTipTitle(this.label14, "");
-            // 
-            // SetupStepsLabel
-            // 
-            this.SetupStepsLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.SetupStepsLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SetupStepsLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(178)))), ((int)(((byte)(183)))), ((int)(((byte)(191)))));
-            this.SetupStepsLabel.Location = new System.Drawing.Point(399, 25);
-            this.SetupStepsLabel.Name = "SetupStepsLabel";
-            this.SetupStepsLabel.Size = new System.Drawing.Size(36, 32);
-            this.SetupStepsLabel.TabIndex = 18;
-            this.SetupStepsLabel.Text = "Step\r\n1/8";
-            this.SetupStepsLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.MainToolTip.SetToolTip(this.SetupStepsLabel, "");
-            this.MainToolTip.SetToolTipIcon(this.SetupStepsLabel, null);
-            this.MainToolTip.SetToolTipTitle(this.SetupStepsLabel, "");
             // 
             // CMDStatusLabel
             // 
@@ -3481,7 +3563,7 @@
             this.CMDStatusLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(178)))), ((int)(((byte)(183)))), ((int)(((byte)(191)))));
             this.CMDStatusLabel.Location = new System.Drawing.Point(3, 11);
             this.CMDStatusLabel.Name = "CMDStatusLabel";
-            this.CMDStatusLabel.Size = new System.Drawing.Size(367, 26);
+            this.CMDStatusLabel.Size = new System.Drawing.Size(453, 26);
             this.CMDStatusLabel.TabIndex = 11;
             this.CMDStatusLabel.Text = "Please wait for the download to finish.";
             this.CMDStatusLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -3489,34 +3571,24 @@
             this.MainToolTip.SetToolTipIcon(this.CMDStatusLabel, null);
             this.MainToolTip.SetToolTipTitle(this.CMDStatusLabel, "");
             // 
-            // bunifuLoader1
+            // bunifuSeparator7
             // 
-            this.bunifuLoader1.AllowStylePresets = true;
-            this.bunifuLoader1.BackColor = System.Drawing.Color.Transparent;
-            this.bunifuLoader1.CapStyle = Bunifu.UI.WinForms.BunifuLoader.CapStyles.Triangle;
-            this.bunifuLoader1.Color = System.Drawing.Color.DodgerBlue;
-            this.bunifuLoader1.Colors = new Bunifu.UI.WinForms.Bloom[0];
-            this.bunifuLoader1.Customization = "";
-            this.bunifuLoader1.DashWidth = 0.5F;
-            this.bunifuLoader1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.bunifuLoader1.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.bunifuLoader1.Image = null;
-            this.bunifuLoader1.Location = new System.Drawing.Point(376, 0);
-            this.bunifuLoader1.Name = "bunifuLoader1";
-            this.bunifuLoader1.NoRounding = false;
-            this.bunifuLoader1.Preset = Bunifu.UI.WinForms.BunifuLoader.StylePresets.Diamond;
-            this.bunifuLoader1.RingStyle = Bunifu.UI.WinForms.BunifuLoader.RingStyles.Dotted;
-            this.bunifuLoader1.ShowText = false;
-            this.bunifuLoader1.Size = new System.Drawing.Size(80, 81);
-            this.bunifuLoader1.Speed = 4;
-            this.bunifuLoader1.TabIndex = 16;
-            this.bunifuLoader1.Text = "bunifuLoader1";
-            this.bunifuLoader1.TextPadding = new System.Windows.Forms.Padding(0);
-            this.bunifuLoader1.Thickness = 5;
-            this.MainToolTip.SetToolTip(this.bunifuLoader1, "");
-            this.MainToolTip.SetToolTipIcon(this.bunifuLoader1, null);
-            this.MainToolTip.SetToolTipTitle(this.bunifuLoader1, "");
-            this.bunifuLoader1.Transparent = true;
+            this.bunifuSeparator7.BackColor = System.Drawing.Color.Transparent;
+            this.bunifuSeparator7.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bunifuSeparator7.BackgroundImage")));
+            this.bunifuSeparator7.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.bunifuSeparator7.DashCap = Bunifu.UI.WinForms.BunifuSeparator.CapStyles.Flat;
+            this.bunifuSeparator7.Dock = System.Windows.Forms.DockStyle.Top;
+            this.bunifuSeparator7.LineColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(227)))));
+            this.bunifuSeparator7.LineStyle = Bunifu.UI.WinForms.BunifuSeparator.LineStyles.DoubleEdgeFaded;
+            this.bunifuSeparator7.LineThickness = 1;
+            this.bunifuSeparator7.Location = new System.Drawing.Point(10, 45);
+            this.bunifuSeparator7.Name = "bunifuSeparator7";
+            this.bunifuSeparator7.Orientation = Bunifu.UI.WinForms.BunifuSeparator.LineOrientation.Horizontal;
+            this.bunifuSeparator7.Size = new System.Drawing.Size(456, 13);
+            this.bunifuSeparator7.TabIndex = 8;
+            this.MainToolTip.SetToolTip(this.bunifuSeparator7, "");
+            this.MainToolTip.SetToolTipIcon(this.bunifuSeparator7, null);
+            this.MainToolTip.SetToolTipTitle(this.bunifuSeparator7, "");
             // 
             // bunifuShadowPanel4
             // 
@@ -3530,7 +3602,7 @@
             this.bunifuShadowPanel4.Dock = System.Windows.Forms.DockStyle.Top;
             this.bunifuShadowPanel4.FillStyle = Bunifu.UI.WinForms.BunifuShadowPanel.FillStyles.Solid;
             this.bunifuShadowPanel4.GradientMode = Bunifu.UI.WinForms.BunifuShadowPanel.GradientModes.Vertical;
-            this.bunifuShadowPanel4.Location = new System.Drawing.Point(10, 18);
+            this.bunifuShadowPanel4.Location = new System.Drawing.Point(10, 5);
             this.bunifuShadowPanel4.Name = "bunifuShadowPanel4";
             this.bunifuShadowPanel4.Padding = new System.Windows.Forms.Padding(12, 10, 12, 10);
             this.bunifuShadowPanel4.PanelColor = System.Drawing.SystemColors.ScrollBar;
@@ -3751,25 +3823,6 @@
             this.SetupCMDBackButton.UseDefaultRadiusAndThickness = true;
             this.SetupCMDBackButton.Click += new System.EventHandler(this.SetupCMDBackButton_Click);
             // 
-            // bunifuSeparator7
-            // 
-            this.bunifuSeparator7.BackColor = System.Drawing.Color.Transparent;
-            this.bunifuSeparator7.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bunifuSeparator7.BackgroundImage")));
-            this.bunifuSeparator7.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.bunifuSeparator7.DashCap = Bunifu.UI.WinForms.BunifuSeparator.CapStyles.Flat;
-            this.bunifuSeparator7.Dock = System.Windows.Forms.DockStyle.Top;
-            this.bunifuSeparator7.LineColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(227)))));
-            this.bunifuSeparator7.LineStyle = Bunifu.UI.WinForms.BunifuSeparator.LineStyles.DoubleEdgeFaded;
-            this.bunifuSeparator7.LineThickness = 1;
-            this.bunifuSeparator7.Location = new System.Drawing.Point(10, 5);
-            this.bunifuSeparator7.Name = "bunifuSeparator7";
-            this.bunifuSeparator7.Orientation = Bunifu.UI.WinForms.BunifuSeparator.LineOrientation.Horizontal;
-            this.bunifuSeparator7.Size = new System.Drawing.Size(456, 13);
-            this.bunifuSeparator7.TabIndex = 8;
-            this.MainToolTip.SetToolTip(this.bunifuSeparator7, "");
-            this.MainToolTip.SetToolTipIcon(this.bunifuSeparator7, null);
-            this.MainToolTip.SetToolTipTitle(this.bunifuSeparator7, "");
-            // 
             // SetupEndPage
             // 
             this.SetupEndPage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
@@ -3796,6 +3849,8 @@
             this.bunifuGroupBox4.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(227)))));
             this.bunifuGroupBox4.BorderRadius = 8;
             this.bunifuGroupBox4.BorderThickness = 2;
+            this.bunifuGroupBox4.Controls.Add(this.bunifuLabel3);
+            this.bunifuGroupBox4.Controls.Add(this.CheckNoHelp);
             this.bunifuGroupBox4.Controls.Add(this.label25);
             this.bunifuGroupBox4.Controls.Add(this.CheckHelpTooltips);
             this.bunifuGroupBox4.Controls.Add(this.label23);
@@ -3815,6 +3870,84 @@
             this.MainToolTip.SetToolTip(this.bunifuGroupBox4, "");
             this.MainToolTip.SetToolTipIcon(this.bunifuGroupBox4, null);
             this.MainToolTip.SetToolTipTitle(this.bunifuGroupBox4, "");
+            // 
+            // bunifuLabel3
+            // 
+            this.bunifuLabel3.AllowParentOverrides = false;
+            this.bunifuLabel3.AutoEllipsis = false;
+            this.bunifuLabel3.Cursor = System.Windows.Forms.Cursors.Default;
+            this.bunifuLabel3.CursorType = System.Windows.Forms.Cursors.Default;
+            this.bunifuLabel3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bunifuLabel3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(178)))), ((int)(((byte)(183)))), ((int)(((byte)(191)))));
+            this.bunifuLabel3.Location = new System.Drawing.Point(25, 44);
+            this.bunifuLabel3.Name = "bunifuLabel3";
+            this.bunifuLabel3.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.bunifuLabel3.Size = new System.Drawing.Size(40, 15);
+            this.bunifuLabel3.TabIndex = 42;
+            this.bunifuLabel3.Text = "Disable";
+            this.bunifuLabel3.TextAlignment = System.Drawing.ContentAlignment.TopLeft;
+            this.bunifuLabel3.TextFormat = Bunifu.UI.WinForms.BunifuLabel.TextFormattingOptions.Default;
+            this.MainToolTip.SetToolTip(this.bunifuLabel3, "");
+            this.MainToolTip.SetToolTipIcon(this.bunifuLabel3, null);
+            this.MainToolTip.SetToolTipTitle(this.bunifuLabel3, "");
+            // 
+            // CheckNoHelp
+            // 
+            this.CheckNoHelp.AllowBindingControlAnimation = true;
+            this.CheckNoHelp.AllowBindingControlColorChanges = false;
+            this.CheckNoHelp.AllowBindingControlLocation = true;
+            this.CheckNoHelp.AllowCheckBoxAnimation = false;
+            this.CheckNoHelp.AllowCheckmarkAnimation = true;
+            this.CheckNoHelp.AllowOnHoverStates = true;
+            this.CheckNoHelp.AutoCheck = true;
+            this.CheckNoHelp.BackColor = System.Drawing.Color.Transparent;
+            this.CheckNoHelp.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("CheckNoHelp.BackgroundImage")));
+            this.CheckNoHelp.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.CheckNoHelp.BindingControlPosition = Bunifu.UI.WinForms.BunifuCheckBox.BindingControlPositions.Right;
+            this.CheckNoHelp.BorderRadius = 12;
+            this.CheckNoHelp.Checked = false;
+            this.CheckNoHelp.CheckState = Bunifu.UI.WinForms.BunifuCheckBox.CheckStates.Unchecked;
+            this.CheckNoHelp.Cursor = System.Windows.Forms.Cursors.Default;
+            this.CheckNoHelp.CustomCheckmarkImage = null;
+            this.CheckNoHelp.Location = new System.Drawing.Point(33, 17);
+            this.CheckNoHelp.MinimumSize = new System.Drawing.Size(17, 17);
+            this.CheckNoHelp.Name = "CheckNoHelp";
+            this.CheckNoHelp.OnCheck.BorderColor = System.Drawing.Color.DodgerBlue;
+            this.CheckNoHelp.OnCheck.BorderRadius = 12;
+            this.CheckNoHelp.OnCheck.BorderThickness = 2;
+            this.CheckNoHelp.OnCheck.CheckBoxColor = System.Drawing.Color.DodgerBlue;
+            this.CheckNoHelp.OnCheck.CheckmarkColor = System.Drawing.Color.White;
+            this.CheckNoHelp.OnCheck.CheckmarkThickness = 2;
+            this.CheckNoHelp.OnDisable.BorderColor = System.Drawing.Color.LightGray;
+            this.CheckNoHelp.OnDisable.BorderRadius = 12;
+            this.CheckNoHelp.OnDisable.BorderThickness = 2;
+            this.CheckNoHelp.OnDisable.CheckBoxColor = System.Drawing.Color.Transparent;
+            this.CheckNoHelp.OnDisable.CheckmarkColor = System.Drawing.Color.LightGray;
+            this.CheckNoHelp.OnDisable.CheckmarkThickness = 2;
+            this.CheckNoHelp.OnHoverChecked.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(105)))), ((int)(((byte)(181)))), ((int)(((byte)(255)))));
+            this.CheckNoHelp.OnHoverChecked.BorderRadius = 12;
+            this.CheckNoHelp.OnHoverChecked.BorderThickness = 2;
+            this.CheckNoHelp.OnHoverChecked.CheckBoxColor = System.Drawing.Color.FromArgb(((int)(((byte)(105)))), ((int)(((byte)(181)))), ((int)(((byte)(255)))));
+            this.CheckNoHelp.OnHoverChecked.CheckmarkColor = System.Drawing.Color.White;
+            this.CheckNoHelp.OnHoverChecked.CheckmarkThickness = 2;
+            this.CheckNoHelp.OnHoverUnchecked.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(105)))), ((int)(((byte)(181)))), ((int)(((byte)(255)))));
+            this.CheckNoHelp.OnHoverUnchecked.BorderRadius = 12;
+            this.CheckNoHelp.OnHoverUnchecked.BorderThickness = 1;
+            this.CheckNoHelp.OnHoverUnchecked.CheckBoxColor = System.Drawing.Color.Transparent;
+            this.CheckNoHelp.OnUncheck.BorderColor = System.Drawing.Color.DarkGray;
+            this.CheckNoHelp.OnUncheck.BorderRadius = 12;
+            this.CheckNoHelp.OnUncheck.BorderThickness = 1;
+            this.CheckNoHelp.OnUncheck.CheckBoxColor = System.Drawing.Color.Transparent;
+            this.CheckNoHelp.Size = new System.Drawing.Size(21, 21);
+            this.CheckNoHelp.Style = Bunifu.UI.WinForms.BunifuCheckBox.CheckBoxStyles.Bunifu;
+            this.CheckNoHelp.TabIndex = 41;
+            this.CheckNoHelp.ThreeState = false;
+            this.MainToolTip.SetToolTip(this.CheckNoHelp, "");
+            this.MainToolTip.SetToolTipIcon(this.CheckNoHelp, null);
+            this.CheckNoHelp.ToolTipText = null;
+            this.MainToolTip.SetToolTipTitle(this.CheckNoHelp, "");
+            this.CheckNoHelp.CheckedChanged += new System.EventHandler<Bunifu.UI.WinForms.BunifuCheckBox.CheckedChangedEventArgs>(this.CheckNoHelp_CheckedChanged);
+            this.CheckNoHelp.Click += new System.EventHandler(this.CheckNoHelp_Click);
             // 
             // label25
             // 
@@ -3888,6 +4021,7 @@
             this.CheckHelpTooltips.ToolTipText = null;
             this.MainToolTip.SetToolTipTitle(this.CheckHelpTooltips, "");
             this.CheckHelpTooltips.CheckedChanged += new System.EventHandler<Bunifu.UI.WinForms.BunifuCheckBox.CheckedChangedEventArgs>(this.CheckHelpTooltips_CheckedChanged);
+            this.CheckHelpTooltips.Click += new System.EventHandler(this.CheckHelpTooltips_Click);
             // 
             // label23
             // 
@@ -3960,6 +4094,7 @@
             this.MainToolTip.SetToolTipIcon(this.CheckOpenReadme, null);
             this.CheckOpenReadme.ToolTipText = null;
             this.MainToolTip.SetToolTipTitle(this.CheckOpenReadme, "");
+            this.CheckOpenReadme.Click += new System.EventHandler(this.CheckOpenReadme_Click);
             // 
             // bunifuGroupBox3
             // 
@@ -3998,12 +4133,12 @@
             this.bunifuLabel1.CursorType = System.Windows.Forms.Cursors.Default;
             this.bunifuLabel1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.bunifuLabel1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(178)))), ((int)(((byte)(183)))), ((int)(((byte)(191)))));
-            this.bunifuLabel1.Location = new System.Drawing.Point(16, 59);
+            this.bunifuLabel1.Location = new System.Drawing.Point(25, 59);
             this.bunifuLabel1.Name = "bunifuLabel1";
             this.bunifuLabel1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.bunifuLabel1.Size = new System.Drawing.Size(58, 15);
+            this.bunifuLabel1.Size = new System.Drawing.Size(40, 15);
             this.bunifuLabel1.TabIndex = 37;
-            this.bunifuLabel1.Text = "No Plugins";
+            this.bunifuLabel1.Text = "Disable";
             this.bunifuLabel1.TextAlignment = System.Drawing.ContentAlignment.TopLeft;
             this.bunifuLabel1.TextFormat = Bunifu.UI.WinForms.BunifuLabel.TextFormattingOptions.Default;
             this.MainToolTip.SetToolTip(this.bunifuLabel1, "");
@@ -4219,6 +4354,8 @@
             this.bunifuGroupBox2.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(227)))));
             this.bunifuGroupBox2.BorderRadius = 8;
             this.bunifuGroupBox2.BorderThickness = 2;
+            this.bunifuGroupBox2.Controls.Add(this.bunifuLabel2);
+            this.bunifuGroupBox2.Controls.Add(this.CheckNoTesting);
             this.bunifuGroupBox2.Controls.Add(this.label16);
             this.bunifuGroupBox2.Controls.Add(this.CheckRunExampleStart);
             this.bunifuGroupBox2.Controls.Add(this.label22);
@@ -4238,6 +4375,83 @@
             this.MainToolTip.SetToolTip(this.bunifuGroupBox2, "");
             this.MainToolTip.SetToolTipIcon(this.bunifuGroupBox2, null);
             this.MainToolTip.SetToolTipTitle(this.bunifuGroupBox2, "");
+            // 
+            // bunifuLabel2
+            // 
+            this.bunifuLabel2.AllowParentOverrides = false;
+            this.bunifuLabel2.AutoEllipsis = false;
+            this.bunifuLabel2.Cursor = System.Windows.Forms.Cursors.Default;
+            this.bunifuLabel2.CursorType = System.Windows.Forms.Cursors.Default;
+            this.bunifuLabel2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bunifuLabel2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(178)))), ((int)(((byte)(183)))), ((int)(((byte)(191)))));
+            this.bunifuLabel2.Location = new System.Drawing.Point(25, 49);
+            this.bunifuLabel2.Name = "bunifuLabel2";
+            this.bunifuLabel2.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.bunifuLabel2.Size = new System.Drawing.Size(40, 15);
+            this.bunifuLabel2.TabIndex = 39;
+            this.bunifuLabel2.Text = "Disable";
+            this.bunifuLabel2.TextAlignment = System.Drawing.ContentAlignment.TopLeft;
+            this.bunifuLabel2.TextFormat = Bunifu.UI.WinForms.BunifuLabel.TextFormattingOptions.Default;
+            this.MainToolTip.SetToolTip(this.bunifuLabel2, "");
+            this.MainToolTip.SetToolTipIcon(this.bunifuLabel2, null);
+            this.MainToolTip.SetToolTipTitle(this.bunifuLabel2, "");
+            // 
+            // CheckNoTesting
+            // 
+            this.CheckNoTesting.AllowBindingControlAnimation = true;
+            this.CheckNoTesting.AllowBindingControlColorChanges = false;
+            this.CheckNoTesting.AllowBindingControlLocation = true;
+            this.CheckNoTesting.AllowCheckBoxAnimation = false;
+            this.CheckNoTesting.AllowCheckmarkAnimation = true;
+            this.CheckNoTesting.AllowOnHoverStates = true;
+            this.CheckNoTesting.AutoCheck = true;
+            this.CheckNoTesting.BackColor = System.Drawing.Color.Transparent;
+            this.CheckNoTesting.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("CheckNoTesting.BackgroundImage")));
+            this.CheckNoTesting.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.CheckNoTesting.BindingControlPosition = Bunifu.UI.WinForms.BunifuCheckBox.BindingControlPositions.Right;
+            this.CheckNoTesting.BorderRadius = 12;
+            this.CheckNoTesting.Checked = false;
+            this.CheckNoTesting.CheckState = Bunifu.UI.WinForms.BunifuCheckBox.CheckStates.Unchecked;
+            this.CheckNoTesting.Cursor = System.Windows.Forms.Cursors.Default;
+            this.CheckNoTesting.CustomCheckmarkImage = null;
+            this.CheckNoTesting.Location = new System.Drawing.Point(33, 22);
+            this.CheckNoTesting.MinimumSize = new System.Drawing.Size(17, 17);
+            this.CheckNoTesting.Name = "CheckNoTesting";
+            this.CheckNoTesting.OnCheck.BorderColor = System.Drawing.Color.DodgerBlue;
+            this.CheckNoTesting.OnCheck.BorderRadius = 12;
+            this.CheckNoTesting.OnCheck.BorderThickness = 2;
+            this.CheckNoTesting.OnCheck.CheckBoxColor = System.Drawing.Color.DodgerBlue;
+            this.CheckNoTesting.OnCheck.CheckmarkColor = System.Drawing.Color.White;
+            this.CheckNoTesting.OnCheck.CheckmarkThickness = 2;
+            this.CheckNoTesting.OnDisable.BorderColor = System.Drawing.Color.LightGray;
+            this.CheckNoTesting.OnDisable.BorderRadius = 12;
+            this.CheckNoTesting.OnDisable.BorderThickness = 2;
+            this.CheckNoTesting.OnDisable.CheckBoxColor = System.Drawing.Color.Transparent;
+            this.CheckNoTesting.OnDisable.CheckmarkColor = System.Drawing.Color.LightGray;
+            this.CheckNoTesting.OnDisable.CheckmarkThickness = 2;
+            this.CheckNoTesting.OnHoverChecked.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(105)))), ((int)(((byte)(181)))), ((int)(((byte)(255)))));
+            this.CheckNoTesting.OnHoverChecked.BorderRadius = 12;
+            this.CheckNoTesting.OnHoverChecked.BorderThickness = 2;
+            this.CheckNoTesting.OnHoverChecked.CheckBoxColor = System.Drawing.Color.FromArgb(((int)(((byte)(105)))), ((int)(((byte)(181)))), ((int)(((byte)(255)))));
+            this.CheckNoTesting.OnHoverChecked.CheckmarkColor = System.Drawing.Color.White;
+            this.CheckNoTesting.OnHoverChecked.CheckmarkThickness = 2;
+            this.CheckNoTesting.OnHoverUnchecked.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(105)))), ((int)(((byte)(181)))), ((int)(((byte)(255)))));
+            this.CheckNoTesting.OnHoverUnchecked.BorderRadius = 12;
+            this.CheckNoTesting.OnHoverUnchecked.BorderThickness = 1;
+            this.CheckNoTesting.OnHoverUnchecked.CheckBoxColor = System.Drawing.Color.Transparent;
+            this.CheckNoTesting.OnUncheck.BorderColor = System.Drawing.Color.DarkGray;
+            this.CheckNoTesting.OnUncheck.BorderRadius = 12;
+            this.CheckNoTesting.OnUncheck.BorderThickness = 1;
+            this.CheckNoTesting.OnUncheck.CheckBoxColor = System.Drawing.Color.Transparent;
+            this.CheckNoTesting.Size = new System.Drawing.Size(21, 21);
+            this.CheckNoTesting.Style = Bunifu.UI.WinForms.BunifuCheckBox.CheckBoxStyles.Bunifu;
+            this.CheckNoTesting.TabIndex = 38;
+            this.CheckNoTesting.ThreeState = false;
+            this.MainToolTip.SetToolTip(this.CheckNoTesting, "");
+            this.MainToolTip.SetToolTipIcon(this.CheckNoTesting, null);
+            this.CheckNoTesting.ToolTipText = null;
+            this.MainToolTip.SetToolTipTitle(this.CheckNoTesting, "");
+            this.CheckNoTesting.CheckedChanged += new System.EventHandler<Bunifu.UI.WinForms.BunifuCheckBox.CheckedChangedEventArgs>(this.CheckNoTesting_CheckedChanged);
             // 
             // label16
             // 
@@ -4308,6 +4522,7 @@
             this.MainToolTip.SetToolTipIcon(this.CheckRunExampleStart, null);
             this.CheckRunExampleStart.ToolTipText = null;
             this.MainToolTip.SetToolTipTitle(this.CheckRunExampleStart, "");
+            this.CheckRunExampleStart.Click += new System.EventHandler(this.CheckRunExampleStart_Click);
             // 
             // label22
             // 
@@ -4380,6 +4595,7 @@
             this.MainToolTip.SetToolTipIcon(this.CheckCopyConnect, null);
             this.CheckCopyConnect.ToolTipText = null;
             this.MainToolTip.SetToolTipTitle(this.CheckCopyConnect, "");
+            this.CheckCopyConnect.Click += new System.EventHandler(this.CheckCopyConnect_Click);
             // 
             // panel5
             // 
@@ -4730,7 +4946,8 @@
             this.HelpTab.ResumeLayout(false);
             this.panel9.ResumeLayout(false);
             this.HelpPanelScroll.ResumeLayout(false);
-            this.bunifuShadowPanel7.ResumeLayout(false);
+            this.FileWatcherPanel.ResumeLayout(false);
+            this.HelpMapStartPanel.ResumeLayout(false);
             this.HelpSetupPanel.ResumeLayout(false);
             this.BottomConsolePanel.ResumeLayout(false);
             this.SettingsPage.ResumeLayout(false);
@@ -4755,9 +4972,11 @@
             this.bunifuShadowPanel4.ResumeLayout(false);
             this.SetupEndPage.ResumeLayout(false);
             this.bunifuGroupBox4.ResumeLayout(false);
+            this.bunifuGroupBox4.PerformLayout();
             this.bunifuGroupBox3.ResumeLayout(false);
             this.bunifuGroupBox3.PerformLayout();
             this.bunifuGroupBox2.ResumeLayout(false);
+            this.bunifuGroupBox2.PerformLayout();
             this.panel5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DiscordPic)).EndInit();
             this.bunifuShadowPanel5.ResumeLayout(false);
@@ -4900,9 +5119,9 @@
 		private System.Windows.Forms.Label label25;
 		private Bunifu.UI.WinForms.BunifuCheckBox CheckHelpTooltips;
 		private Bunifu.UI.WinForms.BunifuShadowPanel HelpSetupPanel;
-		private System.Windows.Forms.Label label26;
-		private Bunifu.UI.WinForms.BunifuShadowPanel bunifuShadowPanel7;
-		private System.Windows.Forms.Label label27;
+		private System.Windows.Forms.Label SetupLabel;
+		private Bunifu.UI.WinForms.BunifuShadowPanel HelpMapStartPanel;
+		private System.Windows.Forms.Label TestingMaplabel;
 		private Bunifu.UI.WinForms.BunifuPanel HelpPanelScroll;
 		private System.Windows.Forms.Panel panel9;
         private System.Windows.Forms.Label label28;
@@ -4910,6 +5129,12 @@
         private Bunifu.UI.WinForms.BunifuRadioButton RadioUmod;
         private Bunifu.UI.WinForms.BunifuLabel bunifuLabel1;
         private Bunifu.UI.WinForms.BunifuCheckBox CheckNoPlugins;
+        private Bunifu.UI.WinForms.BunifuShadowPanel FileWatcherPanel;
+        private System.Windows.Forms.Label FilewatcherLabel;
+        private Bunifu.UI.WinForms.BunifuLabel bunifuLabel3;
+        private Bunifu.UI.WinForms.BunifuCheckBox CheckNoHelp;
+        private Bunifu.UI.WinForms.BunifuLabel bunifuLabel2;
+        private Bunifu.UI.WinForms.BunifuCheckBox CheckNoTesting;
     }
 }
 
