@@ -136,6 +136,8 @@
             this.HelpMapStartPanel = new Bunifu.UI.WinForms.BunifuShadowPanel();
             this.TestingMaplabel = new System.Windows.Forms.Label();
             this.HelpSetupPanel = new Bunifu.UI.WinForms.BunifuShadowPanel();
+            this.bunifuLabel4 = new Bunifu.UI.WinForms.BunifuLabel();
+            this.bunifuPictureBox2 = new Bunifu.UI.WinForms.BunifuPictureBox();
             this.SetupLabel = new System.Windows.Forms.Label();
             this.BottomConsolePanel = new System.Windows.Forms.Panel();
             this.ConsoleTextbox = new System.Windows.Forms.RichTextBox();
@@ -248,6 +250,12 @@
             this.MainSnackbar = new Bunifu.UI.WinForms.BunifuSnackbar(this.components);
             this.openServerDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainToolTip = new Bunifu.UI.WinForms.BunifuToolTip(this.components);
+            this.bunifuGroupBox5 = new Bunifu.UI.WinForms.BunifuGroupBox();
+            this.bunifuGroupBox6 = new Bunifu.UI.WinForms.BunifuGroupBox();
+            this.bunifuGroupBox7 = new Bunifu.UI.WinForms.BunifuGroupBox();
+            this.bunifuLabel5 = new Bunifu.UI.WinForms.BunifuLabel();
+            this.bunifuPictureBox1 = new Bunifu.UI.WinForms.BunifuPictureBox();
+            this.bunifuSeparator1 = new Bunifu.UI.WinForms.BunifuSeparator();
             this.MainPages.SuspendLayout();
             this.MainPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.StatusPic)).BeginInit();
@@ -264,6 +272,7 @@
             this.FileWatcherPanel.SuspendLayout();
             this.HelpMapStartPanel.SuspendLayout();
             this.HelpSetupPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bunifuPictureBox2)).BeginInit();
             this.BottomConsolePanel.SuspendLayout();
             this.SettingsPage.SuspendLayout();
             this.bunifuShadowPanel6.SuspendLayout();
@@ -288,6 +297,9 @@
             this.panel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DiscordPic)).BeginInit();
             this.bunifuShadowPanel5.SuspendLayout();
+            this.bunifuGroupBox5.SuspendLayout();
+            this.bunifuGroupBox7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bunifuPictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // bunifuShadowPanel2
@@ -854,6 +866,7 @@
             this.HelpMapStartPanel.BorderColor = System.Drawing.Color.WhiteSmoke;
             this.HelpMapStartPanel.BorderRadius = 8;
             this.HelpMapStartPanel.BorderThickness = 1;
+            this.HelpMapStartPanel.Controls.Add(this.bunifuGroupBox6);
             this.HelpMapStartPanel.Controls.Add(this.TestingMaplabel);
             this.HelpMapStartPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.HelpMapStartPanel.FillStyle = Bunifu.UI.WinForms.BunifuShadowPanel.FillStyles.Solid;
@@ -896,6 +909,9 @@
             this.HelpSetupPanel.BorderColor = System.Drawing.Color.WhiteSmoke;
             this.HelpSetupPanel.BorderRadius = 8;
             this.HelpSetupPanel.BorderThickness = 1;
+            this.HelpSetupPanel.Controls.Add(this.bunifuGroupBox7);
+            this.HelpSetupPanel.Controls.Add(this.bunifuSeparator1);
+            this.HelpSetupPanel.Controls.Add(this.bunifuGroupBox5);
             this.HelpSetupPanel.Controls.Add(this.SetupLabel);
             this.HelpSetupPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.HelpSetupPanel.FillStyle = Bunifu.UI.WinForms.BunifuShadowPanel.FillStyles.Solid;
@@ -917,6 +933,44 @@
             this.MainToolTip.SetToolTipIcon(this.HelpSetupPanel, null);
             this.MainToolTip.SetToolTipTitle(this.HelpSetupPanel, "");
             // 
+            // bunifuLabel4
+            // 
+            this.bunifuLabel4.AllowParentOverrides = false;
+            this.bunifuLabel4.AutoEllipsis = false;
+            this.bunifuLabel4.Cursor = System.Windows.Forms.Cursors.Default;
+            this.bunifuLabel4.CursorType = System.Windows.Forms.Cursors.Default;
+            this.bunifuLabel4.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.bunifuLabel4.Location = new System.Drawing.Point(31, 22);
+            this.bunifuLabel4.Name = "bunifuLabel4";
+            this.bunifuLabel4.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.bunifuLabel4.Size = new System.Drawing.Size(132, 45);
+            this.bunifuLabel4.TabIndex = 8;
+            this.bunifuLabel4.Text = "Downloading server files.\r\nLaunching a map\r\nUpdating the server files.";
+            this.bunifuLabel4.TextAlignment = System.Drawing.ContentAlignment.TopLeft;
+            this.bunifuLabel4.TextFormat = Bunifu.UI.WinForms.BunifuLabel.TextFormattingOptions.Default;
+            this.MainToolTip.SetToolTip(this.bunifuLabel4, "");
+            this.MainToolTip.SetToolTipIcon(this.bunifuLabel4, null);
+            this.MainToolTip.SetToolTipTitle(this.bunifuLabel4, "");
+            // 
+            // bunifuPictureBox2
+            // 
+            this.bunifuPictureBox2.AllowFocused = false;
+            this.bunifuPictureBox2.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.bunifuPictureBox2.AutoSizeHeight = false;
+            this.bunifuPictureBox2.BorderRadius = 8;
+            this.bunifuPictureBox2.Image = global::EasyMapTestRust.Properties.Resources.icons8_update_64;
+            this.bunifuPictureBox2.IsCircle = false;
+            this.bunifuPictureBox2.Location = new System.Drawing.Point(219, 16);
+            this.bunifuPictureBox2.Name = "bunifuPictureBox2";
+            this.bunifuPictureBox2.Size = new System.Drawing.Size(133, 54);
+            this.bunifuPictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.bunifuPictureBox2.TabIndex = 7;
+            this.bunifuPictureBox2.TabStop = false;
+            this.MainToolTip.SetToolTip(this.bunifuPictureBox2, "");
+            this.MainToolTip.SetToolTipIcon(this.bunifuPictureBox2, null);
+            this.MainToolTip.SetToolTipTitle(this.bunifuPictureBox2, "");
+            this.bunifuPictureBox2.Type = Bunifu.UI.WinForms.BunifuPictureBox.Types.Custom;
+            // 
             // SetupLabel
             // 
             this.SetupLabel.Dock = System.Windows.Forms.DockStyle.Top;
@@ -925,7 +979,7 @@
             this.SetupLabel.Name = "SetupLabel";
             this.SetupLabel.Size = new System.Drawing.Size(391, 20);
             this.SetupLabel.TabIndex = 6;
-            this.SetupLabel.Text = "How to setup";
+            this.SetupLabel.Text = "Help Videos";
             this.SetupLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.MainToolTip.SetToolTip(this.SetupLabel, "");
             this.MainToolTip.SetToolTipIcon(this.SetupLabel, null);
@@ -4919,6 +4973,134 @@
             this.MainToolTip.ToolTipPosition = new System.Drawing.Point(0, 0);
             this.MainToolTip.ToolTipTitle = null;
             // 
+            // bunifuGroupBox5
+            // 
+            this.bunifuGroupBox5.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.bunifuGroupBox5.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(227)))));
+            this.bunifuGroupBox5.BorderRadius = 8;
+            this.bunifuGroupBox5.BorderThickness = 2;
+            this.bunifuGroupBox5.Controls.Add(this.bunifuLabel4);
+            this.bunifuGroupBox5.Controls.Add(this.bunifuPictureBox2);
+            this.bunifuGroupBox5.Dock = System.Windows.Forms.DockStyle.Top;
+            this.bunifuGroupBox5.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bunifuGroupBox5.LabelAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.bunifuGroupBox5.LabelIndent = 10;
+            this.bunifuGroupBox5.LineStyle = Bunifu.UI.WinForms.BunifuGroupBox.LineStyles.Solid;
+            this.bunifuGroupBox5.Location = new System.Drawing.Point(10, 30);
+            this.bunifuGroupBox5.Name = "bunifuGroupBox5";
+            this.bunifuGroupBox5.Padding = new System.Windows.Forms.Padding(5, 0, 5, 5);
+            this.bunifuGroupBox5.Size = new System.Drawing.Size(391, 78);
+            this.bunifuGroupBox5.TabIndex = 21;
+            this.bunifuGroupBox5.TabStop = false;
+            this.bunifuGroupBox5.Text = "Quick start video: 1 Min";
+            this.MainToolTip.SetToolTip(this.bunifuGroupBox5, "");
+            this.MainToolTip.SetToolTipIcon(this.bunifuGroupBox5, null);
+            this.MainToolTip.SetToolTipTitle(this.bunifuGroupBox5, "");
+            // 
+            // bunifuGroupBox6
+            // 
+            this.bunifuGroupBox6.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.bunifuGroupBox6.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(227)))));
+            this.bunifuGroupBox6.BorderRadius = 8;
+            this.bunifuGroupBox6.BorderThickness = 2;
+            this.bunifuGroupBox6.Dock = System.Windows.Forms.DockStyle.Top;
+            this.bunifuGroupBox6.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bunifuGroupBox6.LabelAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.bunifuGroupBox6.LabelIndent = 10;
+            this.bunifuGroupBox6.LineStyle = Bunifu.UI.WinForms.BunifuGroupBox.LineStyles.Solid;
+            this.bunifuGroupBox6.Location = new System.Drawing.Point(10, 30);
+            this.bunifuGroupBox6.Name = "bunifuGroupBox6";
+            this.bunifuGroupBox6.Padding = new System.Windows.Forms.Padding(5, 0, 5, 5);
+            this.bunifuGroupBox6.Size = new System.Drawing.Size(391, 135);
+            this.bunifuGroupBox6.TabIndex = 22;
+            this.bunifuGroupBox6.TabStop = false;
+            this.bunifuGroupBox6.Text = "Server Files (Required)";
+            this.MainToolTip.SetToolTip(this.bunifuGroupBox6, "");
+            this.MainToolTip.SetToolTipIcon(this.bunifuGroupBox6, null);
+            this.MainToolTip.SetToolTipTitle(this.bunifuGroupBox6, "");
+            // 
+            // bunifuGroupBox7
+            // 
+            this.bunifuGroupBox7.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.bunifuGroupBox7.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(227)))));
+            this.bunifuGroupBox7.BorderRadius = 8;
+            this.bunifuGroupBox7.BorderThickness = 2;
+            this.bunifuGroupBox7.Controls.Add(this.bunifuLabel5);
+            this.bunifuGroupBox7.Controls.Add(this.bunifuPictureBox1);
+            this.bunifuGroupBox7.Dock = System.Windows.Forms.DockStyle.Top;
+            this.bunifuGroupBox7.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bunifuGroupBox7.LabelAlign = System.Windows.Forms.HorizontalAlignment.Left;
+            this.bunifuGroupBox7.LabelIndent = 10;
+            this.bunifuGroupBox7.LineStyle = Bunifu.UI.WinForms.BunifuGroupBox.LineStyles.Solid;
+            this.bunifuGroupBox7.Location = new System.Drawing.Point(10, 131);
+            this.bunifuGroupBox7.Name = "bunifuGroupBox7";
+            this.bunifuGroupBox7.Padding = new System.Windows.Forms.Padding(5, 0, 5, 5);
+            this.bunifuGroupBox7.Size = new System.Drawing.Size(391, 106);
+            this.bunifuGroupBox7.TabIndex = 22;
+            this.bunifuGroupBox7.TabStop = false;
+            this.bunifuGroupBox7.Text = "Full app overview: 3 min";
+            this.MainToolTip.SetToolTip(this.bunifuGroupBox7, "");
+            this.MainToolTip.SetToolTipIcon(this.bunifuGroupBox7, null);
+            this.MainToolTip.SetToolTipTitle(this.bunifuGroupBox7, "");
+            // 
+            // bunifuLabel5
+            // 
+            this.bunifuLabel5.AllowParentOverrides = false;
+            this.bunifuLabel5.AutoEllipsis = false;
+            this.bunifuLabel5.Cursor = System.Windows.Forms.Cursors.Default;
+            this.bunifuLabel5.CursorType = System.Windows.Forms.Cursors.Default;
+            this.bunifuLabel5.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.bunifuLabel5.Location = new System.Drawing.Point(31, 22);
+            this.bunifuLabel5.Name = "bunifuLabel5";
+            this.bunifuLabel5.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.bunifuLabel5.Size = new System.Drawing.Size(162, 75);
+            this.bunifuLabel5.TabIndex = 8;
+            this.bunifuLabel5.Text = "App setup\r\nExample workflow\r\nMultiple ways to launch a map\r\nFilewatcher explained" +
+    "\r\nExtra app options";
+            this.bunifuLabel5.TextAlignment = System.Drawing.ContentAlignment.TopLeft;
+            this.bunifuLabel5.TextFormat = Bunifu.UI.WinForms.BunifuLabel.TextFormattingOptions.Default;
+            this.MainToolTip.SetToolTip(this.bunifuLabel5, "");
+            this.MainToolTip.SetToolTipIcon(this.bunifuLabel5, null);
+            this.MainToolTip.SetToolTipTitle(this.bunifuLabel5, "");
+            // 
+            // bunifuPictureBox1
+            // 
+            this.bunifuPictureBox1.AllowFocused = false;
+            this.bunifuPictureBox1.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.bunifuPictureBox1.AutoSizeHeight = false;
+            this.bunifuPictureBox1.BorderRadius = 8;
+            this.bunifuPictureBox1.Image = global::EasyMapTestRust.Properties.Resources.icons8_update_64;
+            this.bunifuPictureBox1.IsCircle = false;
+            this.bunifuPictureBox1.Location = new System.Drawing.Point(219, 33);
+            this.bunifuPictureBox1.Name = "bunifuPictureBox1";
+            this.bunifuPictureBox1.Size = new System.Drawing.Size(133, 54);
+            this.bunifuPictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.bunifuPictureBox1.TabIndex = 7;
+            this.bunifuPictureBox1.TabStop = false;
+            this.MainToolTip.SetToolTip(this.bunifuPictureBox1, "");
+            this.MainToolTip.SetToolTipIcon(this.bunifuPictureBox1, null);
+            this.MainToolTip.SetToolTipTitle(this.bunifuPictureBox1, "");
+            this.bunifuPictureBox1.Type = Bunifu.UI.WinForms.BunifuPictureBox.Types.Custom;
+            // 
+            // bunifuSeparator1
+            // 
+            this.bunifuSeparator1.BackColor = System.Drawing.Color.Transparent;
+            this.bunifuSeparator1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bunifuSeparator1.BackgroundImage")));
+            this.bunifuSeparator1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.bunifuSeparator1.DashCap = Bunifu.UI.WinForms.BunifuSeparator.CapStyles.Flat;
+            this.bunifuSeparator1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.bunifuSeparator1.LineColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(227)))));
+            this.bunifuSeparator1.LineStyle = Bunifu.UI.WinForms.BunifuSeparator.LineStyles.DoubleEdgeFaded;
+            this.bunifuSeparator1.LineThickness = 1;
+            this.bunifuSeparator1.Location = new System.Drawing.Point(10, 108);
+            this.bunifuSeparator1.Name = "bunifuSeparator1";
+            this.bunifuSeparator1.Orientation = Bunifu.UI.WinForms.BunifuSeparator.LineOrientation.Horizontal;
+            this.bunifuSeparator1.Size = new System.Drawing.Size(391, 23);
+            this.bunifuSeparator1.TabIndex = 23;
+            this.MainToolTip.SetToolTip(this.bunifuSeparator1, "");
+            this.MainToolTip.SetToolTipIcon(this.bunifuSeparator1, null);
+            this.MainToolTip.SetToolTipTitle(this.bunifuSeparator1, "");
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -4949,6 +5131,7 @@
             this.FileWatcherPanel.ResumeLayout(false);
             this.HelpMapStartPanel.ResumeLayout(false);
             this.HelpSetupPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.bunifuPictureBox2)).EndInit();
             this.BottomConsolePanel.ResumeLayout(false);
             this.SettingsPage.ResumeLayout(false);
             this.bunifuShadowPanel6.ResumeLayout(false);
@@ -4980,6 +5163,11 @@
             this.panel5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DiscordPic)).EndInit();
             this.bunifuShadowPanel5.ResumeLayout(false);
+            this.bunifuGroupBox5.ResumeLayout(false);
+            this.bunifuGroupBox5.PerformLayout();
+            this.bunifuGroupBox7.ResumeLayout(false);
+            this.bunifuGroupBox7.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bunifuPictureBox1)).EndInit();
             this.ResumeLayout(false);
 
 		}
@@ -5135,6 +5323,14 @@
         private Bunifu.UI.WinForms.BunifuCheckBox CheckNoHelp;
         private Bunifu.UI.WinForms.BunifuLabel bunifuLabel2;
         private Bunifu.UI.WinForms.BunifuCheckBox CheckNoTesting;
+        private Bunifu.UI.WinForms.BunifuPictureBox bunifuPictureBox2;
+        private Bunifu.UI.WinForms.BunifuLabel bunifuLabel4;
+        private Bunifu.UI.WinForms.BunifuGroupBox bunifuGroupBox6;
+        private Bunifu.UI.WinForms.BunifuGroupBox bunifuGroupBox5;
+        private Bunifu.UI.WinForms.BunifuGroupBox bunifuGroupBox7;
+        private Bunifu.UI.WinForms.BunifuLabel bunifuLabel5;
+        private Bunifu.UI.WinForms.BunifuPictureBox bunifuPictureBox1;
+        private Bunifu.UI.WinForms.BunifuSeparator bunifuSeparator1;
     }
 }
 

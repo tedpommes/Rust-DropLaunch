@@ -167,6 +167,12 @@ namespace EasyMapTestRust
                 pnl.Tag = pnl.Height;
                 pnl.Height = collapsedHeight;
 
+                // Hide all group boxes initially
+                foreach (var groupBox in pnl.Controls.OfType<Bunifu.UI.WinForms.BunifuGroupBox>())
+                {
+                    groupBox.Visible = false;
+                }
+
                 // Wire up only the header label
                 var header = pnl.Controls
                                 .OfType<System.Windows.Forms.Label>()
@@ -180,33 +186,45 @@ namespace EasyMapTestRust
         }
 
 
+
         private void HelpPanelHeader_Click(object sender, EventArgs e)
         {
             const int collapsedHeight = 40;
 
-            // Find which panel was clicked
             var header = (System.Windows.Forms.Label)sender;
             var clickedPanel = (Bunifu.UI.WinForms.BunifuShadowPanel)header.Parent;
 
-            // Read back its stored “expanded” height
             int expandedHeight = (int)(clickedPanel.Tag ?? collapsedHeight);
 
-            // If it’s already open, just collapse it and return
-            if (clickedPanel.Height > collapsedHeight)
+            bool isAlreadyExpanded = clickedPanel.Height > collapsedHeight;
+
+            // Collapse all panels and hide their group boxes
+            foreach (var pnl in HelpPanelScroll.Controls.OfType<Bunifu.UI.WinForms.BunifuShadowPanel>())
+            {
+                pnl.Height = collapsedHeight;
+
+                foreach (var groupBox in pnl.Controls.OfType<Bunifu.UI.WinForms.BunifuGroupBox>())
+                {
+                    groupBox.Visible = false;
+                }
+            }
+
+            // If already expanded, don't expand again (toggle behavior)
+            if (isAlreadyExpanded)
             {
                 clickedPanel.Height = collapsedHeight;
                 return;
             }
 
-            // Otherwise, collapse all panels…
-            foreach (var pnl in HelpPanelScroll.Controls.OfType<Bunifu.UI.WinForms.BunifuShadowPanel>())
-            {
-                pnl.Height = collapsedHeight;			
-            }
+            // Expand clicked panel and show its group boxes
+            clickedPanel.Height = expandedHeight;
 
-            // …and expand the one we clicked
-            clickedPanel.Height = expandedHeight;			
+            foreach (var groupBox in clickedPanel.Controls.OfType<Bunifu.UI.WinForms.BunifuGroupBox>())
+            {
+                groupBox.Visible = true;
+            }
         }
+
 
         public void CheckCmdSimple()
 		{
@@ -2995,6 +3013,8 @@ pause";
                 CheckHelpTooltips.Checked = false;
             }
         }
+
+     
     }
 
 
