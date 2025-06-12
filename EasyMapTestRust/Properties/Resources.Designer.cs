@@ -103,6 +103,16 @@ namespace EasyMapTestRust.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_question_mark_64 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-question-mark-64", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_red_circle_48 {
             get {
                 object obj = ResourceManager.GetObject("icons8-red-circle-48", resourceCulture);
@@ -116,6 +126,16 @@ namespace EasyMapTestRust.Properties {
         internal static System.Drawing.Bitmap icons8_update_64 {
             get {
                 object obj = ResourceManager.GetObject("icons8-update-64", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Template___copy_this__3_ {
+            get {
+                object obj = ResourceManager.GetObject("Template - copy this (3)", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

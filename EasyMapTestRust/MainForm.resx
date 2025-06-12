@@ -821,15 +821,18 @@ If steamCMD is not found, the official steamCMD zip file will be downloaded and 
 </value>
   </data>
   <data name="label28.ToolTip" xml:space="preserve">
-    <value>Carbon is A high-performance, self-updating framework 
-with full Oxide plugin compatibility. 
-Option offered for easy Ext.Rustedit.dll installation.
+    <value>uMod is a plugin framework that lets server owners extend and customize game behavior without modifying the game’s core files.
 
-Downloads the official latest release from the CarbonMod github.
+Run custom server plugins written in C#, Lua, Python, or JavaScript (though C# is the most common)
+Modify game mechanics (e.g., add teleport commands, kits, custom spawns)
+Create admin tools, permissions systems, economy plugins, etc.
+Easily manage server rules, gameplay logic, and automation
+
+Downloads the official latest release from the Umod website.
 Extracts the files to the root directory used for server files.
 Deletes the .zip file downloaded. 
 
-More info on CarbonMod.gg</value>
+More info on Umod.org</value>
   </data>
   <data name="label18.ToolTip" xml:space="preserve">
     <value>Carbon is A high-performance, self-updating framework 
@@ -913,6 +916,23 @@ It is a map issue when the test procgen server boots but the server wont boot wi
         AoEEgKDVqLXG/gCAo+qjf9oyl0vNem9PADiifxyX+3L9AWEny7xBs1YCAAAAAElFTkSuQmCC
 </value>
   </data>
+  <data name="pictureBox1.ToolTip" xml:space="preserve">
+    <value>&lt;i style='color:#34495e;'&gt;DropLaunch was built to make Rust map testing easy, fast, and frustration-free. Enjoy building!.&lt;/i&gt;&lt;br&gt;
+
+&lt;b style='color:#2980b9;'&gt;First-Run Wizard:&lt;/b&gt; Guided setup to get you started in seconds.
+&lt;b style='color:#2980b9;'&gt;One-Click Setup:&lt;/b&gt; Automatically gets SteamCMD and the Rust server files.
+&lt;b style='color:#2980b9;'&gt;Auto Configuration:&lt;/b&gt; Generates optimized server startup files.&lt;br&gt;
+
+&lt;b style='color:#2980b9;'&gt;Drag &amp; Drop Map Testing:&lt;/b&gt; Simply drag a .map file to launch a server instantly.
+&lt;b style='color:#2980b9;'&gt;Desktop Notifications:&lt;/b&gt; Stay updated with real-time file changes.
+&lt;b style='color:#2980b9;'&gt;Real-Time Monitoring:&lt;/b&gt; Detects and reloads maps on change for quick iterations.&lt;br&gt;
+
+&lt;b style='color:#2980b9;'&gt;Client &amp; Server Cleanup:&lt;/b&gt; Removes old map files to keep test runs clean.&lt;br&gt;
+&lt;b style='color:#2980b9;'&gt;Instant Join:&lt;/b&gt; Copies connect command to clipboard for fast server entry.&lt;br&gt;
+&lt;b style='color:#2980b9;'&gt;Map History:&lt;/b&gt; View and relaunch previously tested maps.&lt;br&gt;
+
+&lt;span style='color:#27ae60;'&gt;&lt;b&gt;Build, test, and play — effortlessly with DropLaunch.&lt;/b&gt;&lt;/span&gt;</value>
+  </data>
   <data name="bunifuSeparator3.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAA4AAADNCAYAAACINEHLAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -935,15 +955,15 @@ It is a map issue when the test procgen server boots but the server wont boot wi
         Ki++Hjlx4VpsFH25d7q8ChtloS4wb2ycvQLb2i4DqsTwrNB4u0sAAAAASUVORK5CYII=
 </value>
   </data>
-  <data name="bunifuButton22.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="FirstRunCustomInstall.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAK0AAAAbCAYAAAAOPA8rAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAEESURBVHhe7dwxagMxEEBRlS59AzEzl0iZ0hdJ6QOkirsY
-        acG9L5BbuPURAilygS0cTHCzRYKcGIx3e8/AF7xGo+0+20kp/a+8zg9SZadVe636AzjRty6t2OLS6nlJ
-        lWetetAy+gC4v9Zl0YN08nYO1qo9to3RQcCfL1vbU5Ii+4kh4FPRz6RFT6MB4Fi63QC8I1qEQ7QIh2gR
-        DtEiHKJFOESLcIgW4RAtwiFahEO0CIdoEQ7RIhyiRThEi3CIFuEQLcJp0Q63m4BnLdp3buEikD7Zqy2l
-        k+PEEPBmkCrbv3cP2o3cot8ThwAvBuvsI7/k2fWDHStu5sKloqf2h82bPG+t/gLbq9O/HUq2DQAAAABJ
-        RU5ErkJggg==
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAEGSURBVHhe7dyhTgNBEIDhlZU8DhLJiyDrb7eivAHiZhE1
+        SN6ito9AgqC9GVkBaQimAnI9QOy9wEzyb/KZmTv3292Ufk95tOsiui1ix1LtG3Bh7FF024ne/rV6OV0/
+        5Cz2PvsB8GLsU+z5Euyqt5tSlWDhn9hHlsNdWonuZkvAqVz1LeVqX+0C8Cy1A8A7okU4RItwiBbhEC3C
+        IVqEQ7QIh2gRDtEiHKJFOESLcIgW4RAtwiFahEO0CIdoEQ7RIpyURc/tEPAsdaIv7RBwS+yYcj0si9hp
+        tgSc6frhXKpupmvk043cz/YjwIsx2Cz6un7aL/4f7Mh1uOdmLjyautTN+mF/Nbb6A9O9hzRPJ7NVAAAA
+        AElFTkSuQmCC
 </value>
   </data>
   <data name="bunifuLabel9.BaseStylesheet" xml:space="preserve">
@@ -1000,7 +1020,7 @@ It is a map issue when the test procgen server boots but the server wont boot wi
         RTez9qC5+re/juM4juM4jvM/8gcdBqKziPEVJgAAAABJRU5ErkJggg==
 </value>
   </data>
-  <data name="bunifuButton21.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="FirstRunOneClick.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAK0AAAAbCAYAAAAOPA8rAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
         YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAEESURBVHhe7dwxagMxEEBRlS59AzEzl0iZ0hdJ6QOkirsY

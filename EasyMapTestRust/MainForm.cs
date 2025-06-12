@@ -337,9 +337,12 @@ namespace EasyMapTestRust
 
 			LogMixed("FILES: ", "Default settings created.", Color.Goldenrod);
 
-			// Show first run notification
-			FirstRunSnackbar();
-		}
+            // Show first run notification
+            //FirstRunSnackbar();
+
+            MainPages.SetPage(5);
+
+        }
 
 		private void HistoryDataView_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
 		{
@@ -418,11 +421,13 @@ namespace EasyMapTestRust
 			if (Properties.Settings.Default.FirstRun == true)
 			{
 				LogMixed("INFO: ", "First run or incomplete settings.", Color.Blue);
-				//LogMixed("FILES: ", "Creating default settings.", Color.Goldenrod);
-				//CreateDefaultSettings();
+                //LogMixed("FILES: ", "Creating default settings.", Color.Goldenrod);
+                //CreateDefaultSettings();
 
-				FirstRunSnackbar();
-				return;
+                //FirstRunSnackbar();
+
+                MainPages.SetPage(5);
+                return;
 			}
 			else if (!configLoaded)
 			{
@@ -473,9 +478,12 @@ namespace EasyMapTestRust
 		//used to show a message to the user on first run.
 		public void FirstRunSnackbar()
 		{
-			MainSnackbar.Show(this, "Initial setup required. One-click setup creates all folders in the app directory.", BunifuSnackbar.MessageTypes.Warning, 20000, "Run One-Click Setup",
+            //go to main page
+            MainPages.SetPage(5);
+
+            MainSnackbar.Show(this, "Initial setup required.", BunifuSnackbar.MessageTypes.Warning, 20000, "Run One-Click Setup",
 			  BunifuSnackbar.Positions.TopCenter).Then((result) =>
-			  {
+		  {
 				  if (result == BunifuSnackbar.SnackbarResult.ActionClicked)
 				  {
                       RadioCarbon.Checked = true;
@@ -506,19 +514,15 @@ namespace EasyMapTestRust
 					  else
 					  {
 						  //go to setup page
-						  MainPages.SetPage(2);
+						  MainPages.SetPage(5);
 					  }
 
 					  //go to main page
-					  MainPages.SetPage(2);
+					  MainPages.SetPage(5);
 
 
                       //call SetupDirNextButton_Click to start the setup process
 					    SetupDirNextButton_Click(this, EventArgs.Empty);
-
-
-
-
                   }
 
               });
@@ -1496,7 +1500,9 @@ namespace EasyMapTestRust
 			WriteBatchFileTest(batchFilePath, mapPath);
 			LogMixed("FILES: ", "Start file created at: " + serverDir, Color.Goldenrod);
 
-			if (CheckDeleteClientMap.Checked)
+            // Check if the client map should be deleted
+
+            if (CheckDeleteClientMap.Checked)
 			{
 				string clientMapPath = Path.Combine(Properties.Settings.Default.ClientMapsDir, mapName);
 				if (File.Exists(clientMapPath))
@@ -1638,7 +1644,7 @@ namespace EasyMapTestRust
 						LoadMapFilesToDataGridView(Properties.Settings.Default.MapsFilesDir, MapsDataGridView);
 					}));
 				}
-				else
+				else	
 				{
 					LoadMapFilesToDataGridView(Properties.Settings.Default.MapsFilesDir, MapsDataGridView);
 				}
@@ -3014,6 +3020,91 @@ pause";
             }
         }
 
+        private void FirstRunOneClick_Click(object sender, EventArgs e)
+        {
+            RadioCarbon.Checked = true;
+            RadioUmod.Checked = false;
+
+            string path = Directory.GetCurrentDirectory();
+
+            DropDownBranches.SelectedIndex = 0;
+            SettingsBranchDropdown.SelectedIndex = 0;
+
+            SetupServerTextbox.Text = Properties.Settings.Default.RustFilesDir;
+            SetupMapsDirectory.Text = Properties.Settings.Default.MapsFilesDir;
+            SetupCMDdir.Text = Properties.Settings.Default.SteamCMDDir;
+
+            if (SetupServerTextbox.Text == "" ||
+                SetupMapsDirectory.Text == "" ||
+                SetupCMDdir.Text == "")
+            {
+                Properties.Settings.Default.RustFilesDir = path + "\\Server_Files";
+                Properties.Settings.Default.MapsFilesDir = path + "\\Maps";
+                Properties.Settings.Default.SteamCMDDir = path + "\\SteamCMD";
+                Properties.Settings.Default.Save();
+
+                SetupServerTextbox.Text = Properties.Settings.Default.RustFilesDir;
+                SetupMapsDirectory.Text = Properties.Settings.Default.MapsFilesDir;
+                SetupCMDdir.Text = Properties.Settings.Default.SteamCMDDir;
+            }
+            else
+            {
+                //go to setup page
+                MainPages.SetPage(5);
+            }
+
+            //go to main page
+            MainPages.SetPage(5);
+
+
+            //call SetupDirNextButton_Click to start the setup process
+            SetupDirNextButton_Click(this, EventArgs.Empty);
+
+
+
+        }
+
+        private void FirstRunCustomInstall_Click(object sender, EventArgs e)
+        {
+            RadioCarbon.Checked = true;
+            RadioUmod.Checked = false;
+
+            string path = Directory.GetCurrentDirectory();
+
+            DropDownBranches.SelectedIndex = 0;
+            SettingsBranchDropdown.SelectedIndex = 0;
+
+            SetupServerTextbox.Text = Properties.Settings.Default.RustFilesDir;
+            SetupMapsDirectory.Text = Properties.Settings.Default.MapsFilesDir;
+            SetupCMDdir.Text = Properties.Settings.Default.SteamCMDDir;
+
+            if (SetupServerTextbox.Text == "" ||
+                SetupMapsDirectory.Text == "" ||
+                SetupCMDdir.Text == "")
+            {
+                Properties.Settings.Default.RustFilesDir = path + "\\Server_Files";
+                Properties.Settings.Default.MapsFilesDir = path + "\\Maps";
+                Properties.Settings.Default.SteamCMDDir = path + "\\SteamCMD";
+                Properties.Settings.Default.Save();
+
+                SetupServerTextbox.Text = Properties.Settings.Default.RustFilesDir;
+                SetupMapsDirectory.Text = Properties.Settings.Default.MapsFilesDir;
+                SetupCMDdir.Text = Properties.Settings.Default.SteamCMDDir;
+            }
+            else
+            {
+                //go to setup page
+                MainPages.SetPage(2);
+            }
+
+            //go to main page
+            MainPages.SetPage(2);
+
+
+            //call SetupDirNextButton_Click to start the setup process
+            //SetupDirNextButton_Click(this, EventArgs.Empty);
+
+        }
     }
 
 
