@@ -1427,7 +1427,7 @@ namespace EasyMapTestRust
 
 			DropDownBranches.SelectedIndex = 0;
 
-			MainPages.SetPage(2);
+			MainPages.SetPage(5);
 		}
 
 		private void SetupMapsDirectory_OnIconLeftClick(object sender, EventArgs e)
@@ -1485,8 +1485,9 @@ namespace EasyMapTestRust
 				string clientMapPath = Path.Combine(Properties.Settings.Default.ClientMapsDir, mapName);
 				if (File.Exists(clientMapPath))
 				{
+                    MoveClientMapToAppMapsFolder(clientMapPath);
 					File.Delete(clientMapPath);
-					LogMixed("FILES: ", "Client map deleted: " + clientMapPath, Color.Goldenrod);
+					LogMixed("FILES: ", "Client map moved and deleted: " + clientMapPath, Color.Goldenrod);
 				}
 			}
 
@@ -1507,8 +1508,9 @@ namespace EasyMapTestRust
 				string clientMapPath = Path.Combine(Properties.Settings.Default.ClientMapsDir, mapName);
 				if (File.Exists(clientMapPath))
 				{
-					File.Delete(clientMapPath);
-					LogMixed("FILES: ", "Client map deleted: " + clientMapPath, Color.Goldenrod);
+                    MoveClientMapToAppMapsFolder(clientMapPath);
+                    File.Delete(clientMapPath);
+					LogMixed("FILES: ", "Client map moved and deleted: " + clientMapPath, Color.Goldenrod);
 				}
 			}
 
@@ -1803,8 +1805,9 @@ namespace EasyMapTestRust
 						string clientMapPath = Path.Combine(Properties.Settings.Default.ClientMapsDir, mapFile);
 						if (File.Exists(clientMapPath))
 						{
-							File.Delete(clientMapPath);
-							LogMixed("FILES: ", "Client map deleted: " + clientMapPath, Color.Goldenrod);
+                            MoveClientMapToAppMapsFolder(clientMapPath);
+                            File.Delete(clientMapPath);
+							LogMixed("FILES: ", "Client map moved and deleted: " + clientMapPath, Color.Goldenrod);
 						}
 					}
 
@@ -3104,6 +3107,46 @@ pause";
             //call SetupDirNextButton_Click to start the setup process
             //SetupDirNextButton_Click(this, EventArgs.Empty);
 
+        }
+        // Pseudocode plan:
+        // 1. Get the app directory and "maps" folder path.
+        // 2. Ensure the "maps" folder exists.
+        // 3. Generate a unique file name in the "maps" folder (append a number if needed).
+        // 4. Move the file to the "maps" folder with the unique name.
+
+        private void MoveClientMapToAppMapsFolder(string clientMapPath)
+        {
+            try
+            {
+                // 1. Get app directory and maps folder path
+                string appDir = Application.StartupPath;
+                string mapsDir = Path.Combine(appDir, "maps");
+
+                // 2. Ensure maps folder exists
+                if (!Directory.Exists(mapsDir))
+                    Directory.CreateDirectory(mapsDir);
+
+                // 3. Generate unique file name
+                string fileName = Path.GetFileName(clientMapPath);
+                string destPath = Path.Combine(mapsDir, fileName);
+                string nameWithoutExt = Path.GetFileNameWithoutExtension(fileName);
+                string ext = Path.GetExtension(fileName);
+                int count = 1;
+                while (File.Exists(destPath))
+                {
+                    destPath = Path.Combine(mapsDir, $"{nameWithoutExt}_{count}{ext}");
+                    count++;
+                }
+
+                // 4. Move the file
+                File.Move(clientMapPath, destPath);
+
+                LogMixed("FILES: ", $"Client map moved to: {destPath}", Color.Goldenrod);
+            }
+            catch (Exception ex)
+            {
+                HandleError(ex, "moving client map to maps folder");
+            }
         }
     }
 

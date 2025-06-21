@@ -210,19 +210,19 @@
             this.SetupDirBackButton = new Bunifu.UI.WinForms.BunifuButton.BunifuButton2();
             this.SetupDirNextButton = new Bunifu.UI.WinForms.BunifuButton.BunifuButton2();
             this.SetupCMDPage = new System.Windows.Forms.TabPage();
-            this.panel7 = new System.Windows.Forms.Panel();
             this.CMDDownloadText = new System.Windows.Forms.RichTextBox();
+            this.panel7 = new System.Windows.Forms.Panel();
             this.panel8 = new System.Windows.Forms.Panel();
             this.SetupStepsLabel = new System.Windows.Forms.Label();
             this.bunifuLoader1 = new Bunifu.UI.WinForms.BunifuLoader();
             this.AutoNextSetupCheck = new Bunifu.UI.WinForms.BunifuCheckBox();
             this.label14 = new System.Windows.Forms.Label();
             this.CMDStatusLabel = new System.Windows.Forms.Label();
+            this.bunifuSeparator7 = new Bunifu.UI.WinForms.BunifuSeparator();
             this.bunifuShadowPanel4 = new Bunifu.UI.WinForms.BunifuShadowPanel();
             this.label3 = new System.Windows.Forms.Label();
             this.SetupCMDNextButton = new Bunifu.UI.WinForms.BunifuButton.BunifuButton2();
             this.SetupCMDBackButton = new Bunifu.UI.WinForms.BunifuButton.BunifuButton2();
-            this.bunifuSeparator7 = new Bunifu.UI.WinForms.BunifuSeparator();
             this.SetupEndPage = new System.Windows.Forms.TabPage();
             this.bunifuGroupBox4 = new Bunifu.UI.WinForms.BunifuGroupBox();
             this.bunifuLabel3 = new Bunifu.UI.WinForms.BunifuLabel();
@@ -256,6 +256,7 @@
             this.label13 = new System.Windows.Forms.Label();
             this.SetupcompletedHome = new Bunifu.UI.WinForms.BunifuButton.BunifuButton2();
             this.FirstRunPage = new System.Windows.Forms.TabPage();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.PictureThumbHelp = new System.Windows.Forms.PictureBox();
             this.label31 = new System.Windows.Forms.Label();
             this.bunifuSeparator3 = new Bunifu.UI.WinForms.BunifuSeparator();
@@ -285,7 +286,6 @@
             this.MainSnackbar = new Bunifu.UI.WinForms.BunifuSnackbar(this.components);
             this.openServerDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainToolTip = new Bunifu.UI.WinForms.BunifuToolTip(this.components);
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.MainPages.SuspendLayout();
             this.MainPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.StatusPic)).BeginInit();
@@ -331,13 +331,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.DiscordPic)).BeginInit();
             this.bunifuShadowPanel5.SuspendLayout();
             this.FirstRunPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureThumbHelp)).BeginInit();
             this.bunifuShadowPanel9.SuspendLayout();
             this.bunifuShadowPanel11.SuspendLayout();
             this.bunifuShadowPanel8.SuspendLayout();
             this.bunifuShadowPanel10.SuspendLayout();
             this.bunifuShadowPanel7.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // bunifuShadowPanel2
@@ -379,10 +379,10 @@
             this.MainPages.Location = new System.Drawing.Point(0, 0);
             this.MainPages.Multiline = true;
             this.MainPages.Name = "MainPages";
-            this.MainPages.Page = this.FirstRunPage;
-            this.MainPages.PageIndex = 5;
-            this.MainPages.PageName = "FirstRunPage";
-            this.MainPages.PageTitle = "FirstRun";
+            this.MainPages.Page = this.SetupEndPage;
+            this.MainPages.PageIndex = 4;
+            this.MainPages.PageName = "SetupEndPage";
+            this.MainPages.PageTitle = "Setup End";
             this.MainPages.SelectedIndex = 0;
             this.MainPages.Size = new System.Drawing.Size(484, 466);
             this.MainPages.TabIndex = 0;
@@ -3612,17 +3612,6 @@
             this.MainToolTip.SetToolTipIcon(this.SetupCMDPage, null);
             this.MainToolTip.SetToolTipTitle(this.SetupCMDPage, "");
             // 
-            // panel7
-            // 
-            this.panel7.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel7.Location = new System.Drawing.Point(10, 332);
-            this.panel7.Name = "panel7";
-            this.panel7.Size = new System.Drawing.Size(456, 17);
-            this.panel7.TabIndex = 27;
-            this.MainToolTip.SetToolTip(this.panel7, "");
-            this.MainToolTip.SetToolTipIcon(this.panel7, null);
-            this.MainToolTip.SetToolTipTitle(this.panel7, "");
-            // 
             // CMDDownloadText
             // 
             this.CMDDownloadText.BackColor = System.Drawing.Color.DimGray;
@@ -3638,6 +3627,17 @@
             this.MainToolTip.SetToolTipIcon(this.CMDDownloadText, null);
             this.MainToolTip.SetToolTipTitle(this.CMDDownloadText, "");
             this.CMDDownloadText.TextChanged += new System.EventHandler(this.CMDDownloadText_TextChanged);
+            // 
+            // panel7
+            // 
+            this.panel7.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel7.Location = new System.Drawing.Point(10, 332);
+            this.panel7.Name = "panel7";
+            this.panel7.Size = new System.Drawing.Size(456, 17);
+            this.panel7.TabIndex = 27;
+            this.MainToolTip.SetToolTip(this.panel7, "");
+            this.MainToolTip.SetToolTipIcon(this.panel7, null);
+            this.MainToolTip.SetToolTipTitle(this.panel7, "");
             // 
             // panel8
             // 
@@ -3787,6 +3787,25 @@
             this.MainToolTip.SetToolTip(this.CMDStatusLabel, "");
             this.MainToolTip.SetToolTipIcon(this.CMDStatusLabel, null);
             this.MainToolTip.SetToolTipTitle(this.CMDStatusLabel, "");
+            // 
+            // bunifuSeparator7
+            // 
+            this.bunifuSeparator7.BackColor = System.Drawing.Color.Transparent;
+            this.bunifuSeparator7.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bunifuSeparator7.BackgroundImage")));
+            this.bunifuSeparator7.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.bunifuSeparator7.DashCap = Bunifu.UI.WinForms.BunifuSeparator.CapStyles.Flat;
+            this.bunifuSeparator7.Dock = System.Windows.Forms.DockStyle.Top;
+            this.bunifuSeparator7.LineColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(227)))));
+            this.bunifuSeparator7.LineStyle = Bunifu.UI.WinForms.BunifuSeparator.LineStyles.DoubleEdgeFaded;
+            this.bunifuSeparator7.LineThickness = 1;
+            this.bunifuSeparator7.Location = new System.Drawing.Point(10, 45);
+            this.bunifuSeparator7.Name = "bunifuSeparator7";
+            this.bunifuSeparator7.Orientation = Bunifu.UI.WinForms.BunifuSeparator.LineOrientation.Horizontal;
+            this.bunifuSeparator7.Size = new System.Drawing.Size(456, 13);
+            this.bunifuSeparator7.TabIndex = 8;
+            this.MainToolTip.SetToolTip(this.bunifuSeparator7, "");
+            this.MainToolTip.SetToolTipIcon(this.bunifuSeparator7, null);
+            this.MainToolTip.SetToolTipTitle(this.bunifuSeparator7, "");
             // 
             // bunifuShadowPanel4
             // 
@@ -4021,25 +4040,6 @@
             this.SetupCMDBackButton.UseDefaultRadiusAndThickness = true;
             this.SetupCMDBackButton.Click += new System.EventHandler(this.SetupCMDBackButton_Click);
             // 
-            // bunifuSeparator7
-            // 
-            this.bunifuSeparator7.BackColor = System.Drawing.Color.Transparent;
-            this.bunifuSeparator7.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bunifuSeparator7.BackgroundImage")));
-            this.bunifuSeparator7.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.bunifuSeparator7.DashCap = Bunifu.UI.WinForms.BunifuSeparator.CapStyles.Flat;
-            this.bunifuSeparator7.Dock = System.Windows.Forms.DockStyle.Top;
-            this.bunifuSeparator7.LineColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(227)))));
-            this.bunifuSeparator7.LineStyle = Bunifu.UI.WinForms.BunifuSeparator.LineStyles.DoubleEdgeFaded;
-            this.bunifuSeparator7.LineThickness = 1;
-            this.bunifuSeparator7.Location = new System.Drawing.Point(10, 45);
-            this.bunifuSeparator7.Name = "bunifuSeparator7";
-            this.bunifuSeparator7.Orientation = Bunifu.UI.WinForms.BunifuSeparator.LineOrientation.Horizontal;
-            this.bunifuSeparator7.Size = new System.Drawing.Size(456, 13);
-            this.bunifuSeparator7.TabIndex = 8;
-            this.MainToolTip.SetToolTip(this.bunifuSeparator7, "");
-            this.MainToolTip.SetToolTipIcon(this.bunifuSeparator7, null);
-            this.MainToolTip.SetToolTipTitle(this.bunifuSeparator7, "");
-            // 
             // SetupEndPage
             // 
             this.SetupEndPage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
@@ -4096,7 +4096,7 @@
             this.bunifuLabel3.CursorType = System.Windows.Forms.Cursors.Default;
             this.bunifuLabel3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.bunifuLabel3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(178)))), ((int)(((byte)(183)))), ((int)(((byte)(191)))));
-            this.bunifuLabel3.Location = new System.Drawing.Point(25, 44);
+            this.bunifuLabel3.Location = new System.Drawing.Point(25, 47);
             this.bunifuLabel3.Name = "bunifuLabel3";
             this.bunifuLabel3.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.bunifuLabel3.Size = new System.Drawing.Size(40, 15);
@@ -4126,7 +4126,7 @@
             this.CheckNoHelp.CheckState = Bunifu.UI.WinForms.BunifuCheckBox.CheckStates.Unchecked;
             this.CheckNoHelp.Cursor = System.Windows.Forms.Cursors.Default;
             this.CheckNoHelp.CustomCheckmarkImage = null;
-            this.CheckNoHelp.Location = new System.Drawing.Point(33, 17);
+            this.CheckNoHelp.Location = new System.Drawing.Point(33, 20);
             this.CheckNoHelp.MinimumSize = new System.Drawing.Size(17, 17);
             this.CheckNoHelp.Name = "CheckNoHelp";
             this.CheckNoHelp.OnCheck.BorderColor = System.Drawing.Color.DodgerBlue;
@@ -5046,8 +5046,23 @@
             this.MainToolTip.SetToolTipIcon(this.FirstRunPage, null);
             this.MainToolTip.SetToolTipTitle(this.FirstRunPage, "");
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBox1.Image = global::EasyMapTestRust.Properties.Resources.icons8_question_mark_64;
+            this.pictureBox1.Location = new System.Drawing.Point(404, 381);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(62, 46);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 33;
+            this.pictureBox1.TabStop = false;
+            this.MainToolTip.SetToolTip(this.pictureBox1, resources.GetString("pictureBox1.ToolTip"));
+            this.MainToolTip.SetToolTipIcon(this.pictureBox1, global::EasyMapTestRust.Properties.Resources.icons8_update_64);
+            this.MainToolTip.SetToolTipTitle(this.pictureBox1, "Welcome to DropLaunch!");
+            // 
             // PictureThumbHelp
             // 
+            this.PictureThumbHelp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.PictureThumbHelp.Image = global::EasyMapTestRust.Properties.Resources.Template___copy_this__3_;
             this.PictureThumbHelp.InitialImage = global::EasyMapTestRust.Properties.Resources.Template___copy_this__3_;
             this.PictureThumbHelp.Location = new System.Drawing.Point(176, 350);
@@ -5064,7 +5079,7 @@
             // 
             this.label31.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label31.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(178)))), ((int)(((byte)(183)))), ((int)(((byte)(191)))));
-            this.label31.Location = new System.Drawing.Point(13, 310);
+            this.label31.Location = new System.Drawing.Point(13, 309);
             this.label31.Name = "label31";
             this.label31.Size = new System.Drawing.Size(180, 98);
             this.label31.TabIndex = 31;
@@ -5713,7 +5728,7 @@
             this.label26.Name = "label26";
             this.label26.Size = new System.Drawing.Size(432, 20);
             this.label26.TabIndex = 5;
-            this.label26.Text = "First Run Detected";
+            this.label26.Text = "Install Required Files";
             this.label26.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.MainToolTip.SetToolTip(this.label26, "");
             this.MainToolTip.SetToolTipIcon(this.label26, null);
@@ -5830,18 +5845,6 @@
             this.MainToolTip.ToolTipPosition = new System.Drawing.Point(0, 0);
             this.MainToolTip.ToolTipTitle = "22";
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::EasyMapTestRust.Properties.Resources.icons8_question_mark_64;
-            this.pictureBox1.Location = new System.Drawing.Point(400, 361);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(66, 66);
-            this.pictureBox1.TabIndex = 33;
-            this.pictureBox1.TabStop = false;
-            this.MainToolTip.SetToolTip(this.pictureBox1, resources.GetString("pictureBox1.ToolTip"));
-            this.MainToolTip.SetToolTipIcon(this.pictureBox1, global::EasyMapTestRust.Properties.Resources.icons8_update_64);
-            this.MainToolTip.SetToolTipTitle(this.pictureBox1, "Welcome to DropLaunch!");
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -5853,7 +5856,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Rust DropLaunch - Alpha 0.1";
+            this.Text = "Rust DropLaunch - Alpha 0.2";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.MainPages.ResumeLayout(false);
             this.MainPage.ResumeLayout(false);
@@ -5910,13 +5913,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.DiscordPic)).EndInit();
             this.bunifuShadowPanel5.ResumeLayout(false);
             this.FirstRunPage.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PictureThumbHelp)).EndInit();
             this.bunifuShadowPanel9.ResumeLayout(false);
             this.bunifuShadowPanel11.ResumeLayout(false);
             this.bunifuShadowPanel8.ResumeLayout(false);
             this.bunifuShadowPanel10.ResumeLayout(false);
             this.bunifuShadowPanel7.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
 		}
