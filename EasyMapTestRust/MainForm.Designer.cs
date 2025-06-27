@@ -261,7 +261,7 @@
             this.SetupcompletedHome = new Bunifu.UI.WinForms.BunifuButton.BunifuButton2();
             this.FirstRunPage = new System.Windows.Forms.TabPage();
             this.ImageButtonDiscord = new Bunifu.UI.WinForms.BunifuImageButton();
-            this.bunifuImageButton1 = new Bunifu.UI.WinForms.BunifuImageButton();
+            this.ThumbPicButtonStart = new Bunifu.UI.WinForms.BunifuImageButton();
             this.ImageButtonGithub = new Bunifu.UI.WinForms.BunifuImageButton();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label31 = new System.Windows.Forms.Label();
@@ -5092,7 +5092,7 @@
             // 
             this.FirstRunPage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(32)))), ((int)(((byte)(40)))));
             this.FirstRunPage.Controls.Add(this.ImageButtonDiscord);
-            this.FirstRunPage.Controls.Add(this.bunifuImageButton1);
+            this.FirstRunPage.Controls.Add(this.ThumbPicButtonStart);
             this.FirstRunPage.Controls.Add(this.ImageButtonGithub);
             this.FirstRunPage.Controls.Add(this.pictureBox1);
             this.FirstRunPage.Controls.Add(this.label31);
@@ -5150,44 +5150,44 @@
             this.ImageButtonDiscord.ZoomSpeed = 10;
             this.ImageButtonDiscord.Click += new System.EventHandler(this.ImageButtonDiscord_Click);
             // 
-            // bunifuImageButton1
+            // ThumbPicButtonStart
             // 
-            this.bunifuImageButton1.ActiveImage = null;
-            this.bunifuImageButton1.AllowAnimations = true;
-            this.bunifuImageButton1.AllowBuffering = false;
-            this.bunifuImageButton1.AllowToggling = false;
-            this.bunifuImageButton1.AllowZooming = true;
-            this.bunifuImageButton1.AllowZoomingOnFocus = false;
-            this.bunifuImageButton1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.bunifuImageButton1.BackColor = System.Drawing.Color.Transparent;
-            this.bunifuImageButton1.DialogResult = System.Windows.Forms.DialogResult.None;
-            this.bunifuImageButton1.ErrorImage = ((System.Drawing.Image)(resources.GetObject("bunifuImageButton1.ErrorImage")));
-            this.bunifuImageButton1.FadeWhenInactive = false;
-            this.bunifuImageButton1.Flip = Bunifu.UI.WinForms.BunifuImageButton.FlipOrientation.Normal;
-            this.bunifuImageButton1.Image = global::EasyMapTestRust.Properties.Resources.Template___copy_this__3_;
-            this.bunifuImageButton1.ImageActive = null;
-            this.bunifuImageButton1.ImageLocation = null;
-            this.bunifuImageButton1.ImageMargin = 20;
-            this.bunifuImageButton1.ImageSize = new System.Drawing.Size(142, 79);
-            this.bunifuImageButton1.ImageZoomSize = new System.Drawing.Size(162, 99);
-            this.bunifuImageButton1.InitialImage = ((System.Drawing.Image)(resources.GetObject("bunifuImageButton1.InitialImage")));
-            this.bunifuImageButton1.Location = new System.Drawing.Point(156, 331);
-            this.bunifuImageButton1.Name = "bunifuImageButton1";
-            this.bunifuImageButton1.Rotation = 0;
-            this.bunifuImageButton1.ShowActiveImage = true;
-            this.bunifuImageButton1.ShowCursorChanges = true;
-            this.bunifuImageButton1.ShowImageBorders = true;
-            this.bunifuImageButton1.ShowSizeMarkers = false;
-            this.bunifuImageButton1.Size = new System.Drawing.Size(162, 99);
-            this.bunifuImageButton1.TabIndex = 34;
-            this.MainToolTip.SetToolTip(this.bunifuImageButton1, "");
-            this.MainToolTip.SetToolTipIcon(this.bunifuImageButton1, null);
-            this.bunifuImageButton1.ToolTipText = "";
-            this.MainToolTip.SetToolTipTitle(this.bunifuImageButton1, "");
-            this.bunifuImageButton1.WaitOnLoad = false;
-            this.bunifuImageButton1.Zoom = 20;
-            this.bunifuImageButton1.ZoomSpeed = 10;
-            this.bunifuImageButton1.Click += new System.EventHandler(this.ImageButtonGithub_Click);
+            this.ThumbPicButtonStart.ActiveImage = null;
+            this.ThumbPicButtonStart.AllowAnimations = true;
+            this.ThumbPicButtonStart.AllowBuffering = false;
+            this.ThumbPicButtonStart.AllowToggling = false;
+            this.ThumbPicButtonStart.AllowZooming = true;
+            this.ThumbPicButtonStart.AllowZoomingOnFocus = false;
+            this.ThumbPicButtonStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ThumbPicButtonStart.BackColor = System.Drawing.Color.Transparent;
+            this.ThumbPicButtonStart.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.ThumbPicButtonStart.ErrorImage = ((System.Drawing.Image)(resources.GetObject("ThumbPicButtonStart.ErrorImage")));
+            this.ThumbPicButtonStart.FadeWhenInactive = false;
+            this.ThumbPicButtonStart.Flip = Bunifu.UI.WinForms.BunifuImageButton.FlipOrientation.Normal;
+            this.ThumbPicButtonStart.Image = global::EasyMapTestRust.Properties.Resources.file_cover___1;
+            this.ThumbPicButtonStart.ImageActive = null;
+            this.ThumbPicButtonStart.ImageLocation = null;
+            this.ThumbPicButtonStart.ImageMargin = 20;
+            this.ThumbPicButtonStart.ImageSize = new System.Drawing.Size(142, 79);
+            this.ThumbPicButtonStart.ImageZoomSize = new System.Drawing.Size(162, 99);
+            this.ThumbPicButtonStart.InitialImage = ((System.Drawing.Image)(resources.GetObject("ThumbPicButtonStart.InitialImage")));
+            this.ThumbPicButtonStart.Location = new System.Drawing.Point(156, 331);
+            this.ThumbPicButtonStart.Name = "ThumbPicButtonStart";
+            this.ThumbPicButtonStart.Rotation = 0;
+            this.ThumbPicButtonStart.ShowActiveImage = true;
+            this.ThumbPicButtonStart.ShowCursorChanges = true;
+            this.ThumbPicButtonStart.ShowImageBorders = true;
+            this.ThumbPicButtonStart.ShowSizeMarkers = false;
+            this.ThumbPicButtonStart.Size = new System.Drawing.Size(162, 99);
+            this.ThumbPicButtonStart.TabIndex = 34;
+            this.MainToolTip.SetToolTip(this.ThumbPicButtonStart, "");
+            this.MainToolTip.SetToolTipIcon(this.ThumbPicButtonStart, null);
+            this.ThumbPicButtonStart.ToolTipText = "";
+            this.MainToolTip.SetToolTipTitle(this.ThumbPicButtonStart, "");
+            this.ThumbPicButtonStart.WaitOnLoad = false;
+            this.ThumbPicButtonStart.Zoom = 20;
+            this.ThumbPicButtonStart.ZoomSpeed = 10;
+            this.ThumbPicButtonStart.Click += new System.EventHandler(this.ThumbPicButtonStart_Click);
             // 
             // ImageButtonGithub
             // 
@@ -6369,7 +6369,7 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private Bunifu.UI.WinForms.BunifuImageButton ImageButtonGithub;
         private Bunifu.UI.WinForms.BunifuImageButton ImageButtonDiscord;
-        private Bunifu.UI.WinForms.BunifuImageButton bunifuImageButton1;
+        private Bunifu.UI.WinForms.BunifuImageButton ThumbPicButtonStart;
         private Bunifu.UI.WinForms.BunifuGroupBox bunifuGroupBox8;
         private Bunifu.UI.WinForms.BunifuTextBox FinishRustGameDirbox;
         private Bunifu.UI.WinForms.BunifuButton.BunifuButton2 FirstRunHomeButton;

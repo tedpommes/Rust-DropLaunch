@@ -3267,6 +3267,16 @@ namespace EasyMapTestRust
                 MainPages.SetPage(0);
             }
         }
+
+        private void ThumbPicButtonStart_Click(object sender, EventArgs e)
+        {
+            //open the default browser and go to the discord link
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://youtu.be/072XwfL8YqY",
+                UseShellExecute = true
+            });
+        }
     }
 
 

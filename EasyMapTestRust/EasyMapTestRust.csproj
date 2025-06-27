@@ -193,6 +193,7 @@
     <None Include="Resources\Template - copy this %283%29.jpg" />
     <None Include="Resources\icons8-question-mark-64.png" />
     <None Include="Resources\Github.png" />
+    <None Include="Resources\file cover - 1.png" />
     <Content Include="WindowsBackup.ico" />
   </ItemGroup>
   <ItemGroup>
