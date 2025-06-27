@@ -596,7 +596,16 @@ namespace EasyMapTestRust
 
 			}
 
-			if (settingsChanged)
+
+            if (FinishRustGameDirbox.Text != "" && RustGameDirbox.Text != Properties.Settings.Default.ClientMapsDir)
+            {
+                Properties.Settings.Default.ClientMapsDir = FinishRustGameDirbox.Text;
+                settingsChanged = true;
+
+            }
+
+
+            if (settingsChanged)
 			{
 				Properties.Settings.Default.FirstRun = false;
 				// Save changes
@@ -1474,47 +1483,73 @@ namespace EasyMapTestRust
 			CreateAndStartMapServer(mapName, mapDirectory, serverDir);
 		}
 
-		private void CreateAndStartMapServer(string mapName, string mapPath, string serverDir)
-		{
-			string batchFilePath = Path.Combine(serverDir, mapName.Replace(".map", ".bat"));
-			WriteBatchFile(batchFilePath, mapPath);
-			LogMixed("FILES: ", "Start file created at: " + serverDir, Color.Goldenrod);
+        private void CreateAndStartMapServer(string mapName, string mapPath, string serverDir)
+        {
+            string batchFilePath = Path.Combine(serverDir, mapName.Replace(".map", ".bat"));
+            WriteBatchFile(batchFilePath, mapPath);
+            LogMixed("FILES: ", "Start file created at: " + serverDir, Color.Goldenrod);
 
-			if (CheckDeleteClientMap.Checked)
-			{
-				string clientMapPath = Path.Combine(Properties.Settings.Default.ClientMapsDir, mapName);
-				if (File.Exists(clientMapPath))
-				{
-                    MoveClientMapToAppMapsFolder(clientMapPath);
-					File.Delete(clientMapPath);
-					LogMixed("FILES: ", "Client map moved and deleted: " + clientMapPath, Color.Goldenrod);
-				}
-			}
+            if (CheckDeleteClientMap.Checked)
+            {
+                string clientMapsDir = Properties.Settings.Default.ClientMapsDir;
 
-			StartBatFile(batchFilePath);
-			LogMixed("INFO: ", "Server started with map: " + mapName, Color.Blue);
-		}
+                if (!string.IsNullOrWhiteSpace(clientMapsDir))
+                {
+                    string clientMapPath = Path.Combine(clientMapsDir, mapName);
+                    if (File.Exists(clientMapPath))
+                    {
+                        MoveClientMapToAppMapsFolder(clientMapPath);
+                        File.Delete(clientMapPath);
+                        LogMixed("FILES: ", "Client map moved and deleted: " + clientMapPath, Color.Goldenrod);
+                    }
+                    else
+                    {
+                        LogMixed("FILES: ", "Client map not found: " + clientMapPath, Color.DarkOrange);
+                    }
+                }
+                else
+                {
+                    LogMixed("FILES: ", "Client map deletion skipped: no directory set.", Color.Goldenrod);
+                }
+            }
 
-		private void CreateAndStartMapServerTest(string mapName, string mapPath, string serverDir)
+            StartBatFile(batchFilePath);
+            LogMixed("INFO: ", "Server started with map: " + mapName, Color.Blue);
+        }
+
+        private void CreateAndStartMapServerTest(string mapName, string mapPath, string serverDir)
 		{
 			string batchFilePath = Path.Combine(serverDir, mapName.Replace(".map", ".bat"));
 			WriteBatchFileTest(batchFilePath, mapPath);
-			LogMixed("FILES: ", "Start file created at: " + serverDir, Color.Goldenrod);
+			LogMixed("FILES: ", "Prefab start file created at: " + serverDir, Color.Goldenrod);
 
             // Check if the client map should be deleted
 
             if (CheckDeleteClientMap.Checked)
-			{
-				string clientMapPath = Path.Combine(Properties.Settings.Default.ClientMapsDir, mapName);
-				if (File.Exists(clientMapPath))
-				{
-                    MoveClientMapToAppMapsFolder(clientMapPath);
-                    File.Delete(clientMapPath);
-					LogMixed("FILES: ", "Client map moved and deleted: " + clientMapPath, Color.Goldenrod);
-				}
-			}
+            {
+                string clientMapsDir = Properties.Settings.Default.ClientMapsDir;
 
-			StartBatFile(batchFilePath);
+                if (!string.IsNullOrWhiteSpace(clientMapsDir))
+                {
+                    string clientMapPath = Path.Combine(clientMapsDir, mapName);
+                    if (File.Exists(clientMapPath))
+                    {
+                        MoveClientMapToAppMapsFolder(clientMapPath);
+                        File.Delete(clientMapPath);
+                        LogMixed("FILES: ", "Client map moved and deleted: " + clientMapPath, Color.Goldenrod);
+                    }
+                    else
+                    {
+                        LogMixed("FILES: ", "Client map not found: " + clientMapPath, Color.DarkOrange);
+                    }
+                }
+                else
+                {
+                    LogMixed("FILES: ", "Client map deletion skipped: no directory set.", Color.DarkGray);
+                }
+            }
+
+            StartBatFile(batchFilePath);
 			LogMixed("INFO: ", "Server started with map: " + mapName, Color.Blue);
 		}
 
@@ -1843,123 +1878,100 @@ namespace EasyMapTestRust
 				HandleError(ex, "creating batch file for dropped map");
 			}
 		}
-		#endregion
+        #endregion
 
-		#region Start files
-		private void WriteBatchFile(string filePath, string MapPath)
-		{
-			try
-			{
-				string mapName = Path.GetFileName(MapPath);
-				string password = GenerateRandomPassword(8);
-				string id = GenerateRandomPassword(6);
+        #region Start files
+        private void WriteBatchFile(string filePath, string mapPath)
+        {
+            try
+            {
+                string mapName = Path.GetFileName(mapPath);
+                string password = GenerateRandomPassword(8);
+                string id = GenerateRandomPassword(6);
 
-				StringBuilder batchContent = new StringBuilder();
+                // Safely encode the file:// path
+                string escapedMapPath = Uri.EscapeUriString(mapPath);
 
-				batchContent.AppendLine("@echo off");
-				batchContent.AppendLine("RustDedicated.exe ^");
-				batchContent.AppendLine("-batchmode ^");
-				batchContent.AppendLine("+server.port 28015 ^");
-				batchContent.AppendLine($"+server.levelurl \"file:///{MapPath}\" ^");
-				batchContent.AppendLine("+server.maxplayers 10 ^");
-				batchContent.AppendLine("+server.hostname \"Name of Server\" ^");
-				batchContent.AppendLine("+server.description \"Description shown on server connection window.\" ^");
-				batchContent.AppendLine("+server.url \"http://yourwebsite.com\" ^");
-				batchContent.AppendLine("+server.headerimage \"http://yourwebsite.com/serverimage.jpg\" ^");
-				batchContent.AppendLine($"+server.identity \"{mapName.Replace(".map", "_")}{id}\" ^");
-				batchContent.AppendLine("+rcon.port 28016 ^");
-				batchContent.AppendLine($"+rcon.password \"{password}\" ^");
-				batchContent.AppendLine("+rcon.web 1 ^");
-				batchContent.AppendLine("-logfile \"rustserverlog.txt\"");
+                var batchContent = new StringBuilder();
 
-				//check if checkmark is checked and only then delete it.
-				if (CheckNewStart.Checked == true)
-				{
-					if (File.Exists(filePath))
-						File.Delete(filePath);
+                batchContent.AppendLine("@echo off");
+                batchContent.AppendLine("RustDedicated.exe ^");
+                batchContent.AppendLine("-batchmode ^");
+                batchContent.AppendLine("+server.port 28015 ^");
+                batchContent.AppendLine($"+server.levelurl \"file:///{escapedMapPath}\" ^");
+                batchContent.AppendLine("+server.maxplayers 10 ^");
+                batchContent.AppendLine("+server.hostname \"Name of Server\" ^");
+                batchContent.AppendLine("+server.description \"Description shown on server connection window.\" ^");
+                batchContent.AppendLine("+server.url \"http://yourwebsite.com\" ^");
+                batchContent.AppendLine("+server.headerimage \"http://yourwebsite.com/serverimage.jpg\" ^");
+                batchContent.AppendLine($"+server.identity \"{mapName.Replace(".map", "_")}{id}\" ^");
+                batchContent.AppendLine("+rcon.port 28016 ^");
+                batchContent.AppendLine($"+rcon.password \"{password}\" ^");
+                batchContent.AppendLine("+rcon.web 1 ^");
+                batchContent.AppendLine("-logfile \"rustserverlog.txt\"");
 
-					File.WriteAllText(filePath, batchContent.ToString());
-				}
-				else
-				{
-					if (File.Exists(filePath))
-					{
-					}
-					else
-					{
-						File.WriteAllText(filePath, batchContent.ToString());
-					}
+                bool shouldOverwrite = CheckNewStart.Checked;
 
-				}
+                if (shouldOverwrite || !File.Exists(filePath))
+                {
+                    File.WriteAllText(filePath, batchContent.ToString());
+                }
 
+                // Optional success logging:
+                // LogMixed("INFO: ", $"Batch file written at {filePath}", Color.Green);
+            }
+            catch (Exception ex)
+            {
+                HandleError(ex, "writing batch file");
+            }
+        }
 
-			}
-			catch (Exception ex)
-			{
-				HandleError(ex, "writing batch file");
-			}
-		}
+        private void WriteBatchFileTest(string filePath, string mapPath)
+        {
+            try
+            {
+                string mapName = Path.GetFileName(mapPath);
+                string password = GenerateRandomPassword(8);
+                string id = GenerateRandomPassword(6);
+                string escapedMapPath = Uri.EscapeUriString(mapPath);
 
-		private void WriteBatchFileTest(string filePath, string MapPath)
-		{
-			try
-			{
-				string mapName = Path.GetFileName(MapPath);
-				string password = GenerateRandomPassword(8);
-				string id = GenerateRandomPassword(6);
+                var batchContent = new StringBuilder();
 
-				StringBuilder batchContent = new StringBuilder();
+                batchContent.AppendLine("@echo off");
+                batchContent.AppendLine("RustDedicated.exe -batchmode ^");
+                batchContent.AppendLine("+cargoship.event_enabled False ^");
+                batchContent.AppendLine("+baseboat.generate_paths False ^");
+                batchContent.AppendLine("+ai.ocean_patrol_path_iterations 0 ^");
+                batchContent.AppendLine("+server.events False ^");
+                batchContent.AppendLine("+antihack.terrain_protection 0 ^");
+                batchContent.AppendLine("+server.port 28015 ^");
+                batchContent.AppendLine($"+server.levelurl \"file:///{escapedMapPath}\" ^");
+                batchContent.AppendLine("+server.maxplayers 10 ^");
+                batchContent.AppendLine("+server.hostname \"Name of Server\" ^");
+                batchContent.AppendLine("+server.description \"Description shown on server connection window.\" ^");
+                batchContent.AppendLine("+server.url \"http://yourwebsite.com\" ^");
+                batchContent.AppendLine("+server.headerimage \"http://yourwebsite.com/serverimage.jpg\" ^");
+                batchContent.AppendLine($"+server.identity \"{mapName.Replace(".map", "_")}{id}\" ^");
+                batchContent.AppendLine("+rcon.port 28016 ^");
+                batchContent.AppendLine($"+rcon.password \"{password}\" ^");
+                batchContent.AppendLine("+rcon.web 1 ^");
+                batchContent.AppendLine("-logfile \"rustserverlog.txt\"");
 
+                bool shouldOverwrite = CheckNewStart.Checked;
 
-				batchContent.AppendLine("@echo off");
-				batchContent.AppendLine("RustDedicated.exe -batchmode^");
-				batchContent.AppendLine("+cargoship.event_enabled False ^");
-				batchContent.AppendLine("+baseboat.generate_paths False ^");
-				batchContent.AppendLine("+ai.ocean_patrol_path_iterations 0 ^");
-				batchContent.AppendLine("+server.events False ^");
-				batchContent.AppendLine("+antihack.terrain_protection 0 ^");
-				batchContent.AppendLine("+server.port 28015 ^");
-				batchContent.AppendLine($"+server.levelurl \"file:///{MapPath}\" ^");
-				batchContent.AppendLine("+server.maxplayers 10 ^");
-				batchContent.AppendLine("+server.hostname \"Name of Server\" ^");
-				batchContent.AppendLine("+server.description \"Description shown on server connection window.\" ^");
-				batchContent.AppendLine("+server.url \"http://yourwebsite.com\" ^");
-				batchContent.AppendLine("+server.headerimage \"http://yourwebsite.com/serverimage.jpg\" ^");
-				batchContent.AppendLine($"+server.identity \"{mapName.Replace(".map", "_")}{id}\" ^");
-				batchContent.AppendLine("+rcon.port 28016 ^");
-				batchContent.AppendLine($"+rcon.password \"{password}\" ^");
-				batchContent.AppendLine("+rcon.web 1 ^");
-				batchContent.AppendLine("-logfile \"rustserverlog.txt\"");
+                // Always create the file if it doesn't exist, or overwrite if checkbox is checked
+                if (shouldOverwrite || !File.Exists(filePath))
+                {
+                    File.WriteAllText(filePath, batchContent.ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                HandleError(ex, "writing batch file");
+            }
+        }
 
-				//check if checkmark is checked and only then delete it.
-				if (CheckNewStart.Checked == true)
-				{
-					if (File.Exists(filePath))
-						File.Delete(filePath);
-
-					File.WriteAllText(filePath, batchContent.ToString());
-				}
-				else
-				{
-					if (File.Exists(filePath))
-					{
-					}
-					else
-					{
-						File.WriteAllText(filePath, batchContent.ToString());
-					}
-
-				}
-
-
-			}
-			catch (Exception ex)
-			{
-				HandleError(ex, "writing batch file");
-			}
-		}
-
-		private void StartBatFile(string batFilePath)
+        private void StartBatFile(string batFilePath)
 		{
 			try
 			{
@@ -2002,36 +2014,40 @@ namespace EasyMapTestRust
 			}
 		}
 
-		public void CreatePROCStartBatFile(string directory)
-		{
-			StringBuilder batchContent = new StringBuilder();
-			string password = GenerateRandomPassword(8);
-			string ID = GenerateRandomPassword(6);
+        public void CreatePROCStartBatFile(string directory)
+        {
+            const string fileName = "start_rust_server.bat";
+            string password = GenerateRandomPassword(8);
+            string id = GenerateRandomPassword(6);
+
+            string batFilePath = Path.Combine(directory, fileName);
+
+            // Ensure the directory exists
+            Directory.CreateDirectory(directory);
+
+            var batchContent = new StringBuilder();
+            batchContent.AppendLine("@echo off");
+            batchContent.AppendLine("RustDedicated.exe -batchmode ^");
+            batchContent.AppendLine("+server.port 28015 ^");
+            batchContent.AppendLine("+server.level \"Procedural Map\" ^");
+            batchContent.AppendLine("+server.seed 1184645116 ^");
+            batchContent.AppendLine("+server.worldsize 3000 ^");
+            batchContent.AppendLine("+server.maxplayers 100 ^");
+            batchContent.AppendLine("+server.hostname \"My Rust Server\" ^");
+            batchContent.AppendLine("+server.description \"This is my Rust server\" ^");
+            batchContent.AppendLine("+server.url \"http://myrustserver.com\" ^");
+            batchContent.AppendLine($"+server.identity \"server_{id}\" ^");
+            batchContent.AppendLine($"+rcon.port 28016 ^");
+            batchContent.AppendLine($"+rcon.password \"{password}\" ^");
+            batchContent.AppendLine("+rcon.web 1");
+            batchContent.AppendLine("pause");
+
+            // Save the file
+            File.WriteAllText(batFilePath, batchContent.ToString());
+        }
 
 
-			string batFilePath = Path.Combine(directory, "start_rust_server.bat");
-
-			string batContent = $@"@echo off
-RustDedicated.exe -batchmode ^
-+server.port 28015 ^
-+server.level ""Procedural Map"" ^
-+server.seed 1184645116 ^
-+server.worldsize 3000 ^
-+server.maxplayers 100 ^
-+server.hostname ""My Rust Server"" ^
-+server.description ""This is my Rust server"" ^
-+server.url ""http://myrustserver.com"" ^
-+server.identity ""server_{ID}"" ^
-+rcon.port 28016 ^
-+rcon.password ""{password}"" ^
-+rcon.web 1
-pause";
-
-			File.WriteAllText(batFilePath, batContent);
-		}
-
-
-		private bool CheckServerFilesDirectory()
+        private bool CheckServerFilesDirectory()
 		{
 			string serverFilesDir = Properties.Settings.Default.RustFilesDir;
 
@@ -2364,8 +2380,14 @@ pause";
 			ConsoleTextbox.Update();
 			ConsoleTextbox.Refresh();
 
+            if (!string.IsNullOrWhiteSpace(FinishRustGameDirbox.Text))
+            {
+                Properties.Settings.Default.ClientMapsDir = FinishRustGameDirbox.Text;
+				Properties.Settings.Default.Save();
+            }
 
-			if (RadioCarbon.Checked == true)
+
+            if (RadioCarbon.Checked == true)
 			{
 				// Check if carbon release exists
 				if (!await EnsureCarbonReleaseExists())
@@ -3147,6 +3169,58 @@ pause";
             {
                 HandleError(ex, "moving client map to maps folder");
             }
+        }
+
+        private void DiscordPiclink_Click(object sender, EventArgs e)
+        {
+            //open the default browser and go to the discord link
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://discord.gg/hbXD2YArdV",
+                UseShellExecute = true
+            });
+        }
+
+        private void GithubPageLink_Click(object sender, EventArgs e)
+        {
+            //open the default browser and go to the discord link
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://github.com/tedpommes/Rust-DropLaunch",
+                UseShellExecute = true
+            });
+        }
+
+        private void ImageButtonDiscord_Click(object sender, EventArgs e)
+        {
+
+            //open the default browser and go to the discord link
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://discord.gg/hbXD2YArdV",
+                UseShellExecute = true
+            });
+        }
+
+        private void ImageButtonGithub_Click(object sender, EventArgs e)
+        {
+            //open the default browser and go to the discord link
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://github.com/tedpommes/Rust-DropLaunch",
+                UseShellExecute = true
+            });
+        }
+
+        private void FinishRustGameDirbox_OnIconLeftClick(object sender, EventArgs e)
+        {
+            SelectDirectory(SetupRustGameDirbox);
+            UpdateSettings();
+        }
+
+        private void FinishRustGameDirbox_TextChange(object sender, EventArgs e)
+        {
+            UpdateSettings();
         }
     }
 
