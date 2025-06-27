@@ -2291,6 +2291,16 @@ It is a map issue when the test procgen server boots but the server wont boot wi
         RTez9qC5+re/juM4juM4jvM/8gcdBqKziPEVJgAAAABJRU5ErkJggg==
 </value>
   </data>
+  <data name="FirstRunHomeButton.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAAEQAAAAUCAYAAAA0nZtFAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADQSURBVFhH7ZixDQIxDEVTUjIAzq1BSckilAxAxwZxWhpK
+        triWEZAoWIAChBDN6X5QAgjpr2Bbeo2dFH5y9UP4Vpcxjwm9KK5RS7FA2zWhn2Usfx5aScJGMm78wQpt
+        94zD5zJSWUS1K+OHaLnHhFWIiiMPrSIJlyrkxQPLBG5Yx4UQLoRwIYQLIVwI4UIIF0K4EMKFEEEUAzct
+        U4WcuGmVmo+EmLEWxYOH1pA0DqLYtUykRgCi45MfWaHJyDh3+zL5p2a5bG1GAXjVy+hSmVYPb3iwDind
+        5nEkAAAAAElFTkSuQmCC
+</value>
+  </data>
   <data name="bunifuSeparator3.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAA4AAADNCAYAAACINEHLAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8

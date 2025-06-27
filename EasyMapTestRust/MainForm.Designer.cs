@@ -104,6 +104,7 @@
             Bunifu.UI.WinForms.BunifuButton.BunifuButton2.BorderEdges borderEdges10 = new Bunifu.UI.WinForms.BunifuButton.BunifuButton2.BorderEdges();
             Bunifu.UI.WinForms.BunifuButton.BunifuButton2.BorderEdges borderEdges11 = new Bunifu.UI.WinForms.BunifuButton.BunifuButton2.BorderEdges();
             Bunifu.UI.WinForms.BunifuButton.BunifuButton2.BorderEdges borderEdges12 = new Bunifu.UI.WinForms.BunifuButton.BunifuButton2.BorderEdges();
+            Bunifu.UI.WinForms.BunifuButton.BunifuButton2.BorderEdges borderEdges13 = new Bunifu.UI.WinForms.BunifuButton.BunifuButton2.BorderEdges();
             this.bunifuShadowPanel2 = new Bunifu.UI.WinForms.BunifuShadowPanel();
             this.MainPages = new Bunifu.UI.WinForms.BunifuPages();
             this.MainPage = new System.Windows.Forms.TabPage();
@@ -286,6 +287,7 @@
             this.bunifuShadowPanel10 = new Bunifu.UI.WinForms.BunifuShadowPanel();
             this.label29 = new System.Windows.Forms.Label();
             this.bunifuShadowPanel7 = new Bunifu.UI.WinForms.BunifuShadowPanel();
+            this.FirstRunHomeButton = new Bunifu.UI.WinForms.BunifuButton.BunifuButton2();
             this.label26 = new System.Windows.Forms.Label();
             this.bunifuSeparator3 = new Bunifu.UI.WinForms.BunifuSeparator();
             this.MainSnackbar = new Bunifu.UI.WinForms.BunifuSnackbar(this.components);
@@ -382,10 +384,10 @@
             this.MainPages.Location = new System.Drawing.Point(0, 0);
             this.MainPages.Multiline = true;
             this.MainPages.Name = "MainPages";
-            this.MainPages.Page = this.SetupEndPage;
-            this.MainPages.PageIndex = 4;
-            this.MainPages.PageName = "SetupEndPage";
-            this.MainPages.PageTitle = "Setup End";
+            this.MainPages.Page = this.FirstRunPage;
+            this.MainPages.PageIndex = 5;
+            this.MainPages.PageName = "FirstRunPage";
+            this.MainPages.PageTitle = "FirstRun";
             this.MainPages.SelectedIndex = 0;
             this.MainPages.Size = new System.Drawing.Size(484, 466);
             this.MainPages.TabIndex = 0;
@@ -5845,6 +5847,7 @@
             this.bunifuShadowPanel7.BorderColor = System.Drawing.Color.WhiteSmoke;
             this.bunifuShadowPanel7.BorderRadius = 8;
             this.bunifuShadowPanel7.BorderThickness = 1;
+            this.bunifuShadowPanel7.Controls.Add(this.FirstRunHomeButton);
             this.bunifuShadowPanel7.Controls.Add(this.label26);
             this.bunifuShadowPanel7.Dock = System.Windows.Forms.DockStyle.Top;
             this.bunifuShadowPanel7.FillStyle = Bunifu.UI.WinForms.BunifuShadowPanel.FillStyles.Solid;
@@ -5865,6 +5868,100 @@
             this.MainToolTip.SetToolTip(this.bunifuShadowPanel7, "");
             this.MainToolTip.SetToolTipIcon(this.bunifuShadowPanel7, null);
             this.MainToolTip.SetToolTipTitle(this.bunifuShadowPanel7, "");
+            // 
+            // FirstRunHomeButton
+            // 
+            this.FirstRunHomeButton.AllowAnimations = true;
+            this.FirstRunHomeButton.AllowMouseEffects = true;
+            this.FirstRunHomeButton.AllowToggling = false;
+            this.FirstRunHomeButton.AnimationSpeed = 200;
+            this.FirstRunHomeButton.AutoGenerateColors = false;
+            this.FirstRunHomeButton.AutoRoundBorders = false;
+            this.FirstRunHomeButton.AutoSizeLeftIcon = true;
+            this.FirstRunHomeButton.AutoSizeRightIcon = true;
+            this.FirstRunHomeButton.BackColor = System.Drawing.Color.Transparent;
+            this.FirstRunHomeButton.BackColor1 = System.Drawing.Color.DodgerBlue;
+            this.FirstRunHomeButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("FirstRunHomeButton.BackgroundImage")));
+            this.FirstRunHomeButton.BorderStyle = Bunifu.UI.WinForms.BunifuButton.BunifuButton2.BorderStyles.Solid;
+            this.FirstRunHomeButton.ButtonText = "Home";
+            this.FirstRunHomeButton.ButtonTextMarginLeft = 0;
+            this.FirstRunHomeButton.ColorContrastOnClick = 45;
+            this.FirstRunHomeButton.ColorContrastOnHover = 45;
+            this.FirstRunHomeButton.Cursor = System.Windows.Forms.Cursors.Default;
+            borderEdges13.BottomLeft = true;
+            borderEdges13.BottomRight = true;
+            borderEdges13.TopLeft = true;
+            borderEdges13.TopRight = true;
+            this.FirstRunHomeButton.CustomizableEdges = borderEdges13;
+            this.FirstRunHomeButton.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.FirstRunHomeButton.DisabledBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.FirstRunHomeButton.DisabledFillColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
+            this.FirstRunHomeButton.DisabledForecolor = System.Drawing.Color.FromArgb(((int)(((byte)(168)))), ((int)(((byte)(160)))), ((int)(((byte)(168)))));
+            this.FirstRunHomeButton.Dock = System.Windows.Forms.DockStyle.Left;
+            this.FirstRunHomeButton.FocusState = Bunifu.UI.WinForms.BunifuButton.BunifuButton2.ButtonStates.Pressed;
+            this.FirstRunHomeButton.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FirstRunHomeButton.ForeColor = System.Drawing.Color.White;
+            this.FirstRunHomeButton.IconLeftAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.FirstRunHomeButton.IconLeftCursor = System.Windows.Forms.Cursors.Default;
+            this.FirstRunHomeButton.IconLeftPadding = new System.Windows.Forms.Padding(11, 3, 3, 3);
+            this.FirstRunHomeButton.IconMarginLeft = 11;
+            this.FirstRunHomeButton.IconPadding = 10;
+            this.FirstRunHomeButton.IconRightAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.FirstRunHomeButton.IconRightCursor = System.Windows.Forms.Cursors.Default;
+            this.FirstRunHomeButton.IconRightPadding = new System.Windows.Forms.Padding(3, 3, 7, 3);
+            this.FirstRunHomeButton.IconSize = 25;
+            this.FirstRunHomeButton.IdleBorderColor = System.Drawing.Color.DodgerBlue;
+            this.FirstRunHomeButton.IdleBorderRadius = 8;
+            this.FirstRunHomeButton.IdleBorderThickness = 1;
+            this.FirstRunHomeButton.IdleFillColor = System.Drawing.Color.DodgerBlue;
+            this.FirstRunHomeButton.IdleIconLeftImage = null;
+            this.FirstRunHomeButton.IdleIconRightImage = null;
+            this.FirstRunHomeButton.IndicateFocus = false;
+            this.FirstRunHomeButton.Location = new System.Drawing.Point(12, 10);
+            this.FirstRunHomeButton.Name = "FirstRunHomeButton";
+            this.FirstRunHomeButton.OnDisabledState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(191)))), ((int)(((byte)(191)))), ((int)(((byte)(191)))));
+            this.FirstRunHomeButton.OnDisabledState.BorderRadius = 8;
+            this.FirstRunHomeButton.OnDisabledState.BorderStyle = Bunifu.UI.WinForms.BunifuButton.BunifuButton2.BorderStyles.Solid;
+            this.FirstRunHomeButton.OnDisabledState.BorderThickness = 1;
+            this.FirstRunHomeButton.OnDisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
+            this.FirstRunHomeButton.OnDisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(168)))), ((int)(((byte)(160)))), ((int)(((byte)(168)))));
+            this.FirstRunHomeButton.OnDisabledState.IconLeftImage = null;
+            this.FirstRunHomeButton.OnDisabledState.IconRightImage = null;
+            this.FirstRunHomeButton.onHoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(105)))), ((int)(((byte)(181)))), ((int)(((byte)(255)))));
+            this.FirstRunHomeButton.onHoverState.BorderRadius = 8;
+            this.FirstRunHomeButton.onHoverState.BorderStyle = Bunifu.UI.WinForms.BunifuButton.BunifuButton2.BorderStyles.Solid;
+            this.FirstRunHomeButton.onHoverState.BorderThickness = 1;
+            this.FirstRunHomeButton.onHoverState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(105)))), ((int)(((byte)(181)))), ((int)(((byte)(255)))));
+            this.FirstRunHomeButton.onHoverState.ForeColor = System.Drawing.Color.White;
+            this.FirstRunHomeButton.onHoverState.IconLeftImage = null;
+            this.FirstRunHomeButton.onHoverState.IconRightImage = null;
+            this.FirstRunHomeButton.OnIdleState.BorderColor = System.Drawing.Color.DodgerBlue;
+            this.FirstRunHomeButton.OnIdleState.BorderRadius = 8;
+            this.FirstRunHomeButton.OnIdleState.BorderStyle = Bunifu.UI.WinForms.BunifuButton.BunifuButton2.BorderStyles.Solid;
+            this.FirstRunHomeButton.OnIdleState.BorderThickness = 1;
+            this.FirstRunHomeButton.OnIdleState.FillColor = System.Drawing.Color.DodgerBlue;
+            this.FirstRunHomeButton.OnIdleState.ForeColor = System.Drawing.Color.White;
+            this.FirstRunHomeButton.OnIdleState.IconLeftImage = null;
+            this.FirstRunHomeButton.OnIdleState.IconRightImage = null;
+            this.FirstRunHomeButton.OnPressedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(96)))), ((int)(((byte)(144)))));
+            this.FirstRunHomeButton.OnPressedState.BorderRadius = 8;
+            this.FirstRunHomeButton.OnPressedState.BorderStyle = Bunifu.UI.WinForms.BunifuButton.BunifuButton2.BorderStyles.Solid;
+            this.FirstRunHomeButton.OnPressedState.BorderThickness = 1;
+            this.FirstRunHomeButton.OnPressedState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(96)))), ((int)(((byte)(144)))));
+            this.FirstRunHomeButton.OnPressedState.ForeColor = System.Drawing.Color.White;
+            this.FirstRunHomeButton.OnPressedState.IconLeftImage = null;
+            this.FirstRunHomeButton.OnPressedState.IconRightImage = null;
+            this.FirstRunHomeButton.Size = new System.Drawing.Size(68, 20);
+            this.FirstRunHomeButton.TabIndex = 6;
+            this.FirstRunHomeButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.FirstRunHomeButton.TextAlignment = System.Windows.Forms.HorizontalAlignment.Center;
+            this.FirstRunHomeButton.TextMarginLeft = 0;
+            this.FirstRunHomeButton.TextPadding = new System.Windows.Forms.Padding(0);
+            this.MainToolTip.SetToolTip(this.FirstRunHomeButton, "");
+            this.MainToolTip.SetToolTipIcon(this.FirstRunHomeButton, null);
+            this.MainToolTip.SetToolTipTitle(this.FirstRunHomeButton, "");
+            this.FirstRunHomeButton.UseDefaultRadiusAndThickness = true;
+            this.FirstRunHomeButton.Click += new System.EventHandler(this.FirstRunHomeButton_Click);
             // 
             // label26
             // 
@@ -6275,6 +6372,7 @@
         private Bunifu.UI.WinForms.BunifuImageButton bunifuImageButton1;
         private Bunifu.UI.WinForms.BunifuGroupBox bunifuGroupBox8;
         private Bunifu.UI.WinForms.BunifuTextBox FinishRustGameDirbox;
+        private Bunifu.UI.WinForms.BunifuButton.BunifuButton2 FirstRunHomeButton;
     }
 }
 

@@ -1745,7 +1745,7 @@ namespace EasyMapTestRust
 			{
 				Icon = SystemIcons.Information,
 				
-                Visible = false
+                Visible = true
 			};
 
 			// Handle notification click
@@ -1823,61 +1823,82 @@ namespace EasyMapTestRust
 			}
 		}
 
-		private void MainForm_DragDrop(object sender, DragEventArgs e)
-		{
-			CheckCmdSimple();
+        private void MainForm_DragDrop(object sender, DragEventArgs e)
+        {
+            CheckCmdSimple();
 
-			string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-			string mapFile = files[0];
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            string mapFile = files[0];
 
-			if (Path.GetExtension(mapFile).ToLower() == ".map")
-			{
-				try
-				{
-					//check if map client delete is checked and only then delete it.
-					if (CheckDeleteClientMap.Checked)
-					{
-						string clientMapPath = Path.Combine(Properties.Settings.Default.ClientMapsDir, mapFile);
-						if (File.Exists(clientMapPath))
-						{
-                            MoveClientMapToAppMapsFolder(clientMapPath);
-                            File.Delete(clientMapPath);
-							LogMixed("FILES: ", "Client map moved and deleted: " + clientMapPath, Color.Goldenrod);
-						}
-					}
+            if (Path.GetExtension(mapFile).ToLower() == ".map")
+            {
+                try
+                {
+                    // Only delete from client maps directory if enabled and a file with the same name exists there
+                    if (CheckDeleteClientMap.Checked)
+                    {
+                        string clientMapsDir = Properties.Settings.Default.ClientMapsDir;
+                        if (!string.IsNullOrWhiteSpace(clientMapsDir))
+                        {
+                            string clientMapPath = Path.Combine(clientMapsDir, Path.GetFileName(mapFile));
+                            if (File.Exists(clientMapPath))
+                            {
+                                MoveClientMapToAppMapsFolder(clientMapPath);
+                                File.Delete(clientMapPath);
+                                LogMixed("FILES: ", "Client map moved and deleted: " + clientMapPath, Color.Goldenrod);
+                            }
+                        }
+                    }
 
-					LogMixed("FILES: ", mapFile + " drop detected.", Color.Goldenrod);
-					string mapdropped = Path.GetFileName(mapFile);
-					CreateAndStartMapServer(mapdropped, mapFile, Properties.Settings.Default.RustFilesDir);
-				}
-				catch (Exception ex)
-				{
-					HandleError(ex, "creating batch file");
-				}
-			}
-		}
+                    LogMixed("FILES: ", mapFile + " drop detected.", Color.Goldenrod);
+                    string mapdropped = Path.GetFileName(mapFile);
+                    CreateAndStartMapServer(mapdropped, mapFile, Properties.Settings.Default.RustFilesDir);
+                }
+                catch (Exception ex)
+                {
+                    HandleError(ex, "creating batch file");
+                }
+            }
+        }
 
-		private void HandleError(Exception ex, string operationDescription)
+        private void HandleError(Exception ex, string operationDescription)
 		{
 			LogMixed("ERROR: ", $"Error {operationDescription}: {ex.Message}", Color.Red);
 			//MessageBox.Show($"Error {operationDescription}: {ex.Message}", "Error",MessageBoxButtons.OK, MessageBoxIcon.Error);
 		}
 
-		public void HandleDroppedMap(string mapFile)
-		{
-			CheckCmdSimple();
+        public void HandleDroppedMap(string mapFile)
+        {
+            CheckCmdSimple();
 
-			try
-			{
-				LogMixed("FILES: ", mapFile + " drop detected.", Color.Goldenrod);
-				string mapdropped = Path.GetFileName(mapFile);
-				CreateAndStartMapServer(mapdropped, mapFile, Properties.Settings.Default.RustFilesDir);
-			}
-			catch (Exception ex)
-			{
-				HandleError(ex, "creating batch file for dropped map");
-			}
-		}
+            try
+            {
+                // Only delete from client maps directory if enabled and a file with the same name exists there
+                if (CheckDeleteClientMap.Checked)
+                {
+                    string clientMapsDir = Properties.Settings.Default.ClientMapsDir;
+                    if (!string.IsNullOrWhiteSpace(clientMapsDir))
+                    {
+                        string clientMapPath = Path.Combine(clientMapsDir, Path.GetFileName(mapFile));
+                        if (File.Exists(clientMapPath))
+                        {
+                            MoveClientMapToAppMapsFolder(clientMapPath);
+                            File.Delete(clientMapPath);
+                            LogMixed("FILES: ", "Client map moved and deleted: " + clientMapPath, Color.Goldenrod);
+                        }
+                    }
+                }
+
+                LogMixed("FILES: ", mapFile + " drop detected.", Color.Goldenrod);
+                string mapdropped = Path.GetFileName(mapFile);
+                CreateAndStartMapServer(mapdropped, mapFile, Properties.Settings.Default.RustFilesDir);
+            }
+            catch (Exception ex)
+            {
+                HandleError(ex, "creating batch file for dropped map");
+            }
+        } 
+
         #endregion
 
         #region Start files
@@ -2283,7 +2304,10 @@ namespace EasyMapTestRust
 				{
 					SetupCMDNextButton.PerformClick();
 				}
-			}
+
+                Properties.Settings.Default.FirstRun = false;
+                Properties.Settings.Default.Save();
+            }
 
 			if (CMDDownloadText.Text.Contains("SteamCMD updated. Now downloading Rust server files..."))
 			{
@@ -2384,6 +2408,8 @@ namespace EasyMapTestRust
             {
                 Properties.Settings.Default.ClientMapsDir = FinishRustGameDirbox.Text;
 				Properties.Settings.Default.Save();
+
+			    RustGameDirbox.Text = FinishRustGameDirbox.Text;
             }
 
 
@@ -3214,13 +3240,32 @@ namespace EasyMapTestRust
 
         private void FinishRustGameDirbox_OnIconLeftClick(object sender, EventArgs e)
         {
-            SelectDirectory(SetupRustGameDirbox);
+            SelectDirectory(FinishRustGameDirbox);
             UpdateSettings();
         }
 
         private void FinishRustGameDirbox_TextChange(object sender, EventArgs e)
         {
             UpdateSettings();
+        }
+
+        private void FirstRunHomeButton_Click(object sender, EventArgs e)
+        {
+			if (Properties.Settings.Default.FirstRun == true)
+                MainSnackbar.Show(this, "Are you sure you want to cancel the setup?", BunifuSnackbar.MessageTypes.Warning, 20000, "Yes",
+              BunifuSnackbar.Positions.TopCenter).Then((result) =>
+              {
+                  if (result == BunifuSnackbar.SnackbarResult.ActionClicked)
+                  {
+                      MainPages.SetPage(0);
+                  }
+
+              });
+
+            else
+			{
+                MainPages.SetPage(0);
+            }
         }
     }
 
