@@ -2528,42 +2528,36 @@ namespace EasyMapTestRust
 			LogMixed("FILES: ", "Procgen Start file created.", Color.Goldenrod);
 		}
 
-		private void ResetSettingsToDefault()
-		{
-			try
-			{
-				// Reset settings to default values
-				Properties.Settings.Default.FirstRun = true;
-				Properties.Settings.Default.RustFilesDir = string.Empty;
-				Properties.Settings.Default.MapsFilesDir = string.Empty;
-				Properties.Settings.Default.SteamCMDDir = string.Empty;
-				Properties.Settings.Default.CheckDesktopNoti = true;
-				Properties.Settings.Default.CheckFileWatcher = true;
-				Properties.Settings.Default.CheckNewStart = false;
-				Properties.Settings.Default.CheckToolTips = false;
-				Properties.Settings.Default.CheckDeleteMap = true;
-				Properties.Settings.Default.ClientMapsDir = string.Empty;
+        private void ResetSettingsToDefault()
+        {
+            try
+            {
+              
+                Properties.Settings.Default.Reset();
 
-				//clear the history list settings internal file
-				Properties.RunHistory.Default.HistoryList.Clear();
-				Properties.RunHistory.Default.Save();
+                if (Properties.RunHistory.Default.HistoryList != null)
+                {
+                    Properties.RunHistory.Default.HistoryList.Clear();
+                }
+                else
+                {
+                    Properties.RunHistory.Default.HistoryList = new System.Collections.Specialized.StringCollection();
+                }
 
-				// Save the reset settings
-				Properties.Settings.Default.Save();
+                // Save both settings files to ensure all changes are written to disk.
+                Properties.Settings.Default.Save();
+                Properties.RunHistory.Default.Save();
 
-				// Log the reset action  
-				LogMixed("INFO: ", "Settings have been reset to default.", Color.Blue);
+                // Log the reset action
+                LogMixed("INFO: ", "Settings have been reset to default.", Color.Blue);
+            }
+            catch (Exception ex)
+            {
+                HandleError(ex, "resetting settings to default");
+            }
+        }
 
-
-
-			}
-			catch (Exception ex)
-			{
-				HandleError(ex, "resetting settings to default");
-			}
-		}
-
-		private void WriteStartfilesButton_Click(object sender, EventArgs e)
+        private void WriteStartfilesButton_Click(object sender, EventArgs e)
 		{
 
 			MainSnackbar.Show(this, "Are  you sure you want to reset all settings?", BunifuSnackbar.MessageTypes.Warning, 20000, "Reset Settings and Restart",

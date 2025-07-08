@@ -53,7 +53,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>WindowsBackup.ico</ApplicationIcon>
+    <ApplicationIcon>Droplaunch2.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>3346A751A959AF0E24D4991FB25E7627F127E585</ManifestCertificateThumbprint>
@@ -194,6 +194,9 @@
     <None Include="Resources\icons8-question-mark-64.png" />
     <None Include="Resources\Github.png" />
     <None Include="Resources\file cover - 1.png" />
+    <Content Include="Droplaunch 2.ico" />
+    <Content Include="Droplaunch2.ico" />
+    <Content Include="output %281%29.ico" />
     <Content Include="WindowsBackup.ico" />
   </ItemGroup>
   <ItemGroup>
