@@ -556,8 +556,9 @@ namespace EasyMapTestRust
 			ServerFilesDirbox.Text = Properties.Settings.Default.RustFilesDir;
 			MapDirBox.Text = Properties.Settings.Default.MapsFilesDir;
 			SteamCMDBox.Text = Properties.Settings.Default.SteamCMDDir;
+            RustGameDirbox.Text = Properties.Settings.Default.ClientMapsDir;
 
-			SettingsBranchDropdown.SelectedIndex = 0;
+            SettingsBranchDropdown.SelectedIndex = 0;
 
 			//go to settings page
 			MainPages.SetPage(1);
@@ -2309,6 +2310,15 @@ namespace EasyMapTestRust
 
                 Properties.Settings.Default.FirstRun = false;
                 Properties.Settings.Default.Save();
+
+                string rustPath = @"C:\Program Files (x86)\Steam\steamapps\common\Rust";
+                string rustClientPath = Path.Combine(rustPath, "RustClient.exe");
+
+                if (File.Exists(rustClientPath))
+                {
+                    FinishRustGameDirbox.Text = rustPath;
+                }
+         
             }
 
 			if (CMDDownloadText.Text.Contains("SteamCMD updated. Now downloading Rust server files..."))
