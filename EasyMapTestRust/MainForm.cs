@@ -190,11 +190,10 @@ namespace EasyMapTestRust
         private void HelpPanelHeader_Click(object sender, EventArgs e)
         {
             const int collapsedHeight = 40;
+            const int expandedHeight = 400; // Set this to your desired expanded size
 
             var header = (System.Windows.Forms.Label)sender;
             var clickedPanel = (Bunifu.UI.WinForms.BunifuShadowPanel)header.Parent;
-
-            int expandedHeight = (int)(clickedPanel.Tag ?? collapsedHeight);
 
             bool isAlreadyExpanded = clickedPanel.Height > collapsedHeight;
 
@@ -272,8 +271,9 @@ namespace EasyMapTestRust
 					ServerFilesDirbox.Text = Properties.Settings.Default.RustFilesDir;
 					MapDirBox.Text = Properties.Settings.Default.MapsFilesDir;
 					SteamCMDBox.Text = Properties.Settings.Default.SteamCMDDir;
+					RustGameDirbox.Text = Properties.Settings.Default.ClientMapsDir;
 
-					LogMixed("INFO: ", "Settings loaded successfully.", Color.Blue);
+                    LogMixed("INFO: ", "Settings loaded successfully.", Color.Blue);
 					configLoaded = true;
 
 					// Set up file watcher if enabled
@@ -1418,15 +1418,17 @@ namespace EasyMapTestRust
 			SetupServerTextbox.Text = ServerFilesDirbox.Text;
 			SetupCMDdir.Text = SteamCMDBox.Text;
 			SetupMapsDirectory.Text = MapDirBox.Text;
+            SetupRustGameDirbox.Text = RustGameDirbox.Text;
 
-			if (SetupServerTextbox.Text == "" ||
+            if (SetupServerTextbox.Text == "" ||
 						  SetupMapsDirectory.Text == "" ||
 						  SetupCMDdir.Text == "")
 			{
 				Properties.Settings.Default.RustFilesDir = path + "\\Server_Files";
 				Properties.Settings.Default.MapsFilesDir = path + "\\Maps";
 				Properties.Settings.Default.SteamCMDDir = path + "\\SteamCMD";
-				Properties.Settings.Default.Save();
+				Properties.Settings.Default.ClientMapsDir = SetupRustGameDirbox.Text;
+                Properties.Settings.Default.Save();
 
 				SetupServerTextbox.Text = Properties.Settings.Default.RustFilesDir;
 				SetupMapsDirectory.Text = Properties.Settings.Default.MapsFilesDir;
@@ -2452,7 +2454,19 @@ namespace EasyMapTestRust
 				LogMixed("INFO: ", "Connection command copied to clipboard", Color.Blue);
 			}
 
-		}
+            // CheckboxFileWatch_CheckedChanged(null, null); // Initialize file watcher if enabled	
+
+        if(FinishRustGameDirbox.Text != "" && !string.IsNullOrWhiteSpace(FinishRustGameDirbox.Text))
+			{
+				Properties.Settings.Default.ClientMapsDir = FinishRustGameDirbox.Text;
+                Properties.Settings.Default.CheckFileWatcher = true;
+                Properties.Settings.Default.Save();
+                LogMixed("INFO: ", "File watcher enabled. Settings Saved.", Color.Blue);
+            }
+              
+           
+
+        }
 
 		private async void UpdateServerButton_Click(object sender, EventArgs e)
 		{
@@ -3268,6 +3282,7 @@ namespace EasyMapTestRust
             }
         }
 
+
         private void ThumbPicButtonStart_Click(object sender, EventArgs e)
         {
             //open the default browser and go to the discord link
@@ -3277,6 +3292,28 @@ namespace EasyMapTestRust
                 UseShellExecute = true
             });
         }
+
+        private void NextStepsHelpLabel_Click(object sender, EventArgs e)
+        {
+            HelpPanelHeader_Click(sender, e);
+        }
+
+        private void PrefabHelpLabel_Click(object sender, EventArgs e)
+        {
+            HelpPanelHeader_Click(sender, e);
+        }
+
+        private void HelpVideosPicbutton_Click(object sender, EventArgs e)
+        {
+            //open the default browser and go to the discord link
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://youtu.be/072XwfL8YqY",
+                UseShellExecute = true
+            });
+        }
+
+    
     }
 
 
