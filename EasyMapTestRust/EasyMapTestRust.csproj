@@ -197,6 +197,15 @@
     <Content Include="Droplaunch 2.ico" />
     <Content Include="Droplaunch2.ico" />
     <Content Include="output %281%29.ico" />
+    <None Include="Resources\logo_gameservers.png" />
+    <None Include="Resources\download.png" />
+    <None Include="Resources\apex_logo.png" />
+    <None Include="Resources\hostinger-black.png" />
+    <None Include="Resources\logo-dark-theme.png" />
+    <None Include="Resources\logo.png" />
+    <None Include="Resources\logo %282%29.png" />
+    <None Include="Resources\logo-white-2c37ff4c00514fd6ee48fe3846b851f066993dcc8f94ce0da543cef5dfd91902.png" />
+    <None Include="Resources\logo_big_inverse.1305117046.png" />
     <Content Include="WindowsBackup.ico" />
   </ItemGroup>
   <ItemGroup>

@@ -183,6 +183,8 @@ namespace EasyMapTestRust
                     header.Click += HelpPanelHeader_Click;
                 }
             }
+
+
         }
 
 
@@ -2473,12 +2475,10 @@ namespace EasyMapTestRust
                 Properties.Settings.Default.Save();
                 LogMixed("INFO: ", "File watcher enabled. Settings Saved.", Color.Blue);
             }
-              
-           
 
         }
 
-		private async void UpdateServerButton_Click(object sender, EventArgs e)
+        private async void UpdateServerButton_Click(object sender, EventArgs e)
 		{
 
 			SetupServerTextbox.Text = Properties.Settings.Default.RustFilesDir;
@@ -3018,6 +3018,16 @@ namespace EasyMapTestRust
         private void SetupLabel_Click(object sender, EventArgs e)
         {
             HelpPanelHeader_Click(sender, e);
+
+
+            if (HelpVideosPanel.Height == 400)
+            {
+                HelpVideosPicbutton.Visible = true;
+            }
+            else
+            {
+                HelpVideosPicbutton.Visible = false;
+            }
         }
 
         private void TestingMaplabel_Click(object sender, EventArgs e)
@@ -3317,7 +3327,85 @@ namespace EasyMapTestRust
             });
         }
 
-    
+        private void ApexAff_Click(object sender, EventArgs e)
+        {
+            //open the default browser and go to the discord link
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://www.gameserverkings.com/games/rust-server-hosting/?ref=3749",
+                UseShellExecute = true
+            });
+        }
+
+        private void BisectAff_Click(object sender, EventArgs e)
+        {
+            //open the default browser and go to the discord link
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://www.bisecthosting.com/clients/aff.php?aff=6921",
+                UseShellExecute = true
+            });
+        }
+
+        private void HostingerAff_Click(object sender, EventArgs e)
+        {
+            //open the default browser and go to the discord link
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://hostinger.com?REFERRALCODE=SHATEDPOMEJA",
+                UseShellExecute = true
+            });
+        }
+
+        private void ZapAff_Click(object sender, EventArgs e)
+        {
+            //open the default browser and go to the discord link
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://zap-hosting.com/DropLaunch",
+                UseShellExecute = true
+            });
+        }
+
+        private void GameServersAff_Click(object sender, EventArgs e)
+        {
+            //open the default browser and go to the discord link
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://www.gameservers.com/?ref=1667739",
+                UseShellExecute = true
+            });
+        }
+
+        private void HostHavocAff_Click(object sender, EventArgs e)
+        {
+            //open the default browser and go to the discord link
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://hosthavoc.com/billing/aff.php?aff=2336&page=rust",
+                UseShellExecute = true
+            });
+        }
+
+        private void ShockbyteAff_Click(object sender, EventArgs e)
+        {
+            //open the default browser and go to the discord link
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://shockbyte.com/billing/aff.php?aff=10803",
+                UseShellExecute = true
+            });
+        }
+
+        private void GtxGamingCo_Click(object sender, EventArgs e)
+        {
+            //open the default browser and go to the discord link
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://www.gtxgaming.co.uk/clientarea/aff.php?aff=4072",
+                UseShellExecute = true
+            });
+        }
     }
 
 
