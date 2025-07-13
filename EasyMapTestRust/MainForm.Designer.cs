@@ -402,10 +402,10 @@
             this.MainPages.Location = new System.Drawing.Point(0, 0);
             this.MainPages.Multiline = true;
             this.MainPages.Name = "MainPages";
-            this.MainPages.Page = this.MainPage;
-            this.MainPages.PageIndex = 0;
-            this.MainPages.PageName = "MainPage";
-            this.MainPages.PageTitle = "MainPage";
+            this.MainPages.Page = this.SetupCMDPage;
+            this.MainPages.PageIndex = 3;
+            this.MainPages.PageName = "SetupCMDPage";
+            this.MainPages.PageTitle = "Setup CMD";
             this.MainPages.SelectedIndex = 0;
             this.MainPages.Size = new System.Drawing.Size(484, 466);
             this.MainPages.TabIndex = 0;
@@ -1280,6 +1280,7 @@
             this.MainToolTip.SetToolTipIcon(this.HelpVideosPicbutton, null);
             this.HelpVideosPicbutton.ToolTipText = "";
             this.MainToolTip.SetToolTipTitle(this.HelpVideosPicbutton, "");
+            this.HelpVideosPicbutton.Visible = false;
             this.HelpVideosPicbutton.WaitOnLoad = false;
             this.HelpVideosPicbutton.Zoom = 20;
             this.HelpVideosPicbutton.ZoomSpeed = 10;
@@ -4122,8 +4123,8 @@
             this.SetupCMDPage.Controls.Add(this.CMDDownloadText);
             this.SetupCMDPage.Controls.Add(this.panel7);
             this.SetupCMDPage.Controls.Add(this.panel8);
-            this.SetupCMDPage.Controls.Add(this.bunifuShadowPanel4);
             this.SetupCMDPage.Controls.Add(this.bunifuSeparator7);
+            this.SetupCMDPage.Controls.Add(this.bunifuShadowPanel4);
             this.SetupCMDPage.Location = new System.Drawing.Point(4, 4);
             this.SetupCMDPage.Name = "SetupCMDPage";
             this.SetupCMDPage.Padding = new System.Windows.Forms.Padding(10, 5, 10, 10);
@@ -4322,7 +4323,7 @@
             this.bunifuShadowPanel4.Dock = System.Windows.Forms.DockStyle.Top;
             this.bunifuShadowPanel4.FillStyle = Bunifu.UI.WinForms.BunifuShadowPanel.FillStyles.Solid;
             this.bunifuShadowPanel4.GradientMode = Bunifu.UI.WinForms.BunifuShadowPanel.GradientModes.Vertical;
-            this.bunifuShadowPanel4.Location = new System.Drawing.Point(10, 18);
+            this.bunifuShadowPanel4.Location = new System.Drawing.Point(10, 5);
             this.bunifuShadowPanel4.Name = "bunifuShadowPanel4";
             this.bunifuShadowPanel4.Padding = new System.Windows.Forms.Padding(12, 10, 12, 10);
             this.bunifuShadowPanel4.PanelColor = System.Drawing.SystemColors.ScrollBar;
@@ -4553,7 +4554,7 @@
             this.bunifuSeparator7.LineColor = System.Drawing.Color.FromArgb(((int)(((byte)(122)))), ((int)(((byte)(149)))), ((int)(((byte)(227)))));
             this.bunifuSeparator7.LineStyle = Bunifu.UI.WinForms.BunifuSeparator.LineStyles.DoubleEdgeFaded;
             this.bunifuSeparator7.LineThickness = 1;
-            this.bunifuSeparator7.Location = new System.Drawing.Point(10, 5);
+            this.bunifuSeparator7.Location = new System.Drawing.Point(10, 45);
             this.bunifuSeparator7.Name = "bunifuSeparator7";
             this.bunifuSeparator7.Orientation = Bunifu.UI.WinForms.BunifuSeparator.LineOrientation.Horizontal;
             this.bunifuSeparator7.Size = new System.Drawing.Size(456, 13);
