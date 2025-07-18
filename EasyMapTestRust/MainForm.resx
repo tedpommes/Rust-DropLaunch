@@ -177,64 +177,7 @@
         7e3t7e39jffrGwD4wy8K+rc9lpChagAAAABJRU5ErkJggg==
 </value>
   </data>
-  <data name="label5.Text" xml:space="preserve">
-    <value>DropLaunch gives you several convenient ways to get your custom map up and running on a local server.
-
-Drag and Drop: The easiest way to launch a map is to simply drag the .map file from your folder and drop it directly onto the DropLaunch application window. 
-It will automatically create a start file and launch the server for you. 
-You can even drag a map file onto the DropLaunch.exe icon when the app isn't running, and it will boot up a server with that map.
-
-From the Map List: In the "Active Folder" tab, you can right-click on any map to open a context menu. 
-From there, select "Create Start File And Start Server". You can also just double-click on a map in this list to launch it immediately.
-
-From Your History: The "Run History" tab keeps a list of all the maps you've previously launched.
-You can double-click any entry in this list to quickly start that map again.
-
-From a Notification: If you have the file watcher and desktop notifications enabled, a notification will pop up when you save a new version of your map. 
-Clicking this notification will instantly start a server with that map.</value>
-  </data>
-  <data name="bunifuSeparator16.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAAYcAAAALCAYAAACUG0FpAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAR7SURBVHhe7ZVpqFVlFIaNiiwsLCyysKhosqiwsJkKC5ux
-        ULGiosIGKwunu9fa93Issrjp5XbOt9Y+94pFRlYaFhY2GRkZNkqGinYdzt5r7aNNJiXN0Y31nfOr3/Vv
-        Pb8OZ9rfXut9nz1kiOM4juM4juM4juM4juM4juM4juM4juP8HwwODu4zadKyfSuV1fv19w/u/2B14IBK
-        pTG0p0cOrPQ3D6rQxmHd3ZsPrlS/P6TS2xieZMWhlR45rLJgywioDhxeybYdMYsaR2JfPnJ2KI7Cuhyd
-        8tZRHf3bj0kX7Th2Zi0/LsmK49O+4oTZ9W0nJqE8qTMrT4b+5ilQzUd3UnEaZLtOB9YzOmt6JlJ5FoZ8
-        TJLtPBvDznOwJmMT0nMx0/O6Qnk+1PILU2pe1JU1L4aqXJIGvbSL9TKgfFxaKy6H0LwCg4xPSK7ETK/q
-        rOvVScivRS6uS7LyemCZ0FGXG4D1RqB8YpIVk4CKyRBkSkJyE2Ryc0pyS0L5rcjFbWlW3J4EuQNJ7gSW
-        u4DyqRiKu4GKe5CLe5OaTIMg9yckDySUT4dQPJSE4uEkFDM6SGYmLLOgls/pCHkHkCbICgkXKWTSiVR2
-        JSQVYJ2LmT4CrI8CyWPI5TzIyseRyyeQtBtYn8RM56esCzBr9qRc9mJWPpVyWU1ZA7JSSspAWkcu+4DL
-        fuRyIZIuAtanMdNngPRZoHIxcvkcsD6PpEuQ9QVkfRGDLk2pXIZcvowky1PSV5D0VSRZAaSvIevrGGQl
-        kLyBrG+mrG8hyzvIuiplfRdJ3kOW1Wmm7yPJB8iyBlk/RJa1QPIRsnycsn4CLJ8hyefAug5YvgCW9Ujy
-        JVKxAVg3IukmJNkMJFuQ5SukcgBItyHpdmTdAUFzJC2AVIC0RNYmkO5E1l1A+g2yfgus3wHrbiT9AVj3
-        AMuPwPoTsO4Fkp+B9Rdg/RVZfwOSP4D1T2T9C1kHgeRve23vxc9Ifrfvxt+0fru39V/xP/e0r7Hbrhmv
-        bWcg+bp9JjtbaWeNZ7azs+6we2ndUzlg9xjvlWQzsm5qzaDYEGfCsr41I13XmpnNrvjUZtme6dr2jNfY
-        zOPsWVbbLuJOWFfFHZG8bTuLuwuy0nYZd0qywnbc2rUst923MqBLgeSlmA3SJTErlhkqF1uGYpYsU6SL
-        LGPtrPVZ9tJMOWaRNVg22xntbWXWsqvzY5ZJuy3b7YzPs8xb9tsdmGudsG5YR2JXqEDrTuxQLZ9jnYrd
-        CsUM61rsHOXTrYOxiyzTgBr3xY7GruZTrbvWYeuyddq6bR23rlvnY/eDTIF6MbnlhHyiOQKjK2SCuSM6
-        JLokv8bcEh0TZLw5J7qH8nHmInOSuckcZa6KzqrmF5jDostqMtbc1nJcPsacZ+4zB5oLoxPr+eg53DjV
-        XGnONHeaQ82l5lRza3Qsbx1lzo3u7ctHmovNydHNC7aMMFdHZ/c2hpvDo8tp4zBze3R8pTHUnG/ut2eA
-        PQvsmfDv54TjOI7jOI7jOI7jOI7jOI7jOI7jOI7j/Gf8A522tyiin4lmAAAAAElFTkSuQmCC
-</value>
-  </data>
-  <data name="label32.Text" xml:space="preserve">
-    <value>The file watcher will automatically keep an eye on your map files inside your active folder.
-
-Real-Time Monitoring: 
-Monitors the map directory you've specified. It looks for any changes to files with a .map extension.
-
-Instant Updates: 
-If you create, delete, rename, or save a .map file in the monitored folder, the file watcher detects this change and instantly updates the list of maps you see in the "Active Folder" tab.
-
-Desktop Notifications: 
-If you have desktop notifications enabled, the file watcher will also send you a Windows notification whenever a map file is changed.
-
-Quick Launch: You can click directly on the notification to launch a server with the newly saved map, making your testing workflow even faster.
-
-You can enable or disable the file watcher and desktop notifications from the Settings page in the application.</value>
-  </data>
-  <data name="bunifuSeparator17.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="bunifuSeparator15.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAYcAAAAKCAYAAABfR5LMAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
         YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAR3SURBVGhD7ZVpqFVlFIaNiiwsLCyysKhosqiwsJkKC5ux
@@ -258,28 +201,6 @@ You can enable or disable the file watcher and desktop notifications from the Se
         zZXmTHOnOdRcak41t0bH8tZR5tzo3r58pLnYnBzdvGDLCHN1dHZvY7g5PLqcNg4zt0fHVxpDzfnmfnsG
         2LPAngn/fk44juM4juM4juM4juM4juM4juP8V/4BrI63KGQ4boQAAAAASUVORK5CYII=
 </value>
-  </data>
-  <data name="label34.Text" xml:space="preserve">
-    <value>The "Create Prefab Start File and Start Server" option is designed for more focused, isolated testing. 
-This is especially useful when you are working on a specific monument, puzzle, or custom prefab.
-This start file adds several commands to the server launch to allow map testing of unfinished maps.
-
-+cargoship.event_enabled False 
-Disables the Cargo Ship event.
-
-+baseboat.generate_paths False 
-Stops boats from generating paths.
-
-+ai.ocean_patrol_path_iterations 0  
-Disables AI pathing for ocean patrols.
-
-+server.events False  
-Turns off most random server events.
-
-+antihack.terrain_protection 0 
-Disables some anti-hacking measures related to terrain, which can be useful when testing building mechanics or custom terrain features.
-
-It’s perfect for ensuring a custom monument works correctly or for fine-tuning a puzzle.</value>
   </data>
   <data name="bunifuSeparator18.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -306,24 +227,7 @@ It’s perfect for ensuring a custom monument works correctly or for fine-tuning
         PQvsmfDv54TjOI7jOI7jOI7jOI7jOI7jOI7jOI7j/Gf8A522tyiin4lmAAAAAElFTkSuQmCC
 </value>
   </data>
-  <data name="label33.Text" xml:space="preserve">
-    <value>After launching a server, DropLaunch can automatically copy the connection command to your clipboard if you've enabled this option in the setup. 
-The command is usually  "connect localhost:28015"
-
-(Optionally make yourself admin before joining the server, read below)
-Press F1 in game to open up the console and type connect localhost:28015 command and press enter.
-
-Find Your SteamID64: You'll need your unique SteamID64. 
-A quick way to find this is to use a website like https://steamid.io/
-
-In your server console (black screen thats running) run the command "ownerid 123456677890" 
-Make sure that you replace the number with your unique SteamID64
-The console should tell you that you are now a owner.
-
-Run the command "writecfg" to save your admin status to the server files.
-</value>
-  </data>
-  <data name="bunifuSeparator15.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="bunifuSeparator17.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAYcAAAAKCAYAAABfR5LMAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
         YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAR3SURBVGhD7ZVpqFVlFIaNiiwsLCyysKhosqiwsJkKC5ux
@@ -346,6 +250,31 @@ Run the command "writecfg" to save your admin status to the server files.
         Q6JL8mvMLdExQcabc6J7KB9nLjInmZvMUeaq6KxqfoE5LLqsJmPNbS3H5WPMeeY+c6C5MDqxno+ew41T
         zZXmTHOnOdRcak41t0bH8tZR5tzo3r58pLnYnBzdvGDLCHN1dHZvY7g5PLqcNg4zt0fHVxpDzfnmfnsG
         2LPAngn/fk44juM4juM4juM4juM4juM4juP8V/4BrI63KGQ4boQAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="bunifuSeparator16.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAAYcAAAALCAYAAACUG0FpAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAR7SURBVHhe7ZVpqFVlFIaNiiwsLCyysKhosqiwsJkKC5ux
+        ULGiosIGKwunu9fa93Issrjp5XbOt9Y+94pFRlYaFhY2GRkZNkqGinYdzt5r7aNNJiXN0Y31nfOr3/Vv
+        Pb8OZ9rfXut9nz1kiOM4juM4juM4juM4juM4juM4juM4juP8HwwODu4zadKyfSuV1fv19w/u/2B14IBK
+        pTG0p0cOrPQ3D6rQxmHd3ZsPrlS/P6TS2xieZMWhlR45rLJgywioDhxeybYdMYsaR2JfPnJ2KI7Cuhyd
+        8tZRHf3bj0kX7Th2Zi0/LsmK49O+4oTZ9W0nJqE8qTMrT4b+5ilQzUd3UnEaZLtOB9YzOmt6JlJ5FoZ8
+        TJLtPBvDznOwJmMT0nMx0/O6Qnk+1PILU2pe1JU1L4aqXJIGvbSL9TKgfFxaKy6H0LwCg4xPSK7ETK/q
+        rOvVScivRS6uS7LyemCZ0FGXG4D1RqB8YpIVk4CKyRBkSkJyE2Ryc0pyS0L5rcjFbWlW3J4EuQNJ7gSW
+        u4DyqRiKu4GKe5CLe5OaTIMg9yckDySUT4dQPJSE4uEkFDM6SGYmLLOgls/pCHkHkCbICgkXKWTSiVR2
+        JSQVYJ2LmT4CrI8CyWPI5TzIyseRyyeQtBtYn8RM56esCzBr9qRc9mJWPpVyWU1ZA7JSSspAWkcu+4DL
+        fuRyIZIuAtanMdNngPRZoHIxcvkcsD6PpEuQ9QVkfRGDLk2pXIZcvowky1PSV5D0VSRZAaSvIevrGGQl
+        kLyBrG+mrG8hyzvIuiplfRdJ3kOW1Wmm7yPJB8iyBlk/RJa1QPIRsnycsn4CLJ8hyefAug5YvgCW9Ujy
+        JVKxAVg3IukmJNkMJFuQ5SukcgBItyHpdmTdAUFzJC2AVIC0RNYmkO5E1l1A+g2yfgus3wHrbiT9AVj3
+        AMuPwPoTsO4Fkp+B9Rdg/RVZfwOSP4D1T2T9C1kHgeRve23vxc9Ifrfvxt+0fru39V/xP/e0r7Hbrhmv
+        bWcg+bp9JjtbaWeNZ7azs+6we2ndUzlg9xjvlWQzsm5qzaDYEGfCsr41I13XmpnNrvjUZtme6dr2jNfY
+        zOPsWVbbLuJOWFfFHZG8bTuLuwuy0nYZd0qywnbc2rUst923MqBLgeSlmA3SJTErlhkqF1uGYpYsU6SL
+        LGPtrPVZ9tJMOWaRNVg22xntbWXWsqvzY5ZJuy3b7YzPs8xb9tsdmGudsG5YR2JXqEDrTuxQLZ9jnYrd
+        CsUM61rsHOXTrYOxiyzTgBr3xY7GruZTrbvWYeuyddq6bR23rlvnY/eDTIF6MbnlhHyiOQKjK2SCuSM6
+        JLokv8bcEh0TZLw5J7qH8nHmInOSuckcZa6KzqrmF5jDostqMtbc1nJcPsacZ+4zB5oLoxPr+eg53DjV
+        XGnONHeaQ82l5lRza3Qsbx1lzo3u7ctHmovNydHNC7aMMFdHZ/c2hpvDo8tp4zBze3R8pTHUnG/ut2eA
+        PQvsmfDv54TjOI7jOI7jOI7jOI7jOI7jOI7jOI7j/Gf8A522tyiin4lmAAAAAElFTkSuQmCC
 </value>
   </data>
   <data name="bunifuSeparator1.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
