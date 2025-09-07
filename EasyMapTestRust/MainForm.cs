@@ -81,9 +81,7 @@ namespace EasyMapTestRust
 
 			InitializeHelpTabAccordion();
 
-
             Booting();
-
 
 			LogMixed("INFO: ", "Application started.", Color.Blue);
 
@@ -93,7 +91,7 @@ namespace EasyMapTestRust
 			LaunchingAMapBrowser.DocumentText = @"<!DOCTYPE html><html lang=""en""><head><meta charset=""UTF-8""><meta name=""viewport"" content=""width=device-width, initial-scale=1.0""><title>Ways to Launch a Map</title><style>body{font-family:sans-serif;line-height:1.6;margin:20px;background-color:#c8c8c8;}h2{color:#2c3e50;border-bottom:2px solid #3498db;padding-bottom:5px;}p,li{color:#34495e;}ul{list-style-type:none;padding-left:0;}li{margin-bottom:15px;}</style></head><body><h2>Ways to Launch Your Map</h2><p>DropLaunch gives you several convenient ways to get your custom map up and running on a local server.</p><ul><li><strong>Drag and Drop:</strong> The easiest way to launch a map is to simply drag the .map file from your folder and drop it directly onto the DropLaunch application window. It will automatically create a start file and launch the server for you. You can even drag a map file onto the DropLaunch.exe icon when the app isn't running, and it will boot up a server with that map.</li><li><strong>From the Map List:</strong> In the ""Active Folder"" tab, you can right-click on any map to open a context menu. From there, select ""Create Start File And Start Server"". You can also just double-click on a map in this list to launch it immediately.</li><li><strong>From Your History:</strong> The ""Run History"" tab keeps a list of all the maps you've previously launched. You can double-click any entry in this list to quickly start that map again.</li><li><strong>From a Notification:</strong> If you have the file watcher and desktop notifications enabled, a notification will pop up when you save a new version of your map. Clicking this notification will instantly start a server with that map.</li></ul></body></html>";
 
             HelpVideosPicbutton.Visible = false; // Hide the help videos button for now
-
+            HelpVideosPicbutton.Visible = false; // Hide the help videos button for now
         }
 
 		public void LogMixed(string category, string message, Color mcolor)
@@ -354,76 +352,73 @@ namespace EasyMapTestRust
 
         }
 
-		private void HistoryDataView_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
-		{
-			try
-			{
-				var row = e.Row;
+        // --- HistoryDataView_UserDeletingRow: Remove entry with safe separator ---
+        private void HistoryDataView_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
+        {
+            try
+            {
+                var row = e.Row;
 
-				string name = row.Cells[0].Value?.ToString() ?? string.Empty;
-				string directory = row.Cells[1].Value?.ToString() ?? string.Empty;
-				string date = row.Cells[2].Value?.ToString() ?? string.Empty;
+                string name = row.Cells[0].Value?.ToString() ?? string.Empty;
+                string directory = row.Cells[1].Value?.ToString() ?? string.Empty;
+                string date = row.Cells[2].Value?.ToString() ?? string.Empty;
 
-				string entryToRemove = $"{directory}\\{name}|{date}";
+                string entryToRemove = $"{directory}|{name}|{date}";
 
-				// Remove from StringCollection  
-				if (RunHistory.Default.HistoryList != null && RunHistory.Default.HistoryList.Contains(entryToRemove))
-				{
-					RunHistory.Default.HistoryList.Remove(entryToRemove);
-					RunHistory.Default.Save();
-				}
+                if (RunHistory.Default.HistoryList != null && RunHistory.Default.HistoryList.Contains(entryToRemove))
+                {
+                    RunHistory.Default.HistoryList.Remove(entryToRemove);
+                    RunHistory.Default.Save();
+                }
 
-				LogMixed("INFO: ", "History entry removed and settings synchronized.", Color.Blue);
-			}
-			catch (Exception ex)
-			{
-				HandleError(ex, "removing history entry and syncing settings");
-			}
-		}
+                LogMixed("INFO: ", "History entry removed and settings synchronized.", Color.Blue);
+            }
+            catch (Exception ex)
+            {
+                HandleError(ex, "removing history entry and syncing settings");
+            }
+        }
 
 
-		private void LoadRunHistoryToGrid()
-		{
-			var historyList = RunHistory.Default.HistoryList;
+        // --- LoadRunHistoryToGrid: Parse entries with safe separator ---
+        private void LoadRunHistoryToGrid()
+        {
+            var historyList = RunHistory.Default.HistoryList;
 
-			if (historyList == null || historyList.Count == 0)
-				return;
+            if (historyList == null || historyList.Count == 0)
+                return;
 
-			// Optional: remove this if you want to preserve existing rows
-			HistoryDataView.Rows.Clear();
+            HistoryDataView.Rows.Clear();
 
-			foreach (string entry in historyList)
-			{
-				// Prevent duplicates based on the full string value
-				bool exists = false;
-				foreach (DataGridViewRow row in HistoryDataView.Rows)
-				{
-					if (row.IsNewRow) continue;
+            foreach (string entry in historyList)
+            {
+                bool exists = false;
+                foreach (DataGridViewRow row in HistoryDataView.Rows)
+                {
+                    if (row.IsNewRow) continue;
+                    string rowString = $"{row.Cells[1].Value}|{row.Cells[0].Value}|{row.Cells[2].Value}";
+                    if (string.Equals(rowString, entry, StringComparison.OrdinalIgnoreCase))
+                    {
+                        exists = true;
+                        break;
+                    }
+                }
 
-					// Reconstruct the row string to compare
-					string rowString = $"{row.Cells[0].Value}|{row.Cells[1].Value}|{row.Cells[2].Value}";
-					if (string.Equals(rowString, entry, StringComparison.OrdinalIgnoreCase))
-					{
-						exists = true;
-						break;
-					}
-				}
+                if (!exists)
+                {
+                    var parts = entry.Split('|');
+                    if (parts.Length == 3)
+                        HistoryDataView.Rows.Add(parts[1], parts[0], parts[2]);
+                }
+            }
+        }
 
-				if (!exists)
-				{
-					var parts = entry.Split('\\');
-					if (parts.Length == 3)
-						HistoryDataView.Rows.Add(parts[2].Replace(".bat", ""), parts[0] + "\\" + parts[1], DateTime.Now.ToString("dd/MM/yyyy"));
-				}
-			}
-		}
+        #endregion
 
-		#endregion
+        #region App first run functions
 
-		#region App first run functions
-
-		//This function is called when the program is booting. Check for first run to make the process as simple as possible.
-		public void Booting()
+        //This function is called when the program is booting. Check for first run to make the process as simple as possible.
+        public void Booting()
 		{
 			LogMixed("FILES: ", "Loading settings...", Color.Goldenrod);
 
@@ -1910,7 +1905,7 @@ namespace EasyMapTestRust
             {
                 HandleError(ex, "creating batch file for dropped map");
             }
-        } 
+        }
 
         #endregion
 
@@ -1923,8 +1918,8 @@ namespace EasyMapTestRust
                 string password = GenerateRandomPassword(8);
                 string id = GenerateRandomPassword(6);
 
-                // Safely encode the file:// path
-                string escapedMapPath = Uri.EscapeUriString(mapPath);
+                // Convert backslashes to forward slashes for file:// URI
+                string escapedMapPath = mapPath.Replace("\\", "/");
 
                 var batchContent = new StringBuilder();
 
@@ -1950,9 +1945,6 @@ namespace EasyMapTestRust
                 {
                     File.WriteAllText(filePath, batchContent.ToString());
                 }
-
-                // Optional success logging:
-                // LogMixed("INFO: ", $"Batch file written at {filePath}", Color.Green);
             }
             catch (Exception ex)
             {
@@ -1967,7 +1959,9 @@ namespace EasyMapTestRust
                 string mapName = Path.GetFileName(mapPath);
                 string password = GenerateRandomPassword(8);
                 string id = GenerateRandomPassword(6);
-                string escapedMapPath = Uri.EscapeUriString(mapPath);
+
+                // Replace backslashes with forward slashes for file:// path
+                string escapedMapPath = mapPath.Replace("\\", "/");
 
                 var batchContent = new StringBuilder();
 
@@ -1993,7 +1987,6 @@ namespace EasyMapTestRust
 
                 bool shouldOverwrite = CheckNewStart.Checked;
 
-                // Always create the file if it doesn't exist, or overwrite if checkbox is checked
                 if (shouldOverwrite || !File.Exists(filePath))
                 {
                     File.WriteAllText(filePath, batchContent.ToString());
@@ -2004,49 +1997,43 @@ namespace EasyMapTestRust
                 HandleError(ex, "writing batch file");
             }
         }
-
+        // --- StartBatFile: Add to history with safe separator ---
         private void StartBatFile(string batFilePath)
-		{
-			try
-			{
-				// Start the bat file
-				using (Process process = new Process())
-				{
-					ProcessStartInfo startInfo = new ProcessStartInfo
-					{
-						FileName = batFilePath,
-						WorkingDirectory = Path.GetDirectoryName(batFilePath),
-						UseShellExecute = true // Use shell execute for .bat files
-					};
+        {
+            try
+            {
+                using (Process process = new Process())
+                {
+                    ProcessStartInfo startInfo = new ProcessStartInfo
+                    {
+                        FileName = batFilePath,
+                        WorkingDirectory = Path.GetDirectoryName(batFilePath),
+                        UseShellExecute = true
+                    };
 
-					process.StartInfo = startInfo;
-					process.Start();
+                    process.StartInfo = startInfo;
+                    process.Start();
 
-					// Add to history DataGridView
-					HistoryDataView.Rows.Add(
-						Path.GetFileName(batFilePath),           // Name
-						Path.GetDirectoryName(batFilePath),      // Location
-						DateTime.Now.ToString("dd/MM/yyyy"));      // Date
+                    // Add to history DataGridView
+                    HistoryDataView.Rows.Add(
+                        Path.GetFileName(batFilePath),
+                        Path.GetDirectoryName(batFilePath),
+                        DateTime.Now.ToString("dd/MM/yyyy"));
 
+                    // Add map path to internal stringcollection with safe separator
+                    if (RunHistory.Default.HistoryList == null)
+                        RunHistory.Default.HistoryList = new StringCollection();
 
-					//add map path to internal stringcollection
-
-					//if (RunHistory.Default.HistoryList == null)
-					//	RunHistory.Default.HistoryList = new StringCollection();
-
-					if (RunHistory.Default.HistoryList == null)
-						RunHistory.Default.HistoryList = new StringCollection();
-					RunHistory.Default.HistoryList.Add(batFilePath);
-					RunHistory.Default.Save();
-					//add the map path to the to Properties.RunHistory.Default
-
-				}
-			}
-			catch (Exception ex)
-			{
-				HandleError(ex, "starting batch file");
-			}
-		}
+                    string entry = $"{Path.GetDirectoryName(batFilePath)}|{Path.GetFileName(batFilePath)}|{DateTime.Now.ToString("dd/MM/yyyy")}";
+                    RunHistory.Default.HistoryList.Add(entry);
+                    RunHistory.Default.Save();
+                }
+            }
+            catch (Exception ex)
+            {
+                HandleError(ex, "starting batch file");
+            }
+        }
 
         public void CreatePROCStartBatFile(string directory)
         {
@@ -2736,62 +2723,54 @@ namespace EasyMapTestRust
 			//}
 		}
 
-		private void SyncRunHistoryWithGridView()
-		{
-			try
-			{
-				// Ensure the RunHistory StringCollection is initialized
-				if (RunHistory.Default.HistoryList == null)
-				{
-					RunHistory.Default.HistoryList = new StringCollection();
-				}
+        private void SyncRunHistoryWithGridView()
+        {
+            try
+            {
+                if (RunHistory.Default.HistoryList == null)
+                {
+                    RunHistory.Default.HistoryList = new StringCollection();
+                }
 
-				// Create a HashSet to track existing entries for efficient removal
-				HashSet<string> existingEntries = new HashSet<string>(RunHistory.Default.HistoryList.Cast<string>());
+                HashSet<string> existingEntries = new HashSet<string>(RunHistory.Default.HistoryList.Cast<string>());
 
-				// Iterate through the rows of the HistoryDataView and update the StringCollection
-				foreach (DataGridViewRow row in HistoryDataView.Rows)
-				{
-					if (!row.IsNewRow)
-					{
-						string name = row.Cells[0].Value?.ToString() ?? string.Empty;
-						string directory = row.Cells[1].Value?.ToString() ?? string.Empty;
-						string date = row.Cells[2].Value?.ToString() ?? string.Empty;
+                foreach (DataGridViewRow row in HistoryDataView.Rows)
+                {
+                    if (!row.IsNewRow)
+                    {
+                        string name = row.Cells[0].Value?.ToString() ?? string.Empty;
+                        string directory = row.Cells[1].Value?.ToString() ?? string.Empty;
+                        string date = row.Cells[2].Value?.ToString() ?? string.Empty;
 
-						// Combine the values into a single string
-						string entry = $"{directory}\\{name}|{date}";
+                        string entry = $"{directory}|{name}|{date}";
 
-						// Add the entry if it doesn't already exist
-						if (!existingEntries.Contains(entry))
-						{
-							RunHistory.Default.HistoryList.Add(entry);
-						}
-						else
-						{
-							// Remove from the HashSet to track remaining entries
-							existingEntries.Remove(entry);
-						}
-					}
-				}
+                        if (!existingEntries.Contains(entry))
+                        {
+                            RunHistory.Default.HistoryList.Add(entry);
+                        }
+                        else
+                        {
+                            existingEntries.Remove(entry);
+                        }
+                    }
+                }
 
-				// Remove any remaining entries in the HashSet from the StringCollection
-				foreach (string entry in existingEntries)
-				{
-					RunHistory.Default.HistoryList.Remove(entry);
-				}
+                foreach (string entry in existingEntries)
+                {
+                    RunHistory.Default.HistoryList.Remove(entry);
+                }
 
-				// Save the updated RunHistory settings
-				RunHistory.Default.Save();
+                RunHistory.Default.Save();
 
-				LogMixed("INFO: ", "RunHistory settings synchronized with the grid view.", Color.Blue);
-			}
-			catch (Exception ex)
-			{
-				HandleError(ex, "synchronizing RunHistory with grid view");
-			}
-		}
+                LogMixed("INFO: ", "RunHistory settings synchronized with the grid view.", Color.Blue);
+            }
+            catch (Exception ex)
+            {
+                HandleError(ex, "synchronizing RunHistory with grid view");
+            }
+        }
 
-		private void HistoryDataView_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
+        private void HistoryDataView_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
 		{
 			SyncRunHistoryWithGridView();
 		}

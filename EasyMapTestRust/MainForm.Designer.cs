@@ -6636,7 +6636,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Rust DropLaunch - Alpha 0.2";
+            this.Text = "Rust DropLaunch - Alpha 0.3";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.MainPages.ResumeLayout(false);
             this.MainPage.ResumeLayout(false);
