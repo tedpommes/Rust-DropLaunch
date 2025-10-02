@@ -520,6 +520,7 @@
             // 
             // MapsContextMenu
             // 
+            this.MapsContextMenu.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.MapsContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.createStartFileToolStripMenuItem,
             this.startServerWithMapToolStripMenuItem,
@@ -695,6 +696,7 @@
             this.MapsDataGridView.Name = "MapsDataGridView";
             this.MapsDataGridView.ReadOnly = true;
             this.MapsDataGridView.RowHeadersVisible = false;
+            this.MapsDataGridView.RowHeadersWidth = 62;
             this.MapsDataGridView.RowTemplate.Height = 40;
             this.MapsDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.MapsDataGridView.Size = new System.Drawing.Size(442, 290);
@@ -711,18 +713,21 @@
             // NameTab
             // 
             this.NameTab.HeaderText = "Name";
+            this.NameTab.MinimumWidth = 8;
             this.NameTab.Name = "NameTab";
             this.NameTab.ReadOnly = true;
             // 
             // LocationTab
             // 
             this.LocationTab.HeaderText = "Location";
+            this.LocationTab.MinimumWidth = 8;
             this.LocationTab.Name = "LocationTab";
             this.LocationTab.ReadOnly = true;
             // 
             // DateTab
             // 
             this.DateTab.HeaderText = "Date ";
+            this.DateTab.MinimumWidth = 8;
             this.DateTab.Name = "DateTab";
             this.DateTab.ReadOnly = true;
             // 
@@ -801,6 +806,7 @@
             this.HistoryDataView.Name = "HistoryDataView";
             this.HistoryDataView.ReadOnly = true;
             this.HistoryDataView.RowHeadersVisible = false;
+            this.HistoryDataView.RowHeadersWidth = 62;
             this.HistoryDataView.RowTemplate.Height = 40;
             this.HistoryDataView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.HistoryDataView.Size = new System.Drawing.Size(442, 290);
@@ -816,18 +822,21 @@
             // dataGridViewTextBoxColumn1
             // 
             this.dataGridViewTextBoxColumn1.HeaderText = "Name";
+            this.dataGridViewTextBoxColumn1.MinimumWidth = 8;
             this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
             this.dataGridViewTextBoxColumn1.ReadOnly = true;
             // 
             // dataGridViewTextBoxColumn2
             // 
             this.dataGridViewTextBoxColumn2.HeaderText = "Location";
+            this.dataGridViewTextBoxColumn2.MinimumWidth = 8;
             this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
             this.dataGridViewTextBoxColumn2.ReadOnly = true;
             // 
             // dataGridViewTextBoxColumn3
             // 
             this.dataGridViewTextBoxColumn3.HeaderText = "Date ";
+            this.dataGridViewTextBoxColumn3.MinimumWidth = 8;
             this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
             this.dataGridViewTextBoxColumn3.ReadOnly = true;
             // 
@@ -935,6 +944,7 @@
             this.bunifuSeparator15.LineStyle = Bunifu.UI.WinForms.BunifuSeparator.LineStyles.DoubleEdgeFaded;
             this.bunifuSeparator15.LineThickness = 1;
             this.bunifuSeparator15.Location = new System.Drawing.Point(10, 30);
+            this.bunifuSeparator15.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.bunifuSeparator15.Name = "bunifuSeparator15";
             this.bunifuSeparator15.Orientation = Bunifu.UI.WinForms.BunifuSeparator.LineOrientation.Horizontal;
             this.bunifuSeparator15.Size = new System.Drawing.Size(391, 10);
@@ -1010,6 +1020,7 @@
             this.bunifuSeparator18.LineStyle = Bunifu.UI.WinForms.BunifuSeparator.LineStyles.DoubleEdgeFaded;
             this.bunifuSeparator18.LineThickness = 1;
             this.bunifuSeparator18.Location = new System.Drawing.Point(10, 30);
+            this.bunifuSeparator18.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.bunifuSeparator18.Name = "bunifuSeparator18";
             this.bunifuSeparator18.Orientation = Bunifu.UI.WinForms.BunifuSeparator.LineOrientation.Horizontal;
             this.bunifuSeparator18.Size = new System.Drawing.Size(391, 11);
@@ -1085,6 +1096,7 @@
             this.bunifuSeparator17.LineStyle = Bunifu.UI.WinForms.BunifuSeparator.LineStyles.DoubleEdgeFaded;
             this.bunifuSeparator17.LineThickness = 1;
             this.bunifuSeparator17.Location = new System.Drawing.Point(10, 30);
+            this.bunifuSeparator17.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.bunifuSeparator17.Name = "bunifuSeparator17";
             this.bunifuSeparator17.Orientation = Bunifu.UI.WinForms.BunifuSeparator.LineOrientation.Horizontal;
             this.bunifuSeparator17.Size = new System.Drawing.Size(391, 10);
@@ -1160,6 +1172,7 @@
             this.bunifuSeparator16.LineStyle = Bunifu.UI.WinForms.BunifuSeparator.LineStyles.DoubleEdgeFaded;
             this.bunifuSeparator16.LineThickness = 1;
             this.bunifuSeparator16.Location = new System.Drawing.Point(10, 30);
+            this.bunifuSeparator16.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.bunifuSeparator16.Name = "bunifuSeparator16";
             this.bunifuSeparator16.Orientation = Bunifu.UI.WinForms.BunifuSeparator.LineOrientation.Horizontal;
             this.bunifuSeparator16.Size = new System.Drawing.Size(391, 11);
@@ -1223,6 +1236,7 @@
             this.bunifuSeparator1.LineStyle = Bunifu.UI.WinForms.BunifuSeparator.LineStyles.DoubleEdgeFaded;
             this.bunifuSeparator1.LineThickness = 1;
             this.bunifuSeparator1.Location = new System.Drawing.Point(10, 30);
+            this.bunifuSeparator1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.bunifuSeparator1.Name = "bunifuSeparator1";
             this.bunifuSeparator1.Orientation = Bunifu.UI.WinForms.BunifuSeparator.LineOrientation.Horizontal;
             this.bunifuSeparator1.Size = new System.Drawing.Size(391, 11);
@@ -1267,7 +1281,7 @@
             this.HelpVideosPicbutton.ImageSize = new System.Drawing.Size(243, 141);
             this.HelpVideosPicbutton.ImageZoomSize = new System.Drawing.Size(263, 161);
             this.HelpVideosPicbutton.InitialImage = ((System.Drawing.Image)(resources.GetObject("HelpVideosPicbutton.InitialImage")));
-            this.HelpVideosPicbutton.Location = new System.Drawing.Point(89, 58);
+            this.HelpVideosPicbutton.Location = new System.Drawing.Point(90, 58);
             this.HelpVideosPicbutton.Name = "HelpVideosPicbutton";
             this.HelpVideosPicbutton.Rotation = 0;
             this.HelpVideosPicbutton.ShowActiveImage = true;
@@ -1541,7 +1555,7 @@
             this.HostingerAff.ImageSize = new System.Drawing.Size(125, 50);
             this.HostingerAff.ImageZoomSize = new System.Drawing.Size(145, 70);
             this.HostingerAff.InitialImage = ((System.Drawing.Image)(resources.GetObject("HostingerAff.InitialImage")));
-            this.HostingerAff.Location = new System.Drawing.Point(297, 169);
+            this.HostingerAff.Location = new System.Drawing.Point(298, 169);
             this.HostingerAff.Name = "HostingerAff";
             this.HostingerAff.Rotation = 0;
             this.HostingerAff.ShowActiveImage = true;
@@ -1736,11 +1750,13 @@
             this.SettingsBtn.FocusState = Bunifu.UI.WinForms.BunifuButton.BunifuButton2.ButtonStates.Pressed;
             this.SettingsBtn.Font = new System.Drawing.Font("Segoe UI Black", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SettingsBtn.ForeColor = System.Drawing.Color.White;
+            this.SettingsBtn.IconLeft = null;
             this.SettingsBtn.IconLeftAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.SettingsBtn.IconLeftCursor = System.Windows.Forms.Cursors.Default;
             this.SettingsBtn.IconLeftPadding = new System.Windows.Forms.Padding(11, 3, 3, 3);
             this.SettingsBtn.IconMarginLeft = 11;
             this.SettingsBtn.IconPadding = 10;
+            this.SettingsBtn.IconRight = null;
             this.SettingsBtn.IconRightAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.SettingsBtn.IconRightCursor = System.Windows.Forms.Cursors.Default;
             this.SettingsBtn.IconRightPadding = new System.Windows.Forms.Padding(3, 3, 7, 3);
@@ -1849,6 +1865,7 @@
             // 
             // label19
             // 
+            this.label19.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label19.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.label19.Location = new System.Drawing.Point(166, 20);
             this.label19.Name = "label19";
@@ -1868,6 +1885,7 @@
             this.CheckToolTips.AllowCheckBoxAnimation = false;
             this.CheckToolTips.AllowCheckmarkAnimation = true;
             this.CheckToolTips.AllowOnHoverStates = true;
+            this.CheckToolTips.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.CheckToolTips.AutoCheck = true;
             this.CheckToolTips.BackColor = System.Drawing.Color.Transparent;
             this.CheckToolTips.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("CheckToolTips.BackgroundImage")));
@@ -2004,11 +2022,13 @@
             this.UpdateServerButton.FocusState = Bunifu.UI.WinForms.BunifuButton.BunifuButton2.ButtonStates.Pressed;
             this.UpdateServerButton.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.UpdateServerButton.ForeColor = System.Drawing.Color.White;
+            this.UpdateServerButton.IconLeft = null;
             this.UpdateServerButton.IconLeftAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.UpdateServerButton.IconLeftCursor = System.Windows.Forms.Cursors.Default;
             this.UpdateServerButton.IconLeftPadding = new System.Windows.Forms.Padding(11, 3, 3, 3);
             this.UpdateServerButton.IconMarginLeft = 11;
             this.UpdateServerButton.IconPadding = 10;
+            this.UpdateServerButton.IconRight = null;
             this.UpdateServerButton.IconRightAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.UpdateServerButton.IconRightCursor = System.Windows.Forms.Cursors.Default;
             this.UpdateServerButton.IconRightPadding = new System.Windows.Forms.Padding(3, 3, 7, 3);
@@ -2098,11 +2118,13 @@
             this.WriteStartfilesButton.FocusState = Bunifu.UI.WinForms.BunifuButton.BunifuButton2.ButtonStates.Pressed;
             this.WriteStartfilesButton.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.WriteStartfilesButton.ForeColor = System.Drawing.Color.White;
+            this.WriteStartfilesButton.IconLeft = null;
             this.WriteStartfilesButton.IconLeftAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.WriteStartfilesButton.IconLeftCursor = System.Windows.Forms.Cursors.Default;
             this.WriteStartfilesButton.IconLeftPadding = new System.Windows.Forms.Padding(11, 3, 3, 3);
             this.WriteStartfilesButton.IconMarginLeft = 11;
             this.WriteStartfilesButton.IconPadding = 10;
+            this.WriteStartfilesButton.IconRight = null;
             this.WriteStartfilesButton.IconRightAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.WriteStartfilesButton.IconRightCursor = System.Windows.Forms.Cursors.Default;
             this.WriteStartfilesButton.IconRightPadding = new System.Windows.Forms.Padding(3, 3, 7, 3);
@@ -2197,6 +2219,7 @@
             // 
             // label21
             // 
+            this.label21.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label21.AutoSize = true;
             this.label21.Location = new System.Drawing.Point(246, 37);
             this.label21.Name = "label21";
@@ -2217,6 +2240,7 @@
             this.CheckDeleteClientMap.AllowCheckBoxAnimation = false;
             this.CheckDeleteClientMap.AllowCheckmarkAnimation = true;
             this.CheckDeleteClientMap.AllowOnHoverStates = true;
+            this.CheckDeleteClientMap.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.CheckDeleteClientMap.AutoCheck = true;
             this.CheckDeleteClientMap.BackColor = System.Drawing.Color.Transparent;
             this.CheckDeleteClientMap.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("CheckDeleteClientMap.BackgroundImage")));
@@ -2270,6 +2294,7 @@
             // 
             // bunifuSeparator2
             // 
+            this.bunifuSeparator2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.bunifuSeparator2.BackColor = System.Drawing.Color.Transparent;
             this.bunifuSeparator2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bunifuSeparator2.BackgroundImage")));
             this.bunifuSeparator2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
@@ -2278,6 +2303,7 @@
             this.bunifuSeparator2.LineStyle = Bunifu.UI.WinForms.BunifuSeparator.LineStyles.DoubleEdgeFaded;
             this.bunifuSeparator2.LineThickness = 1;
             this.bunifuSeparator2.Location = new System.Drawing.Point(190, 11);
+            this.bunifuSeparator2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.bunifuSeparator2.Name = "bunifuSeparator2";
             this.bunifuSeparator2.Orientation = Bunifu.UI.WinForms.BunifuSeparator.LineOrientation.Vertical;
             this.bunifuSeparator2.Size = new System.Drawing.Size(14, 42);
@@ -2312,6 +2338,7 @@
             // 
             // label4
             // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(246, 13);
             this.label4.Name = "label4";
@@ -2445,6 +2472,7 @@
             this.CheckNewStart.AllowCheckBoxAnimation = false;
             this.CheckNewStart.AllowCheckmarkAnimation = true;
             this.CheckNewStart.AllowOnHoverStates = true;
+            this.CheckNewStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.CheckNewStart.AutoCheck = true;
             this.CheckNewStart.BackColor = System.Drawing.Color.Transparent;
             this.CheckNewStart.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("CheckNewStart.BackgroundImage")));
@@ -3107,11 +3135,13 @@
             this.SaveSettingsButton.FocusState = Bunifu.UI.WinForms.BunifuButton.BunifuButton2.ButtonStates.Pressed;
             this.SaveSettingsButton.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SaveSettingsButton.ForeColor = System.Drawing.Color.White;
+            this.SaveSettingsButton.IconLeft = null;
             this.SaveSettingsButton.IconLeftAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.SaveSettingsButton.IconLeftCursor = System.Windows.Forms.Cursors.Default;
             this.SaveSettingsButton.IconLeftPadding = new System.Windows.Forms.Padding(11, 3, 3, 3);
             this.SaveSettingsButton.IconMarginLeft = 11;
             this.SaveSettingsButton.IconPadding = 10;
+            this.SaveSettingsButton.IconRight = null;
             this.SaveSettingsButton.IconRightAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.SaveSettingsButton.IconRightCursor = System.Windows.Forms.Cursors.Default;
             this.SaveSettingsButton.IconRightPadding = new System.Windows.Forms.Padding(3, 3, 7, 3);
@@ -3201,11 +3231,13 @@
             this.SettingsBackButton.FocusState = Bunifu.UI.WinForms.BunifuButton.BunifuButton2.ButtonStates.Pressed;
             this.SettingsBackButton.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SettingsBackButton.ForeColor = System.Drawing.Color.White;
+            this.SettingsBackButton.IconLeft = null;
             this.SettingsBackButton.IconLeftAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.SettingsBackButton.IconLeftCursor = System.Windows.Forms.Cursors.Default;
             this.SettingsBackButton.IconLeftPadding = new System.Windows.Forms.Padding(11, 3, 3, 3);
             this.SettingsBackButton.IconMarginLeft = 11;
             this.SettingsBackButton.IconPadding = 10;
+            this.SettingsBackButton.IconRight = null;
             this.SettingsBackButton.IconRightAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.SettingsBackButton.IconRightCursor = System.Windows.Forms.Cursors.Default;
             this.SettingsBackButton.IconRightPadding = new System.Windows.Forms.Padding(3, 3, 7, 3);
@@ -3961,11 +3993,13 @@
             this.SetupDirBackButton.FocusState = Bunifu.UI.WinForms.BunifuButton.BunifuButton2.ButtonStates.Pressed;
             this.SetupDirBackButton.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SetupDirBackButton.ForeColor = System.Drawing.Color.White;
+            this.SetupDirBackButton.IconLeft = null;
             this.SetupDirBackButton.IconLeftAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.SetupDirBackButton.IconLeftCursor = System.Windows.Forms.Cursors.Default;
             this.SetupDirBackButton.IconLeftPadding = new System.Windows.Forms.Padding(11, 3, 3, 3);
             this.SetupDirBackButton.IconMarginLeft = 11;
             this.SetupDirBackButton.IconPadding = 10;
+            this.SetupDirBackButton.IconRight = null;
             this.SetupDirBackButton.IconRightAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.SetupDirBackButton.IconRightCursor = System.Windows.Forms.Cursors.Default;
             this.SetupDirBackButton.IconRightPadding = new System.Windows.Forms.Padding(3, 3, 7, 3);
@@ -4055,11 +4089,13 @@
             this.SetupDirNextButton.FocusState = Bunifu.UI.WinForms.BunifuButton.BunifuButton2.ButtonStates.Pressed;
             this.SetupDirNextButton.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SetupDirNextButton.ForeColor = System.Drawing.Color.White;
+            this.SetupDirNextButton.IconLeft = null;
             this.SetupDirNextButton.IconLeftAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.SetupDirNextButton.IconLeftCursor = System.Windows.Forms.Cursors.Default;
             this.SetupDirNextButton.IconLeftPadding = new System.Windows.Forms.Padding(11, 3, 3, 3);
             this.SetupDirNextButton.IconMarginLeft = 11;
             this.SetupDirNextButton.IconPadding = 10;
+            this.SetupDirNextButton.IconRight = null;
             this.SetupDirNextButton.IconRightAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.SetupDirNextButton.IconRightCursor = System.Windows.Forms.Cursors.Default;
             this.SetupDirNextButton.IconRightPadding = new System.Windows.Forms.Padding(3, 3, 7, 3);
@@ -4183,7 +4219,7 @@
             this.SetupStepsLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.SetupStepsLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SetupStepsLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(178)))), ((int)(((byte)(183)))), ((int)(((byte)(191)))));
-            this.SetupStepsLabel.Location = new System.Drawing.Point(399, 25);
+            this.SetupStepsLabel.Location = new System.Drawing.Point(398, 25);
             this.SetupStepsLabel.Name = "SetupStepsLabel";
             this.SetupStepsLabel.Size = new System.Drawing.Size(36, 32);
             this.SetupStepsLabel.TabIndex = 18;
@@ -4241,7 +4277,7 @@
             this.AutoNextSetupCheck.CheckState = Bunifu.UI.WinForms.BunifuCheckBox.CheckStates.Checked;
             this.AutoNextSetupCheck.Cursor = System.Windows.Forms.Cursors.Default;
             this.AutoNextSetupCheck.CustomCheckmarkImage = null;
-            this.AutoNextSetupCheck.Location = new System.Drawing.Point(121, 40);
+            this.AutoNextSetupCheck.Location = new System.Drawing.Point(122, 40);
             this.AutoNextSetupCheck.MinimumSize = new System.Drawing.Size(17, 17);
             this.AutoNextSetupCheck.Name = "AutoNextSetupCheck";
             this.AutoNextSetupCheck.OnCheck.BorderColor = System.Drawing.Color.DodgerBlue;
@@ -4322,6 +4358,7 @@
             this.bunifuSeparator7.LineStyle = Bunifu.UI.WinForms.BunifuSeparator.LineStyles.DoubleEdgeFaded;
             this.bunifuSeparator7.LineThickness = 1;
             this.bunifuSeparator7.Location = new System.Drawing.Point(10, 45);
+            this.bunifuSeparator7.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.bunifuSeparator7.Name = "bunifuSeparator7";
             this.bunifuSeparator7.Orientation = Bunifu.UI.WinForms.BunifuSeparator.LineOrientation.Horizontal;
             this.bunifuSeparator7.Size = new System.Drawing.Size(456, 13);
@@ -4407,11 +4444,13 @@
             this.SetupCMDNextButton.FocusState = Bunifu.UI.WinForms.BunifuButton.BunifuButton2.ButtonStates.Pressed;
             this.SetupCMDNextButton.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SetupCMDNextButton.ForeColor = System.Drawing.Color.White;
+            this.SetupCMDNextButton.IconLeft = null;
             this.SetupCMDNextButton.IconLeftAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.SetupCMDNextButton.IconLeftCursor = System.Windows.Forms.Cursors.Default;
             this.SetupCMDNextButton.IconLeftPadding = new System.Windows.Forms.Padding(11, 3, 3, 3);
             this.SetupCMDNextButton.IconMarginLeft = 11;
             this.SetupCMDNextButton.IconPadding = 10;
+            this.SetupCMDNextButton.IconRight = null;
             this.SetupCMDNextButton.IconRightAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.SetupCMDNextButton.IconRightCursor = System.Windows.Forms.Cursors.Default;
             this.SetupCMDNextButton.IconRightPadding = new System.Windows.Forms.Padding(3, 3, 7, 3);
@@ -4501,11 +4540,13 @@
             this.SetupCMDBackButton.FocusState = Bunifu.UI.WinForms.BunifuButton.BunifuButton2.ButtonStates.Pressed;
             this.SetupCMDBackButton.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SetupCMDBackButton.ForeColor = System.Drawing.Color.White;
+            this.SetupCMDBackButton.IconLeft = null;
             this.SetupCMDBackButton.IconLeftAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.SetupCMDBackButton.IconLeftCursor = System.Windows.Forms.Cursors.Default;
             this.SetupCMDBackButton.IconLeftPadding = new System.Windows.Forms.Padding(11, 3, 3, 3);
             this.SetupCMDBackButton.IconMarginLeft = 11;
             this.SetupCMDBackButton.IconPadding = 10;
+            this.SetupCMDBackButton.IconRight = null;
             this.SetupCMDBackButton.IconRightAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.SetupCMDBackButton.IconRightCursor = System.Windows.Forms.Cursors.Default;
             this.SetupCMDBackButton.IconRightPadding = new System.Windows.Forms.Padding(3, 3, 7, 3);
@@ -5544,11 +5585,13 @@
             this.SetupcompletedHome.FocusState = Bunifu.UI.WinForms.BunifuButton.BunifuButton2.ButtonStates.Pressed;
             this.SetupcompletedHome.Font = new System.Drawing.Font("Segoe UI Black", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SetupcompletedHome.ForeColor = System.Drawing.Color.White;
+            this.SetupcompletedHome.IconLeft = null;
             this.SetupcompletedHome.IconLeftAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.SetupcompletedHome.IconLeftCursor = System.Windows.Forms.Cursors.Default;
             this.SetupcompletedHome.IconLeftPadding = new System.Windows.Forms.Padding(11, 3, 3, 3);
             this.SetupcompletedHome.IconMarginLeft = 11;
             this.SetupcompletedHome.IconPadding = 10;
+            this.SetupcompletedHome.IconRight = null;
             this.SetupcompletedHome.IconRightAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.SetupcompletedHome.IconRightCursor = System.Windows.Forms.Cursors.Default;
             this.SetupcompletedHome.IconRightPadding = new System.Windows.Forms.Padding(3, 3, 7, 3);
@@ -5854,11 +5897,13 @@
             this.FirstRunCustomInstall.FocusState = Bunifu.UI.WinForms.BunifuButton.BunifuButton2.ButtonStates.Pressed;
             this.FirstRunCustomInstall.Font = new System.Drawing.Font("Segoe UI Black", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FirstRunCustomInstall.ForeColor = System.Drawing.Color.White;
+            this.FirstRunCustomInstall.IconLeft = null;
             this.FirstRunCustomInstall.IconLeftAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.FirstRunCustomInstall.IconLeftCursor = System.Windows.Forms.Cursors.Default;
             this.FirstRunCustomInstall.IconLeftPadding = new System.Windows.Forms.Padding(11, 3, 3, 3);
             this.FirstRunCustomInstall.IconMarginLeft = 11;
             this.FirstRunCustomInstall.IconPadding = 10;
+            this.FirstRunCustomInstall.IconRight = null;
             this.FirstRunCustomInstall.IconRightAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.FirstRunCustomInstall.IconRightCursor = System.Windows.Forms.Cursors.Default;
             this.FirstRunCustomInstall.IconRightPadding = new System.Windows.Forms.Padding(3, 3, 7, 3);
@@ -5947,6 +5992,7 @@
             this.bunifuSeparator12.LineStyle = Bunifu.UI.WinForms.BunifuSeparator.LineStyles.DoubleEdgeFaded;
             this.bunifuSeparator12.LineThickness = 1;
             this.bunifuSeparator12.Location = new System.Drawing.Point(10, 128);
+            this.bunifuSeparator12.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.bunifuSeparator12.Name = "bunifuSeparator12";
             this.bunifuSeparator12.Orientation = Bunifu.UI.WinForms.BunifuSeparator.LineOrientation.Horizontal;
             this.bunifuSeparator12.Size = new System.Drawing.Size(173, 10);
@@ -5986,6 +6032,7 @@
             this.bunifuSeparator13.LineStyle = Bunifu.UI.WinForms.BunifuSeparator.LineStyles.DoubleEdgeFaded;
             this.bunifuSeparator13.LineThickness = 1;
             this.bunifuSeparator13.Location = new System.Drawing.Point(10, 87);
+            this.bunifuSeparator13.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.bunifuSeparator13.Name = "bunifuSeparator13";
             this.bunifuSeparator13.Orientation = Bunifu.UI.WinForms.BunifuSeparator.LineOrientation.Horizontal;
             this.bunifuSeparator13.Size = new System.Drawing.Size(173, 10);
@@ -6025,6 +6072,7 @@
             this.bunifuSeparator14.LineStyle = Bunifu.UI.WinForms.BunifuSeparator.LineStyles.DoubleEdgeFaded;
             this.bunifuSeparator14.LineThickness = 1;
             this.bunifuSeparator14.Location = new System.Drawing.Point(10, 46);
+            this.bunifuSeparator14.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.bunifuSeparator14.Name = "bunifuSeparator14";
             this.bunifuSeparator14.Orientation = Bunifu.UI.WinForms.BunifuSeparator.LineOrientation.Horizontal;
             this.bunifuSeparator14.Size = new System.Drawing.Size(173, 10);
@@ -6139,11 +6187,13 @@
             this.FirstRunOneClick.FocusState = Bunifu.UI.WinForms.BunifuButton.BunifuButton2.ButtonStates.Pressed;
             this.FirstRunOneClick.Font = new System.Drawing.Font("Segoe UI Black", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FirstRunOneClick.ForeColor = System.Drawing.Color.White;
+            this.FirstRunOneClick.IconLeft = null;
             this.FirstRunOneClick.IconLeftAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.FirstRunOneClick.IconLeftCursor = System.Windows.Forms.Cursors.Default;
             this.FirstRunOneClick.IconLeftPadding = new System.Windows.Forms.Padding(11, 3, 3, 3);
             this.FirstRunOneClick.IconMarginLeft = 11;
             this.FirstRunOneClick.IconPadding = 10;
+            this.FirstRunOneClick.IconRight = null;
             this.FirstRunOneClick.IconRightAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.FirstRunOneClick.IconRightCursor = System.Windows.Forms.Cursors.Default;
             this.FirstRunOneClick.IconRightPadding = new System.Windows.Forms.Padding(3, 3, 7, 3);
@@ -6232,6 +6282,7 @@
             this.bunifuSeparator9.LineStyle = Bunifu.UI.WinForms.BunifuSeparator.LineStyles.DoubleEdgeFaded;
             this.bunifuSeparator9.LineThickness = 1;
             this.bunifuSeparator9.Location = new System.Drawing.Point(10, 128);
+            this.bunifuSeparator9.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.bunifuSeparator9.Name = "bunifuSeparator9";
             this.bunifuSeparator9.Orientation = Bunifu.UI.WinForms.BunifuSeparator.LineOrientation.Horizontal;
             this.bunifuSeparator9.Size = new System.Drawing.Size(173, 10);
@@ -6271,6 +6322,7 @@
             this.bunifuSeparator6.LineStyle = Bunifu.UI.WinForms.BunifuSeparator.LineStyles.DoubleEdgeFaded;
             this.bunifuSeparator6.LineThickness = 1;
             this.bunifuSeparator6.Location = new System.Drawing.Point(10, 87);
+            this.bunifuSeparator6.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.bunifuSeparator6.Name = "bunifuSeparator6";
             this.bunifuSeparator6.Orientation = Bunifu.UI.WinForms.BunifuSeparator.LineOrientation.Horizontal;
             this.bunifuSeparator6.Size = new System.Drawing.Size(173, 10);
@@ -6310,6 +6362,7 @@
             this.bunifuSeparator8.LineStyle = Bunifu.UI.WinForms.BunifuSeparator.LineStyles.DoubleEdgeFaded;
             this.bunifuSeparator8.LineThickness = 1;
             this.bunifuSeparator8.Location = new System.Drawing.Point(10, 46);
+            this.bunifuSeparator8.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.bunifuSeparator8.Name = "bunifuSeparator8";
             this.bunifuSeparator8.Orientation = Bunifu.UI.WinForms.BunifuSeparator.LineOrientation.Horizontal;
             this.bunifuSeparator8.Size = new System.Drawing.Size(173, 10);
@@ -6419,11 +6472,13 @@
             this.FirstRunHomeButton.FocusState = Bunifu.UI.WinForms.BunifuButton.BunifuButton2.ButtonStates.Pressed;
             this.FirstRunHomeButton.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FirstRunHomeButton.ForeColor = System.Drawing.Color.White;
+            this.FirstRunHomeButton.IconLeft = null;
             this.FirstRunHomeButton.IconLeftAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.FirstRunHomeButton.IconLeftCursor = System.Windows.Forms.Cursors.Default;
             this.FirstRunHomeButton.IconLeftPadding = new System.Windows.Forms.Padding(11, 3, 3, 3);
             this.FirstRunHomeButton.IconMarginLeft = 11;
             this.FirstRunHomeButton.IconPadding = 10;
+            this.FirstRunHomeButton.IconRight = null;
             this.FirstRunHomeButton.IconRightAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.FirstRunHomeButton.IconRightCursor = System.Windows.Forms.Cursors.Default;
             this.FirstRunHomeButton.IconRightPadding = new System.Windows.Forms.Padding(3, 3, 7, 3);
@@ -6506,6 +6561,7 @@
             this.bunifuSeparator3.LineStyle = Bunifu.UI.WinForms.BunifuSeparator.LineStyles.DoubleEdgeFaded;
             this.bunifuSeparator3.LineThickness = 1;
             this.bunifuSeparator3.Location = new System.Drawing.Point(230, 102);
+            this.bunifuSeparator3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.bunifuSeparator3.Name = "bunifuSeparator3";
             this.bunifuSeparator3.Orientation = Bunifu.UI.WinForms.BunifuSeparator.LineOrientation.Vertical;
             this.bunifuSeparator3.Size = new System.Drawing.Size(14, 205);

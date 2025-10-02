@@ -33,8 +33,8 @@ namespace EasyMapTestRust
 
 	public partial class MainForm : Form
 	{
-
-		private bool configLoaded = false;
+        #region Declare
+        private bool configLoaded = false;
 
 		private FileSystemWatcher watcher;
 		private DateTime lastChange = DateTime.MinValue;
@@ -53,8 +53,10 @@ namespace EasyMapTestRust
 		// Store the last logged line to avoid duplicates for process output
 		private string lastLoggedLine = string.Empty;
 		private DateTime lastLoggedTime = DateTime.MinValue;
+        #endregion
 
-		public MainForm()
+        #region Mainform
+        public MainForm()
 		{
 			InitializeComponent();
 			InitializeNotification();
@@ -93,75 +95,247 @@ namespace EasyMapTestRust
             HelpVideosPicbutton.Visible = false; // Hide the help videos button for now
             HelpVideosPicbutton.Visible = false; // Hide the help videos button for now
         }
+		#endregion
 
-		public void LogMixed(string category, string message, Color mcolor)
-		{
-			if (ConsoleTextbox.InvokeRequired)
-			{
-				ConsoleTextbox.Invoke(new Action(() => LogMixed(category, message, mcolor)));
-				return;
-			}
+        #region Helpers
 
-			ConsoleTextbox.SelectionStart = ConsoleTextbox.TextLength;
-			ConsoleTextbox.SelectionLength = 0;
-			// Add timestamp in blue
-			ConsoleTextbox.SelectionFont = new Font(ConsoleTextbox.Font, FontStyle.Bold);
-			ConsoleTextbox.SelectionColor = Color.Black;
-			ConsoleTextbox.AppendText($"[{DateTime.Now.ToString("HH:mm:ss")}] ");
-			// Add category in bold
-			ConsoleTextbox.SelectionColor = mcolor;
-			ConsoleTextbox.SelectionFont = new Font(ConsoleTextbox.Font, FontStyle.Bold);
-			ConsoleTextbox.AppendText(category);
-			// Add message in normal font
-			ConsoleTextbox.SelectionColor = Color.Black;
-			ConsoleTextbox.SelectionFont = ConsoleTextbox.Font;
-			ConsoleTextbox.AppendText(message + Environment.NewLine);
-			ConsoleTextbox.ScrollToCaret();
-		}
+        private void SyncRunHistoryWithGridView()
+        {
+            try
+            {
+                if (RunHistory.Default.HistoryList == null)
+                {
+                    RunHistory.Default.HistoryList = new StringCollection();
+                }
 
-		// Method for debounced logging to prevent duplicate messages
-		private void LogMixedDebounced(string category, string message, Color mcolor)
-		{
-			// Use the debounce dictionary to prevent message spam
-			string key = category + message;
-			DateTime now = DateTime.Now;
+                HashSet<string> existingEntries = new HashSet<string>(RunHistory.Default.HistoryList.Cast<string>());
 
-			if (lastLogByCategory.ContainsKey(key))
-			{
-				// If this message was logged recently, skip it
-				if (now - lastLogByCategory[key] < logDebounceTime)
-				{
-					return;
-				}
-			}
+                foreach (DataGridViewRow row in HistoryDataView.Rows)
+                {
+                    if (!row.IsNewRow)
+                    {
+                        string name = row.Cells[0].Value?.ToString() ?? string.Empty;
+                        string directory = row.Cells[1].Value?.ToString() ?? string.Empty;
+                        string date = row.Cells[2].Value?.ToString() ?? string.Empty;
 
-			// Update the last log time for this key
-			lastLogByCategory[key] = now;
+                        string entry = $"{directory}|{name}|{date}";
 
-			// Call the original method
-			LogMixed(category, message, mcolor);
-		}
+                        if (!existingEntries.Contains(entry))
+                        {
+                            RunHistory.Default.HistoryList.Add(entry);
+                        }
+                        else
+                        {
+                            existingEntries.Remove(entry);
+                        }
+                    }
+                }
 
-		private string GetSteamCMDPath()
-		{
-			string appDirectory = Application.StartupPath;
+                foreach (string entry in existingEntries)
+                {
+                    RunHistory.Default.HistoryList.Remove(entry);
+                }
 
-			// Check same directory
-			string steamCmdPath = Path.Combine(appDirectory, "steamcmd.exe");
-			if (File.Exists(steamCmdPath))
-			{
-				return steamCmdPath;
-			}
+                RunHistory.Default.Save();
 
-			// Check steamcmd folder
-			string steamCmdInFolderPath = Path.Combine(appDirectory, "steamcmd", "steamcmd.exe");
-			if (File.Exists(steamCmdInFolderPath))
-			{
-				return steamCmdInFolderPath;
-			}
+                LogMixed("INFO: ", "RunHistory settings synchronized with the grid view.", Color.Blue);
+            }
+            catch (Exception ex)
+            {
+                HandleError(ex, "synchronizing RunHistory with grid view");
+            }
+        }
 
-			return null;
-		}
+        private void MoveClientMapToAppMapsFolder(string clientMapPath)
+        {
+            try
+            {
+                // 1. Get app directory and maps folder path
+                string appDir = Application.StartupPath;
+                string mapsDir = Path.Combine(appDir, "maps");
+
+                // 2. Ensure maps folder exists
+                if (!Directory.Exists(mapsDir))
+                    Directory.CreateDirectory(mapsDir);
+
+                // 3. Generate unique file name
+                string fileName = Path.GetFileName(clientMapPath);
+                string destPath = Path.Combine(mapsDir, fileName);
+                string nameWithoutExt = Path.GetFileNameWithoutExtension(fileName);
+                string ext = Path.GetExtension(fileName);
+                int count = 1;
+                while (File.Exists(destPath))
+                {
+                    destPath = Path.Combine(mapsDir, $"{nameWithoutExt}_{count}{ext}");
+                    count++;
+                }
+
+                // 4. Move the file
+                File.Move(clientMapPath, destPath);
+
+                LogMixed("FILES: ", $"Client map moved to: {destPath}", Color.Goldenrod);
+            }
+            catch (Exception ex)
+            {
+                HandleError(ex, "moving client map to maps folder");
+            }
+        }
+
+        public void UpdateSettings()
+        {
+            bool settingsChanged = false;
+
+            //check if server files directory are set, if so update settings
+            if (ServerFilesDirbox.Text != "" && ServerFilesDirbox.Text != Properties.Settings.Default.RustFilesDir)
+            {
+                Properties.Settings.Default.RustFilesDir = ServerFilesDirbox.Text;
+                settingsChanged = true;
+
+            }
+
+            if (MapDirBox.Text != "" && MapDirBox.Text != Properties.Settings.Default.MapsFilesDir)
+            {
+                Properties.Settings.Default.MapsFilesDir = MapDirBox.Text;
+                settingsChanged = true;
+
+            }
+
+            if (SteamCMDBox.Text != "" && SteamCMDBox.Text != Properties.Settings.Default.SteamCMDDir)
+            {
+                Properties.Settings.Default.SteamCMDDir = SteamCMDBox.Text;
+                settingsChanged = true;
+
+            }
+
+            if (RustGameDirbox.Text != "" && RustGameDirbox.Text != Properties.Settings.Default.ClientMapsDir)
+            {
+                Properties.Settings.Default.ClientMapsDir = RustGameDirbox.Text;
+                settingsChanged = true;
+
+            }
+
+
+            if (FinishRustGameDirbox.Text != "" && RustGameDirbox.Text != Properties.Settings.Default.ClientMapsDir)
+            {
+                Properties.Settings.Default.ClientMapsDir = FinishRustGameDirbox.Text;
+                settingsChanged = true;
+
+            }
+
+
+            if (settingsChanged)
+            {
+                Properties.Settings.Default.FirstRun = false;
+                // Save changes
+                Properties.Settings.Default.Save();
+                LogMixed("FILES: ", "Settings updated.", Color.Goldenrod);
+            }
+        }
+
+        private void LoadMapFilesToDataGridView(string folderPath, Bunifu.UI.WinForms.BunifuDataGridView dataGridView, int pageSize = 100, int pageNumber = 1)
+        {
+            try
+            {
+                // Clear existing rows
+                dataGridView.Rows.Clear();
+
+                // Get all .map files including sudirectories
+                string[] allMapFiles = Directory.GetFiles(folderPath, "*.map", SearchOption.AllDirectories);
+
+                // Calculate total pages
+                int totalFiles = allMapFiles.Length;
+                int totalPages = (int)Math.Ceiling((double)totalFiles / pageSize);
+
+                // Validate page number
+                pageNumber = Math.Max(1, Math.Min(pageNumber, totalPages > 0 ? totalPages : 1));
+
+                // Get files for current page
+                string[] pageMapFiles = allMapFiles
+                    .Skip((pageNumber - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToArray();
+
+                // Create columns if they don't exist
+                if (dataGridView.Columns.Count == 0)
+                {
+                    // Add columns with Bunifu styling
+                    dataGridView.ColumnCount = 3;
+                    dataGridView.Columns[0].HeaderText = "Name";
+                    dataGridView.Columns[1].HeaderText = "Directory";
+                    dataGridView.Columns[2].HeaderText = "Date";
+
+                    // Optional: Customize column appearance
+                    foreach (DataGridViewColumn column in dataGridView.Columns)
+                    {
+                        column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                        column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                    }
+                }
+
+                // Add files to the grid
+                foreach (string file in pageMapFiles)
+                {
+                    FileInfo fileInfo = new FileInfo(file);
+                    dataGridView.Rows.Add(
+                        Path.GetFileName(file),                    // Name
+                        Path.GetFullPath(file),               // Directory
+                        fileInfo.LastWriteTime.ToString("dd/MM/yyyy")  // Date
+                    );
+                }
+
+                // Optional: Additional Bunifu-specific styling
+                dataGridView.AllowCustomTheming = true;
+                dataGridView.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(248, 251, 255);
+                dataGridView.DefaultCellStyle.SelectionBackColor = Color.FromArgb(87, 161, 192);
+                dataGridView.DefaultCellStyle.SelectionForeColor = Color.White;
+
+                // Enable sorting
+                dataGridView.AllowUserToOrderColumns = true;
+                dataGridView.Sort(dataGridView.Columns[2], System.ComponentModel.ListSortDirection.Descending);
+
+                if (totalPages > 1)
+                {
+                    LogMixed("INFO: ", $"Map files added to list (Page {pageNumber} of {totalPages}, showing {pageMapFiles.Length} of {totalFiles} files)", Color.Blue);
+                }
+                else
+                {
+                    LogMixed("INFO: ", "Map files added to list.", Color.Blue);
+                }
+            }
+            catch (Exception ex)
+            {
+                HandleError(ex, "loading map files");
+            }
+        }
+
+        private void ResetSettingsToDefault()
+        {
+            try
+            {
+
+                Properties.Settings.Default.Reset();
+
+                if (Properties.RunHistory.Default.HistoryList != null)
+                {
+                    Properties.RunHistory.Default.HistoryList.Clear();
+                }
+                else
+                {
+                    Properties.RunHistory.Default.HistoryList = new System.Collections.Specialized.StringCollection();
+                }
+
+                // Save both settings files to ensure all changes are written to disk.
+                Properties.Settings.Default.Save();
+                Properties.RunHistory.Default.Save();
+
+                // Log the reset action
+                LogMixed("INFO: ", "Settings have been reset to default.", Color.Blue);
+            }
+            catch (Exception ex)
+            {
+                HandleError(ex, "resetting settings to default");
+            }
+        }
 
         private void InitializeHelpTabAccordion()
         {
@@ -193,61 +367,30 @@ namespace EasyMapTestRust
 
         }
 
-
-
-        private void HelpPanelHeader_Click(object sender, EventArgs e)
+        public void LogMixed(string category, string message, Color mcolor)
         {
-            const int collapsedHeight = 40;
-            const int expandedHeight = 400; // Set this to your desired expanded size
-
-            var header = (System.Windows.Forms.Label)sender;
-            var clickedPanel = (Bunifu.UI.WinForms.BunifuShadowPanel)header.Parent;
-
-            bool isAlreadyExpanded = clickedPanel.Height > collapsedHeight;
-
-            // Collapse all panels and hide their group boxes
-            foreach (var pnl in HelpPanelScroll.Controls.OfType<Bunifu.UI.WinForms.BunifuShadowPanel>())
+            if (ConsoleTextbox.InvokeRequired)
             {
-                pnl.Height = collapsedHeight;
-
-                foreach (var groupBox in pnl.Controls.OfType<Bunifu.UI.WinForms.BunifuGroupBox>())
-                {
-                    groupBox.Visible = false;
-                }
-            }
-
-            // If already expanded, don't expand again (toggle behavior)
-            if (isAlreadyExpanded)
-            {
-                clickedPanel.Height = collapsedHeight;
+                ConsoleTextbox.Invoke(new Action(() => LogMixed(category, message, mcolor)));
                 return;
             }
 
-            // Expand clicked panel and show its group boxes
-            clickedPanel.Height = expandedHeight;
-
-            foreach (var groupBox in clickedPanel.Controls.OfType<Bunifu.UI.WinForms.BunifuGroupBox>())
-            {
-                groupBox.Visible = true;
-            }
+            ConsoleTextbox.SelectionStart = ConsoleTextbox.TextLength;
+            ConsoleTextbox.SelectionLength = 0;
+            // Add timestamp in blue
+            ConsoleTextbox.SelectionFont = new Font(ConsoleTextbox.Font, FontStyle.Bold);
+            ConsoleTextbox.SelectionColor = Color.Black;
+            ConsoleTextbox.AppendText($"[{DateTime.Now.ToString("HH:mm:ss")}] ");
+            // Add category in bold
+            ConsoleTextbox.SelectionColor = mcolor;
+            ConsoleTextbox.SelectionFont = new Font(ConsoleTextbox.Font, FontStyle.Bold);
+            ConsoleTextbox.AppendText(category);
+            // Add message in normal font
+            ConsoleTextbox.SelectionColor = Color.Black;
+            ConsoleTextbox.SelectionFont = ConsoleTextbox.Font;
+            ConsoleTextbox.AppendText(message + Environment.NewLine);
+            ConsoleTextbox.ScrollToCaret();
         }
-
-
-        public void CheckCmdSimple()
-		{
-			string steamCmdPath = Path.Combine(Properties.Settings.Default.SteamCMDDir, "steamcmd.exe");
-
-			if (File.Exists(steamCmdPath))
-			{
-				LogMixed("INFO: ", "SteamCMD.exe found in specified directory.", Color.Blue);
-				StatusPic.Image = Properties.Resources.icons8_check_64;
-			}
-			else
-			{
-				LogMixed("ERROR: ", "SteamCMD.exe not found in specified directory.", Color.Red);
-				StatusPic.Image = Properties.Resources.icons8_red_circle_48;
-			}
-		}
 
 		private string GenerateRandomPassword(int length)
 		{
@@ -257,18 +400,33 @@ namespace EasyMapTestRust
 				.Select(s => s[random.Next(s.Length)]).ToArray());
 		}
 
+        private void LogMixedDebounced(string category, string message, Color mcolor)
+        {
+            // Use the debounce dictionary to prevent message spam
+            string key = category + message;
+            DateTime now = DateTime.Now;
 
-		private void UpdateDirectories()
-		{
-			SteamCmdDirPath = GetSteamCMDPath();
-		}
+            if (lastLogByCategory.ContainsKey(key))
+            {
+                // If this message was logged recently, skip it
+                if (now - lastLogByCategory[key] < logDebounceTime)
+                {
+                    return;
+                }
+            }
 
+            // Update the last log time for this key
+            lastLogByCategory[key] = now;
 
+            // Call the original method
+            LogMixed(category, message, mcolor);
+        }
+        #endregion
 
-		#region Settings Management
+        #region Settings Management
 
-		// Load settings from the application settings
-		public void LoadSettings()
+        // Load settings from the application settings
+        public void LoadSettings()
 		{
 			try
 			{
@@ -547,10 +705,605 @@ namespace EasyMapTestRust
 				}
 			}
 		}
-		#endregion
+        #endregion
 
-		#region Buttons
-		private void SetupCMDNextButton_Click(object sender, EventArgs e)
+        #region Buttons-and-clicks
+
+        private void openClientMapsDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //string fullPath = Properties.Settings.Default.RustFilesDir;
+                string Serverdirectory = Properties.Settings.Default.ClientMapsDir;
+
+                if (Directory.Exists(Serverdirectory))
+                {
+                    LogMixed("INFO: ", "Client maps path opened in explorer", Color.Blue);
+                    Process.Start("explorer.exe", Serverdirectory);
+                }
+                else
+                {
+                    HandleError(new DirectoryNotFoundException("Folder not found"), "opening client maps directory");
+                }
+            }
+            catch (Exception ex)
+            {
+                HandleError(ex, "opening map directory");
+            }
+        }
+
+        private void createPrefabStartFileAndStartServerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string serverDir = Properties.Settings.Default.RustFilesDir;
+            string mapDirectory = MapsDataGridView.SelectedRows[0].Cells[1].Value.ToString();
+            string mapName = MapsDataGridView.SelectedRows[0].Cells[0].Value.ToString();
+
+            CreateAndStartMapServerTest(mapName, mapDirectory, serverDir);
+        }
+
+        private void CheckNoHelp_Click(object sender, EventArgs e)
+        {
+            if (CheckNoHelp.Checked == true)
+            {
+                CheckOpenReadme.Checked = false;
+                CheckHelpTooltips.Checked = false;
+            }
+        }
+
+        private void FirstRunOneClick_Click(object sender, EventArgs e)
+        {
+            RadioCarbon.Checked = true;
+            RadioUmod.Checked = false;
+
+            string path = Directory.GetCurrentDirectory();
+
+            DropDownBranches.SelectedIndex = 0;
+            SettingsBranchDropdown.SelectedIndex = 0;
+
+            SetupServerTextbox.Text = Properties.Settings.Default.RustFilesDir;
+            SetupMapsDirectory.Text = Properties.Settings.Default.MapsFilesDir;
+            SetupCMDdir.Text = Properties.Settings.Default.SteamCMDDir;
+
+            if (SetupServerTextbox.Text == "" ||
+                SetupMapsDirectory.Text == "" ||
+                SetupCMDdir.Text == "")
+            {
+                Properties.Settings.Default.RustFilesDir = path + "\\Server_Files";
+                Properties.Settings.Default.MapsFilesDir = path + "\\Maps";
+                Properties.Settings.Default.SteamCMDDir = path + "\\SteamCMD";
+                Properties.Settings.Default.Save();
+
+                SetupServerTextbox.Text = Properties.Settings.Default.RustFilesDir;
+                SetupMapsDirectory.Text = Properties.Settings.Default.MapsFilesDir;
+                SetupCMDdir.Text = Properties.Settings.Default.SteamCMDDir;
+            }
+            else
+            {
+                //go to setup page
+                MainPages.SetPage(5);
+            }
+
+            //go to main page
+            MainPages.SetPage(5);
+
+
+            //call SetupDirNextButton_Click to start the setup process
+            SetupDirNextButton_Click(this, EventArgs.Empty);
+
+
+
+        }
+
+        private void FirstRunCustomInstall_Click(object sender, EventArgs e)
+        {
+            RadioCarbon.Checked = true;
+            RadioUmod.Checked = false;
+
+            string path = Directory.GetCurrentDirectory();
+
+            DropDownBranches.SelectedIndex = 0;
+            SettingsBranchDropdown.SelectedIndex = 0;
+
+            SetupServerTextbox.Text = Properties.Settings.Default.RustFilesDir;
+            SetupMapsDirectory.Text = Properties.Settings.Default.MapsFilesDir;
+            SetupCMDdir.Text = Properties.Settings.Default.SteamCMDDir;
+
+            if (SetupServerTextbox.Text == "" ||
+                SetupMapsDirectory.Text == "" ||
+                SetupCMDdir.Text == "")
+            {
+                Properties.Settings.Default.RustFilesDir = path + "\\Server_Files";
+                Properties.Settings.Default.MapsFilesDir = path + "\\Maps";
+                Properties.Settings.Default.SteamCMDDir = path + "\\SteamCMD";
+                Properties.Settings.Default.Save();
+
+                SetupServerTextbox.Text = Properties.Settings.Default.RustFilesDir;
+                SetupMapsDirectory.Text = Properties.Settings.Default.MapsFilesDir;
+                SetupCMDdir.Text = Properties.Settings.Default.SteamCMDDir;
+            }
+            else
+            {
+                //go to setup page
+                MainPages.SetPage(2);
+            }
+
+            //go to main page
+            MainPages.SetPage(2);
+
+
+            //call SetupDirNextButton_Click to start the setup process
+            //SetupDirNextButton_Click(this, EventArgs.Empty);
+
+        }
+
+        private void DiscordPiclink_Click(object sender, EventArgs e)
+        {
+            //open the default browser and go to the discord link
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://discord.gg/hbXD2YArdV",
+                UseShellExecute = true
+            });
+        }
+
+        private void GithubPageLink_Click(object sender, EventArgs e)
+        {
+            //open the default browser and go to the discord link
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://github.com/tedpommes/Rust-DropLaunch",
+                UseShellExecute = true
+            });
+        }
+
+        private void ImageButtonDiscord_Click(object sender, EventArgs e)
+        {
+
+            //open the default browser and go to the discord link
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://discord.gg/hbXD2YArdV",
+                UseShellExecute = true
+            });
+        }
+
+        private void ImageButtonGithub_Click(object sender, EventArgs e)
+        {
+            //open the default browser and go to the discord link
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://github.com/tedpommes/Rust-DropLaunch",
+                UseShellExecute = true
+            });
+        }
+
+        private void FinishRustGameDirbox_OnIconLeftClick(object sender, EventArgs e)
+        {
+            SelectDirectory(FinishRustGameDirbox);
+            UpdateSettings();
+        }
+
+        private void openServerDirectoryToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //string fullPath = Properties.Settings.Default.RustFilesDir;
+                string Serverdirectory = Properties.Settings.Default.RustFilesDir;
+
+                if (Directory.Exists(Serverdirectory))
+                {
+                    LogMixed("INFO: ", "Server path opened in explorer", Color.Blue);
+                    Process.Start("explorer.exe", Serverdirectory);
+                }
+                else
+                {
+                    HandleError(new DirectoryNotFoundException("Folder not found"), "opening server directory");
+                }
+            }
+            catch (Exception ex)
+            {
+                HandleError(ex, "opening map directory");
+            }
+        }
+
+        private void RadioUmod_Click(object sender, EventArgs e)
+        {
+            if (CheckNoPlugins.Checked == true)
+            {
+                CheckNoPlugins.Checked = false;
+                RadioUmod.Checked = true;
+            }
+        }
+
+        private void RadioCarbon_Click(object sender, EventArgs e)
+        {
+            if (CheckNoPlugins.Checked == true)
+            {
+                CheckNoPlugins.Checked = false;
+                RadioCarbon.Checked = true;
+            }
+        }
+
+        private void CheckRusteditDLL_Click(object sender, EventArgs e)
+        {
+            if (CheckNoPlugins.Checked == true)
+            {
+                CheckNoPlugins.Checked = false;
+            }
+
+            // check if radiocarbon or radioUmod is checked otherwise check radiocarbon
+            if (RadioCarbon.Checked == false && RadioUmod.Checked == false)
+            {
+                RadioCarbon.Checked = true;
+            }
+        }
+
+        private void SetupLabel_Click(object sender, EventArgs e)
+        {
+            HelpPanelHeader_Click(sender, e);
+
+
+            if (HelpVideosPanel.Height == 400)
+            {
+                HelpVideosPicbutton.Visible = true;
+            }
+            else
+            {
+                HelpVideosPicbutton.Visible = false;
+            }
+        }
+
+        private void TestingMaplabel_Click(object sender, EventArgs e)
+        {
+            HelpPanelHeader_Click(sender, e);
+        }
+
+        private void FilewatcherLabel_Click(object sender, EventArgs e)
+        {
+            HelpPanelHeader_Click(sender, e);
+        }
+
+        private void RustGameDirbox_OnIconLeftClick(object sender, EventArgs e)
+        {
+            SelectDirectory(RustGameDirbox);
+            UpdateSettings();
+        }
+
+        private void SetupRustGameDirbox_OnIconLeftClick(object sender, EventArgs e)
+        {
+            SelectDirectory(SetupRustGameDirbox);
+            UpdateSettings();
+        }
+
+        private void FirstRunHomeButton_Click(object sender, EventArgs e)
+        {
+            if (Properties.Settings.Default.FirstRun == true)
+                MainSnackbar.Show(this, "Are you sure you want to cancel the setup?", BunifuSnackbar.MessageTypes.Warning, 20000, "Yes",
+              BunifuSnackbar.Positions.TopCenter).Then((result) =>
+              {
+                  if (result == BunifuSnackbar.SnackbarResult.ActionClicked)
+                  {
+                      MainPages.SetPage(0);
+                  }
+
+              });
+
+            else
+            {
+                MainPages.SetPage(0);
+            }
+        }
+
+        private void WriteStartfilesButton_Click(object sender, EventArgs e)
+        {
+
+            MainSnackbar.Show(this, "Are  you sure you want to reset all settings?", BunifuSnackbar.MessageTypes.Warning, 20000, "Reset Settings and Restart",
+              BunifuSnackbar.Positions.TopCenter).Then((result) =>
+              {
+                  if (result == BunifuSnackbar.SnackbarResult.ActionClicked)
+                  {
+                      ResetSettingsToDefault();
+
+                      // Restart the application
+                      LogMixed("INFO: ", "Application is restarting with default settings...", Color.Blue);
+
+                      // Use Application.Restart() to properly restart the application
+                      System.Windows.Forms.Application.Restart();
+                      this.Close();
+                  }
+              });
+
+        }
+
+        private void ThumbPicButtonStart_Click(object sender, EventArgs e)
+        {
+            //open the default browser and go to the discord link
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://youtu.be/072XwfL8YqY",
+                UseShellExecute = true
+            });
+        }
+
+        private void NextStepsHelpLabel_Click(object sender, EventArgs e)
+        {
+            HelpPanelHeader_Click(sender, e);
+        }
+
+        private void PrefabHelpLabel_Click(object sender, EventArgs e)
+        {
+            HelpPanelHeader_Click(sender, e);
+        }
+
+        private void HelpVideosPicbutton_Click(object sender, EventArgs e)
+        {
+            //open the default browser and go to the discord link
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://youtu.be/072XwfL8YqY",
+                UseShellExecute = true
+            });
+        }
+
+        private void CheckRunExampleStart_Click(object sender, EventArgs e)
+        {
+            if (CheckRunExampleStart.Checked == true)
+            {
+                CheckNoTesting.Checked = false;
+            }
+        }
+
+        private void CheckCopyConnect_Click(object sender, EventArgs e)
+        {
+            if (CheckNoTesting.Checked == true)
+            {
+                CheckNoTesting.Checked = false;
+            }
+        }
+
+        private void CheckOpenReadme_Click(object sender, EventArgs e)
+        {
+            if (CheckNoHelp.Checked == true)
+            {
+                CheckNoHelp.Checked = false;
+            }
+        }
+
+        private void CheckHelpTooltips_Click(object sender, EventArgs e)
+        {
+            if (CheckNoHelp.Checked == true)
+            {
+                CheckNoHelp.Checked = false;
+            }
+        }
+
+        private void MapsDataGridView_DoubleClick(object sender, EventArgs e)
+        {
+            if (MapsDataGridView.SelectedCells.Count == 0)
+            { return; }
+
+            string serverDir = Properties.Settings.Default.RustFilesDir;
+            string mapDirectory = MapsDataGridView.SelectedRows[0].Cells[1].Value.ToString();
+            string mapName = MapsDataGridView.SelectedRows[0].Cells[0].Value.ToString();
+
+            CreateAndStartMapServer(mapName, mapDirectory, serverDir);
+        }
+
+        private void HistoryDataView_DoubleClick(object sender, EventArgs e)
+        {
+            string serverDir = Properties.Settings.Default.RustFilesDir;
+            string mapDirectory = MapsDataGridView.SelectedRows[0].Cells[1].Value.ToString();
+            string mapName = MapsDataGridView.SelectedRows[0].Cells[0].Value.ToString();
+
+            CreateAndStartMapServer(mapName, mapDirectory, serverDir);
+        }
+
+        private void openMapDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string fullPath = MapsDataGridView.SelectedRows[0].Cells[1].Value.ToString();
+                string Mapdirectory = Path.GetDirectoryName(fullPath);
+
+                if (Directory.Exists(Mapdirectory))
+                {
+                    LogMixed("INFO: ", "Maps path opened in explorer", Color.Blue);
+                    Process.Start("explorer.exe", Mapdirectory);
+                }
+                else
+                {
+                    HandleError(new DirectoryNotFoundException("Folder not found"), "opening maps directory");
+                }
+            }
+            catch (Exception ex)
+            {
+                HandleError(ex, "opening maps directory");
+            }
+        }
+
+        private void copyMapDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string fullPath = MapsDataGridView.SelectedRows[0].Cells[1].Value.ToString();
+                string Mapdirectory = Path.GetDirectoryName(fullPath);
+
+                if (Directory.Exists(Mapdirectory))
+                {
+                    Clipboard.SetText(Mapdirectory);
+                    LogMixed("INFO: ", "Path copied to clipboard", Color.Blue);
+                }
+                else
+                {
+                    HandleError(new DirectoryNotFoundException("Folder not found"), "copying map directory");
+                }
+            }
+            catch (Exception ex)
+            {
+                HandleError(ex, "copying map directory");
+            }
+        }
+
+        private void copyMapNameToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string fullPath = MapsDataGridView.SelectedRows[0].Cells[1].Value.ToString();
+                string fileName = Path.GetFileName(fullPath);
+
+                Clipboard.SetText(fileName);
+                LogMixed("INFO: ", "Map name copied to clipboard", Color.Blue);
+            }
+            catch (Exception ex)
+            {
+                HandleError(ex, "copying map name");
+            }
+        }
+
+        private async void SetupcompletedHome_Click(object sender, EventArgs e)
+        {
+            LoadMapFilesToDataGridView(Properties.Settings.Default.MapsFilesDir, MapsDataGridView);
+
+            MainPages.SetPage(0);
+
+            if (CheckOpenReadme.Checked == true)
+            {
+                TabsFoundMaps.SelectedTab = HelpTab;
+            }
+
+            if (CheckHelpTooltips.Checked == true)
+            {
+                CheckToolTips.Checked = true;
+            }
+
+            CheckCmdSimple();
+
+            Properties.Settings.Default.FirstRun = false;
+            Properties.Settings.Default.Save();
+            ConsoleTextbox.Update();
+            ConsoleTextbox.Refresh();
+
+            if (!string.IsNullOrWhiteSpace(FinishRustGameDirbox.Text))
+            {
+                Properties.Settings.Default.ClientMapsDir = FinishRustGameDirbox.Text;
+                Properties.Settings.Default.Save();
+
+                RustGameDirbox.Text = FinishRustGameDirbox.Text;
+            }
+
+
+            if (RadioCarbon.Checked == true)
+            {
+                // Check if carbon release exists
+                if (!await EnsureCarbonReleaseExists())
+
+                    return;
+            }
+
+            if (RadioUmod.Checked == true)
+            {
+                // Check if carbon release exists
+                if (!await EnsureUmodExists())
+
+                    return;
+            }
+
+
+            if (CheckRusteditDLL.Checked == true)
+            {
+                // Check if carbon release exists
+                if (!await DownloadRustEditDllAsync())
+
+                    return;
+            }
+
+            if (CheckRunExampleStart.Checked == true)
+            {
+                CreatePROCStartBatFile(Properties.Settings.Default.RustFilesDir);
+                StartBatFile(Path.Combine(Properties.Settings.Default.RustFilesDir, "start_rust_server.bat"));
+                LogMixed("INFO: ", "Server started with example start file", Color.Blue);
+            }
+
+            if (CheckCopyConnect.Checked == true)
+            {
+                //set clipboard to the connection command
+                Clipboard.SetText("client.connect localhost 28015");
+                LogMixed("INFO: ", "Connection command copied to clipboard", Color.Blue);
+            }
+
+            // CheckboxFileWatch_CheckedChanged(null, null); // Initialize file watcher if enabled	
+
+            if (FinishRustGameDirbox.Text != "" && !string.IsNullOrWhiteSpace(FinishRustGameDirbox.Text))
+            {
+                Properties.Settings.Default.ClientMapsDir = FinishRustGameDirbox.Text;
+                Properties.Settings.Default.CheckFileWatcher = true;
+                Properties.Settings.Default.Save();
+                LogMixed("INFO: ", "File watcher enabled. Settings Saved.", Color.Blue);
+            }
+
+        }
+
+        private async void UpdateServerButton_Click(object sender, EventArgs e)
+        {
+
+            SetupServerTextbox.Text = Properties.Settings.Default.RustFilesDir;
+            SetupCMDdir.Text = Properties.Settings.Default.SteamCMDDir;
+
+
+            if (!ValidateInputAndUpdateSettings())
+                return;
+
+            UpdateUIForDownload();
+
+            // Check if steamcmd.exe exists in the specified directory
+            if (!await EnsureSteamCmdExists())
+                return;
+
+            // Check for selected branch type and pass the correct branch name
+            if (SettingsBranchDropdown.SelectedIndex == 0)
+            {
+                // Main branch
+                await DownloadServerFiles(false, null);
+            }
+            else
+            {
+                // Beta branch - pass the selected branch name
+                await DownloadServerFiles(true, SettingsBranchDropdown.SelectedItem.ToString());
+            }
+        }
+
+        private void CopyConnectButton_Click(object sender, EventArgs e)
+        {
+            //set clipboard to the connection command
+            Clipboard.SetText("client.connect localhost 28015");
+        }
+
+        private void DiscordPic_Click(object sender, EventArgs e)
+        {
+            //open the default browser and go to the discord link
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://discord.gg/hbXD2YArdV",
+                UseShellExecute = true
+            });
+        }
+
+        private void moreStartFilesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            if (!CheckServerFilesDirectory())
+            {
+                LogMixed("ERROR: ", "Server files directory is missing or invalid.", Color.Red);
+                return;
+            }
+
+            //generate a start file for a rust server
+            CreatePROCStartBatFile(Properties.Settings.Default.RustFilesDir);
+
+            LogMixed("FILES: ", "Procgen Start file created.", Color.Goldenrod);
+        }
+
+        private void SetupCMDNextButton_Click(object sender, EventArgs e)
 		{
 			MainPages.SetPage(4);
 		}
@@ -569,56 +1322,43 @@ namespace EasyMapTestRust
 			MainPages.SetPage(1);
 		}
 
-		public void UpdateSettings()
-		{
-			bool settingsChanged = false;
+        private void HelpPanelHeader_Click(object sender, EventArgs e)
+        {
+            const int collapsedHeight = 40;
+            const int expandedHeight = 400; // Set this to your desired expanded size
 
-			//check if server files directory are set, if so update settings
-			if (ServerFilesDirbox.Text != "" && ServerFilesDirbox.Text != Properties.Settings.Default.RustFilesDir)
-			{
-				Properties.Settings.Default.RustFilesDir = ServerFilesDirbox.Text;
-				settingsChanged = true;
+            var header = (System.Windows.Forms.Label)sender;
+            var clickedPanel = (Bunifu.UI.WinForms.BunifuShadowPanel)header.Parent;
 
-			}
+            bool isAlreadyExpanded = clickedPanel.Height > collapsedHeight;
 
-			if (MapDirBox.Text != "" && MapDirBox.Text != Properties.Settings.Default.MapsFilesDir)
-			{
-				Properties.Settings.Default.MapsFilesDir = MapDirBox.Text;
-				settingsChanged = true;
-
-			}
-
-			if (SteamCMDBox.Text != "" && SteamCMDBox.Text != Properties.Settings.Default.SteamCMDDir)
-			{
-				Properties.Settings.Default.SteamCMDDir = SteamCMDBox.Text;
-				settingsChanged = true;
-
-			}
-
-			if (RustGameDirbox.Text != "" && RustGameDirbox.Text != Properties.Settings.Default.ClientMapsDir)
-			{
-				Properties.Settings.Default.ClientMapsDir = RustGameDirbox.Text;
-				settingsChanged = true;
-
-			}
-
-
-            if (FinishRustGameDirbox.Text != "" && RustGameDirbox.Text != Properties.Settings.Default.ClientMapsDir)
+            // Collapse all panels and hide their group boxes
+            foreach (var pnl in HelpPanelScroll.Controls.OfType<Bunifu.UI.WinForms.BunifuShadowPanel>())
             {
-                Properties.Settings.Default.ClientMapsDir = FinishRustGameDirbox.Text;
-                settingsChanged = true;
+                pnl.Height = collapsedHeight;
 
+                foreach (var groupBox in pnl.Controls.OfType<Bunifu.UI.WinForms.BunifuGroupBox>())
+                {
+                    groupBox.Visible = false;
+                }
             }
 
+            // If already expanded, don't expand again (toggle behavior)
+            if (isAlreadyExpanded)
+            {
+                clickedPanel.Height = collapsedHeight;
+                return;
+            }
 
-            if (settingsChanged)
-			{
-				Properties.Settings.Default.FirstRun = false;
-				// Save changes
-				Properties.Settings.Default.Save();
-				LogMixed("FILES: ", "Settings updated.", Color.Goldenrod);
-			}
-		}
+            // Expand clicked panel and show its group boxes
+            clickedPanel.Height = expandedHeight;
+
+            foreach (var groupBox in clickedPanel.Controls.OfType<Bunifu.UI.WinForms.BunifuGroupBox>())
+            {
+                groupBox.Visible = true;
+            }
+        }
+
 
 		private void SettingsBackButton_Click(object sender, EventArgs e)
 		{
@@ -2094,11 +2834,46 @@ namespace EasyMapTestRust
 			}
 		}
 
-		#endregion
+        #endregion
 
-		#region SteamCMD
+        #region SteamCMD
+        public void CheckCmdSimple()
+        {
+            string steamCmdPath = Path.Combine(Properties.Settings.Default.SteamCMDDir, "steamcmd.exe");
 
-		private async Task DownloadAndExtractSteamCMD()
+            if (File.Exists(steamCmdPath))
+            {
+                LogMixed("INFO: ", "SteamCMD.exe found in specified directory.", Color.Blue);
+                StatusPic.Image = Properties.Resources.icons8_check_64;
+            }
+            else
+            {
+                LogMixed("ERROR: ", "SteamCMD.exe not found in specified directory.", Color.Red);
+                StatusPic.Image = Properties.Resources.icons8_red_circle_48;
+            }
+        }
+        private string GetSteamCMDPath()
+        {
+            string appDirectory = Application.StartupPath;
+
+            // Check same directory
+            string steamCmdPath = Path.Combine(appDirectory, "steamcmd.exe");
+            if (File.Exists(steamCmdPath))
+            {
+                return steamCmdPath;
+            }
+
+            // Check steamcmd folder
+            string steamCmdInFolderPath = Path.Combine(appDirectory, "steamcmd", "steamcmd.exe");
+            if (File.Exists(steamCmdInFolderPath))
+            {
+                return steamCmdInFolderPath;
+            }
+
+            return null;
+        }
+
+        private async Task DownloadAndExtractSteamCMD()
 		{
 			try
 			{
@@ -2166,865 +2941,163 @@ namespace EasyMapTestRust
 			}
 		}
 
-		#endregion
+        #endregion
 
-		private void LoadMapFilesToDataGridView(string folderPath, Bunifu.UI.WinForms.BunifuDataGridView dataGridView, int pageSize = 100, int pageNumber = 1)
-		{
-			try
-			{
-				// Clear existing rows
-				dataGridView.Rows.Clear();
+        #region CheckChange
 
-				// Get all .map files including sudirectories
-				string[] allMapFiles = Directory.GetFiles(folderPath, "*.map", SearchOption.AllDirectories);
-
-				// Calculate total pages
-				int totalFiles = allMapFiles.Length;
-				int totalPages = (int)Math.Ceiling((double)totalFiles / pageSize);
-
-				// Validate page number
-				pageNumber = Math.Max(1, Math.Min(pageNumber, totalPages > 0 ? totalPages : 1));
-
-				// Get files for current page
-				string[] pageMapFiles = allMapFiles
-					.Skip((pageNumber - 1) * pageSize)
-					.Take(pageSize)
-					.ToArray();
-
-				// Create columns if they don't exist
-				if (dataGridView.Columns.Count == 0)
-				{
-					// Add columns with Bunifu styling
-					dataGridView.ColumnCount = 3;
-					dataGridView.Columns[0].HeaderText = "Name";
-					dataGridView.Columns[1].HeaderText = "Directory";
-					dataGridView.Columns[2].HeaderText = "Date";
-
-					// Optional: Customize column appearance
-					foreach (DataGridViewColumn column in dataGridView.Columns)
-					{
-						column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-						column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-					}
-				}
-
-				// Add files to the grid
-				foreach (string file in pageMapFiles)
-				{
-					FileInfo fileInfo = new FileInfo(file);
-					dataGridView.Rows.Add(
-						Path.GetFileName(file),                    // Name
-						Path.GetFullPath(file),               // Directory
-						fileInfo.LastWriteTime.ToString("dd/MM/yyyy")  // Date
-					);
-				}
-
-				// Optional: Additional Bunifu-specific styling
-				dataGridView.AllowCustomTheming = true;
-				dataGridView.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(248, 251, 255);
-				dataGridView.DefaultCellStyle.SelectionBackColor = Color.FromArgb(87, 161, 192);
-				dataGridView.DefaultCellStyle.SelectionForeColor = Color.White;
-
-				// Enable sorting
-				dataGridView.AllowUserToOrderColumns = true;
-				dataGridView.Sort(dataGridView.Columns[2], System.ComponentModel.ListSortDirection.Descending);
-
-				if (totalPages > 1)
-				{
-					LogMixed("INFO: ", $"Map files added to list (Page {pageNumber} of {totalPages}, showing {pageMapFiles.Length} of {totalFiles} files)", Color.Blue);
-				}
-				else
-				{
-					LogMixed("INFO: ", "Map files added to list.", Color.Blue);
-				}
-			}
-			catch (Exception ex)
-			{
-				HandleError(ex, "loading map files");
-			}
-		}
-
-		private void CMDDownloadText_TextChanged(object sender, EventArgs e)
-		{
-			if (CMDDownloadText.Text.Contains("Connecting anonymously to Steam Public"))
-			{
-				SetupStepsLabel.Text = "Step\n2/8";
-			}
-
-
-			if (CMDDownloadText.Text.Contains("[----] Verifying installation..."))
-			{
-				SetupStepsLabel.Text = "Step\n3/8";
-			}
-
-			if (CMDDownloadText.Text.Contains("SteamCMD updated. Now downloading Rust server files..."))
-			{
-				SetupStepsLabel.Text = "Step\n4/8";
-			}
-
-			if (CMDDownloadText.Text.Contains("Waiting for user info...OK"))
-			{
-				SetupStepsLabel.Text = "Step\n5/8";
-			}
-
-
-			if (CMDDownloadText.Text.Contains("Update state (0x5) verifying install, progress:"))
-			{
-				SetupStepsLabel.Text = "Step\n6/8";
-			}
-
-
-			if (CMDDownloadText.Text.Contains("Update state (0x5) verifying install, progress: 5"))
-			{
-				SetupStepsLabel.Text = "Step\n7/8";
-			}
-
-
-			//if textbox contains "Process completed!" then enable next button
-			if (CMDDownloadText.Text.Contains("App '258550' fully installed."))
-			{
-				SetupCMDNextButton.Enabled = true;
-				SetupCMDNextButton.Visible = true;
-				SetupCMDNextButton.Refresh();
-
-				CMDStatusLabel.Text = "Rust files downloaded, Click next.";
-
-				SetupStepsLabel.Text = "Step\n8/8";
-
-				if (DropDownBranches.SelectedIndex == 0)
-				{
-					LogMixed("FILES: ", "Downloaded main branch files to: " + Properties.Settings.Default.RustFilesDir, Color.Goldenrod);
-				}
-				else
-				{
-					LogMixed("FILES: ", "Downloaded beta branch files to: " + Properties.Settings.Default.RustFilesDir, Color.Goldenrod);
-				}
-
-				if (AutoNextSetupCheck.Checked == true)
-				{
-					SetupCMDNextButton.PerformClick();
-				}
-
-                Properties.Settings.Default.FirstRun = false;
+        private void CheckNewStart_CheckedChanged(object sender, BunifuCheckBox.CheckedChangedEventArgs e)
+        {
+            if (e.CheckState == BunifuCheckBox.CheckStates.Checked)
+            {
+                Properties.Settings.Default.CheckNewStart = true;
                 Properties.Settings.Default.Save();
+                LogMixed("INFO: ", "New Start file on boot enabled. Settings Saved.", Color.Blue);
+            }
+            else
+            {
+                Properties.Settings.Default.CheckNewStart = false;
+                Properties.Settings.Default.Save();
+                LogMixed("INFO: ", "New Start file on boot disabled. Settings Saved.", Color.Blue);
+            }
+        }
 
-                string rustPath = @"C:\Program Files (x86)\Steam\steamapps\common\Rust";
-                string rustClientPath = Path.Combine(rustPath, "RustClient.exe");
+        private void CheckDeleteClientMap_CheckedChanged(object sender, BunifuCheckBox.CheckedChangedEventArgs e)
+        {
+            if (e.CheckState == BunifuCheckBox.CheckStates.Checked)
+            {
+                Properties.Settings.Default.CheckDeleteMap = true;
+                Properties.Settings.Default.Save();
+                LogMixed("INFO: ", "New Start file on boot enabled. Settings Saved.", Color.Blue);
+            }
+            else
+            {
+                Properties.Settings.Default.CheckDeleteMap = false;
+                Properties.Settings.Default.Save();
+                LogMixed("INFO: ", "New Start file on boot disabled. Settings Saved.", Color.Blue);
+            }
+        }
+        private void AutoNextSetupCheck_CheckedChanged(object sender, BunifuCheckBox.CheckedChangedEventArgs e)
+        {
+            if (CMDDownloadText.Text.Contains("App '258550' fully installed."))
+            {
+                SetupCMDNextButton.Enabled = true;
+                SetupCMDNextButton.Visible = true;
+                SetupCMDNextButton.Refresh();
 
-                if (File.Exists(rustClientPath))
+                CMDStatusLabel.Text = "Rust files downloaded, Click next.";
+
+                //dont trigger multiple times
+                if (DropDownBranches.SelectedIndex == 0)
                 {
-                    FinishRustGameDirbox.Text = rustPath;
+                    LogMixed("FILES: ", "Downloaded main branch files to: " + Properties.Settings.Default.RustFilesDir, Color.Goldenrod);
                 }
-         
+                else
+                {
+                    LogMixed("FILES: ", "Downloaded beta branch files to: " + Properties.Settings.Default.RustFilesDir, Color.Goldenrod);
+                }
+
+                if (AutoNextSetupCheck.Checked == true)
+                {
+                    SetupCMDNextButton.PerformClick();
+                }
             }
 
-			if (CMDDownloadText.Text.Contains("SteamCMD updated. Now downloading Rust server files..."))
-			{
-				CMDStatusLabel.Text = "Downloading Rust files, Please wait.";
-			}
-		}
-
-
-
-		private void openMapDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			try
-			{
-				string fullPath = MapsDataGridView.SelectedRows[0].Cells[1].Value.ToString();
-				string Mapdirectory = Path.GetDirectoryName(fullPath);
-
-				if (Directory.Exists(Mapdirectory))
-				{
-					LogMixed("INFO: ", "Maps path opened in explorer", Color.Blue);
-					Process.Start("explorer.exe", Mapdirectory);
-				}
-				else
-				{
-					HandleError(new DirectoryNotFoundException("Folder not found"), "opening maps directory");
-				}
-			}
-			catch (Exception ex)
-			{
-				HandleError(ex, "opening maps directory");
-			}
-		}
-
-		private void copyMapDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			try
-			{
-				string fullPath = MapsDataGridView.SelectedRows[0].Cells[1].Value.ToString();
-				string Mapdirectory = Path.GetDirectoryName(fullPath);
-
-				if (Directory.Exists(Mapdirectory))
-				{
-					Clipboard.SetText(Mapdirectory);
-					LogMixed("INFO: ", "Path copied to clipboard", Color.Blue);
-				}
-				else
-				{
-					HandleError(new DirectoryNotFoundException("Folder not found"), "copying map directory");
-				}
-			}
-			catch (Exception ex)
-			{
-				HandleError(ex, "copying map directory");
-			}
-		}
-
-		private void copyMapNameToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			try
-			{
-				string fullPath = MapsDataGridView.SelectedRows[0].Cells[1].Value.ToString();
-				string fileName = Path.GetFileName(fullPath);
-
-				Clipboard.SetText(fileName);
-				LogMixed("INFO: ", "Map name copied to clipboard", Color.Blue);
-			}
-			catch (Exception ex)
-			{
-				HandleError(ex, "copying map name");
-			}
-		}
-
-
-
-		private async void SetupcompletedHome_Click(object sender, EventArgs e)
-		{
-			LoadMapFilesToDataGridView(Properties.Settings.Default.MapsFilesDir, MapsDataGridView);
-
-			MainPages.SetPage(0);
-
-			if (CheckOpenReadme.Checked == true)
-			{
-				TabsFoundMaps.SelectedTab = HelpTab;
-			}
-
-			if (CheckHelpTooltips.Checked == true)
-			{
-				CheckToolTips.Checked = true;
-			}
-
-			CheckCmdSimple();
-
-			Properties.Settings.Default.FirstRun = false;
-			Properties.Settings.Default.Save();
-			ConsoleTextbox.Update();
-			ConsoleTextbox.Refresh();
-
-            if (!string.IsNullOrWhiteSpace(FinishRustGameDirbox.Text))
+            if (CMDDownloadText.Text.Contains("SteamCMD updated. Now downloading Rust server files..."))
             {
-                Properties.Settings.Default.ClientMapsDir = FinishRustGameDirbox.Text;
-				Properties.Settings.Default.Save();
-
-			    RustGameDirbox.Text = FinishRustGameDirbox.Text;
+                CMDStatusLabel.Text = "Downloading Rust files, Please wait.";
             }
+        }
 
-
-            if (RadioCarbon.Checked == true)
-			{
-				// Check if carbon release exists
-				if (!await EnsureCarbonReleaseExists())
-
-					return;
-			}
-
-            if (RadioUmod.Checked == true)
+        private void CheckboxFileWatch_CheckedChanged(object sender, BunifuCheckBox.CheckedChangedEventArgs e)
+        {
+            if (e.CheckState == BunifuCheckBox.CheckStates.Checked)
             {
-                // Check if carbon release exists
-                if (!await EnsureUmodExists())
-
-                    return;
-            }
-
-
-            if (CheckRusteditDLL.Checked == true)
-			{
-				// Check if carbon release exists
-				if (!await DownloadRustEditDllAsync())
-
-					return;
-			}
-
-			if (CheckRunExampleStart.Checked == true)
-			{
-				CreatePROCStartBatFile(Properties.Settings.Default.RustFilesDir);
-				StartBatFile(Path.Combine(Properties.Settings.Default.RustFilesDir, "start_rust_server.bat"));
-				LogMixed("INFO: ", "Server started with example start file", Color.Blue);
-			}
-
-			if (CheckCopyConnect.Checked == true)
-			{
-				//set clipboard to the connection command
-				Clipboard.SetText("client.connect localhost 28015");
-				LogMixed("INFO: ", "Connection command copied to clipboard", Color.Blue);
-			}
-
-            // CheckboxFileWatch_CheckedChanged(null, null); // Initialize file watcher if enabled	
-
-        if(FinishRustGameDirbox.Text != "" && !string.IsNullOrWhiteSpace(FinishRustGameDirbox.Text))
-			{
-				Properties.Settings.Default.ClientMapsDir = FinishRustGameDirbox.Text;
                 Properties.Settings.Default.CheckFileWatcher = true;
                 Properties.Settings.Default.Save();
                 LogMixed("INFO: ", "File watcher enabled. Settings Saved.", Color.Blue);
             }
-
-        }
-
-        private async void UpdateServerButton_Click(object sender, EventArgs e)
-		{
-
-			SetupServerTextbox.Text = Properties.Settings.Default.RustFilesDir;
-			SetupCMDdir.Text = Properties.Settings.Default.SteamCMDDir;
-
-
-			if (!ValidateInputAndUpdateSettings())
-				return;
-
-			UpdateUIForDownload();
-
-			// Check if steamcmd.exe exists in the specified directory
-			if (!await EnsureSteamCmdExists())
-				return;
-
-			// Check for selected branch type and pass the correct branch name
-			if (SettingsBranchDropdown.SelectedIndex == 0)
-			{
-				// Main branch
-				await DownloadServerFiles(false, null);
-			}
-			else
-			{
-				// Beta branch - pass the selected branch name
-				await DownloadServerFiles(true, SettingsBranchDropdown.SelectedItem.ToString());
-			}
-		}
-
-		private void CopyConnectButton_Click(object sender, EventArgs e)
-		{
-			//set clipboard to the connection command
-			Clipboard.SetText("client.connect localhost 28015");
-		}
-
-		private void DiscordPic_Click(object sender, EventArgs e)
-		{
-			//open the default browser and go to the discord link
-			Process.Start(new ProcessStartInfo
-			{
-				FileName = "https://discord.gg/hbXD2YArdV",
-				UseShellExecute = true
-			});
-		}
-
-		private void moreStartFilesToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-
-			if (!CheckServerFilesDirectory())
-			{
-				LogMixed("ERROR: ", "Server files directory is missing or invalid.", Color.Red);
-				return;
-			}
-
-			//generate a start file for a rust server
-			CreatePROCStartBatFile(Properties.Settings.Default.RustFilesDir);
-
-			LogMixed("FILES: ", "Procgen Start file created.", Color.Goldenrod);
-		}
-
-        private void ResetSettingsToDefault()
-        {
-            try
+            else
             {
-              
-                Properties.Settings.Default.Reset();
-
-                if (Properties.RunHistory.Default.HistoryList != null)
-                {
-                    Properties.RunHistory.Default.HistoryList.Clear();
-                }
-                else
-                {
-                    Properties.RunHistory.Default.HistoryList = new System.Collections.Specialized.StringCollection();
-                }
-
-                // Save both settings files to ensure all changes are written to disk.
+                Properties.Settings.Default.CheckFileWatcher = false;
                 Properties.Settings.Default.Save();
-                Properties.RunHistory.Default.Save();
-
-                // Log the reset action
-                LogMixed("INFO: ", "Settings have been reset to default.", Color.Blue);
-            }
-            catch (Exception ex)
-            {
-                HandleError(ex, "resetting settings to default");
+                LogMixed("INFO: ", "File watcher disabled. Settings Saved.", Color.Blue);
             }
         }
 
-        private void WriteStartfilesButton_Click(object sender, EventArgs e)
-		{
-
-			MainSnackbar.Show(this, "Are  you sure you want to reset all settings?", BunifuSnackbar.MessageTypes.Warning, 20000, "Reset Settings and Restart",
-			  BunifuSnackbar.Positions.TopCenter).Then((result) =>
-			  {
-				  if (result == BunifuSnackbar.SnackbarResult.ActionClicked)
-				  {
-					  ResetSettingsToDefault();
-
-					  // Restart the application
-					  LogMixed("INFO: ", "Application is restarting with default settings...", Color.Blue);
-
-					  // Use Application.Restart() to properly restart the application
-					  System.Windows.Forms.Application.Restart();
-					  this.Close();
-				  }
-			  });
-
-		}
-
-
-		private void AutoNextSetupCheck_CheckedChanged(object sender, BunifuCheckBox.CheckedChangedEventArgs e)
-		{
-			if (CMDDownloadText.Text.Contains("App '258550' fully installed."))
-			{
-				SetupCMDNextButton.Enabled = true;
-				SetupCMDNextButton.Visible = true;
-				SetupCMDNextButton.Refresh();
-
-				CMDStatusLabel.Text = "Rust files downloaded, Click next.";
-
-				//dont trigger multiple times
-				if (DropDownBranches.SelectedIndex == 0)
-				{
-					LogMixed("FILES: ", "Downloaded main branch files to: " + Properties.Settings.Default.RustFilesDir, Color.Goldenrod);
-				}
-				else
-				{
-					LogMixed("FILES: ", "Downloaded beta branch files to: " + Properties.Settings.Default.RustFilesDir, Color.Goldenrod);
-				}
-
-				if (AutoNextSetupCheck.Checked == true)
-				{
-					SetupCMDNextButton.PerformClick();
-				}
-			}
-
-			if (CMDDownloadText.Text.Contains("SteamCMD updated. Now downloading Rust server files..."))
-			{
-				CMDStatusLabel.Text = "Downloading Rust files, Please wait.";
-			}
-		}
-
-		private void MapsContextMenu_Opening(object sender, CancelEventArgs e)
-		{
-
-		}
-
-		private void openServerDirectoryToolStripMenuItem1_Click(object sender, EventArgs e)
-		{
-			try
-			{
-				//string fullPath = Properties.Settings.Default.RustFilesDir;
-				string Serverdirectory = Properties.Settings.Default.RustFilesDir;
-
-				if (Directory.Exists(Serverdirectory))
-				{
-					LogMixed("INFO: ", "Server path opened in explorer", Color.Blue);
-					Process.Start("explorer.exe", Serverdirectory);
-				}
-				else
-				{
-					HandleError(new DirectoryNotFoundException("Folder not found"), "opening server directory");
-				}
-			}
-			catch (Exception ex)
-			{
-				HandleError(ex, "opening map directory");
-			}
-		}
-
-		private void SetupServerTextbox_TextChange(object sender, EventArgs e)
-		{
-			UpdateSettings();
-		}
-
-		private void SetupMapsDirectory_TextChanged(object sender, EventArgs e)
-		{
-			UpdateSettings();
-		}
-
-		private void SetupCMDdir_TextChanged(object sender, EventArgs e)
-		{
-			UpdateSettings();
-		}
-
-		private void CheckboxFileWatch_CheckedChanged(object sender, BunifuCheckBox.CheckedChangedEventArgs e)
-		{
-			if (e.CheckState == BunifuCheckBox.CheckStates.Checked)
-			{
-				Properties.Settings.Default.CheckFileWatcher = true;
-				Properties.Settings.Default.Save();
-				LogMixed("INFO: ", "File watcher enabled. Settings Saved.", Color.Blue);
-			}
-			else
-			{
-				Properties.Settings.Default.CheckFileWatcher = false;
-				Properties.Settings.Default.Save();
-				LogMixed("INFO: ", "File watcher disabled. Settings Saved.", Color.Blue);
-			}
-		}
-
-		private void CheckboxDesktopNoti_CheckedChanged(object sender, BunifuCheckBox.CheckedChangedEventArgs e)
-		{
-			if (e.CheckState == BunifuCheckBox.CheckStates.Checked)
-			{
-				Properties.Settings.Default.CheckDesktopNoti = true;
-				Properties.Settings.Default.Save();
-				LogMixed("INFO: ", "Desktop notifications enabled. Settings Saved.", Color.Blue);
-			}
-			else
-			{
-				Properties.Settings.Default.CheckDesktopNoti = false;
-				Properties.Settings.Default.Save();
-				LogMixed("INFO: ", "Desktop notifications disabled. Settings Saved.", Color.Blue);
-			}
-		}
-
-		private void MapsDataGridView_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
-		{
-			SyncRunHistoryWithGridView();
-
-
-			//LoadRunHistoryToGrid();
-		}
-
-		private void RemoveSelectedHistoryEntry()
-		{
-			//if (HistoryDataView.SelectedRows.Count > 0)
-			//{
-			DataGridViewRow selectedRow = HistoryDataView.SelectedRows[0];
-
-			string name = selectedRow.Cells[0].Value?.ToString() ?? string.Empty;
-			string directory = selectedRow.Cells[1].Value?.ToString() ?? string.Empty;
-			string date = selectedRow.Cells[2].Value?.ToString() ?? string.Empty;
-
-			string entryToRemove = $"{directory}\\{name}|{date}";
-
-			// Remove from StringCollection
-			if (RunHistory.Default.HistoryList != null && RunHistory.Default.HistoryList.Contains(entryToRemove))
-			{
-				RunHistory.Default.HistoryList.Remove(entryToRemove);
-				RunHistory.Default.Save();
-			}
-
-			// Remove from DataGridView
-			HistoryDataView.Rows.Remove(selectedRow);
-			//}
-		}
-
-        private void SyncRunHistoryWithGridView()
+        private void CheckboxDesktopNoti_CheckedChanged(object sender, BunifuCheckBox.CheckedChangedEventArgs e)
         {
-            try
+            if (e.CheckState == BunifuCheckBox.CheckStates.Checked)
             {
-                if (RunHistory.Default.HistoryList == null)
-                {
-                    RunHistory.Default.HistoryList = new StringCollection();
-                }
-
-                HashSet<string> existingEntries = new HashSet<string>(RunHistory.Default.HistoryList.Cast<string>());
-
-                foreach (DataGridViewRow row in HistoryDataView.Rows)
-                {
-                    if (!row.IsNewRow)
-                    {
-                        string name = row.Cells[0].Value?.ToString() ?? string.Empty;
-                        string directory = row.Cells[1].Value?.ToString() ?? string.Empty;
-                        string date = row.Cells[2].Value?.ToString() ?? string.Empty;
-
-                        string entry = $"{directory}|{name}|{date}";
-
-                        if (!existingEntries.Contains(entry))
-                        {
-                            RunHistory.Default.HistoryList.Add(entry);
-                        }
-                        else
-                        {
-                            existingEntries.Remove(entry);
-                        }
-                    }
-                }
-
-                foreach (string entry in existingEntries)
-                {
-                    RunHistory.Default.HistoryList.Remove(entry);
-                }
-
-                RunHistory.Default.Save();
-
-                LogMixed("INFO: ", "RunHistory settings synchronized with the grid view.", Color.Blue);
-            }
-            catch (Exception ex)
-            {
-                HandleError(ex, "synchronizing RunHistory with grid view");
-            }
-        }
-
-        private void HistoryDataView_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
-		{
-			SyncRunHistoryWithGridView();
-		}
-
-		private void MapsDataGridView_DoubleClick(object sender, EventArgs e)
-		{
-			string serverDir = Properties.Settings.Default.RustFilesDir;
-			string mapDirectory = MapsDataGridView.SelectedRows[0].Cells[1].Value.ToString();
-			string mapName = MapsDataGridView.SelectedRows[0].Cells[0].Value.ToString();
-
-			CreateAndStartMapServer(mapName, mapDirectory, serverDir);
-		}
-
-		private void HistoryDataView_DoubleClick(object sender, EventArgs e)
-		{
-			string serverDir = Properties.Settings.Default.RustFilesDir;
-			string mapDirectory = MapsDataGridView.SelectedRows[0].Cells[1].Value.ToString();
-			string mapName = MapsDataGridView.SelectedRows[0].Cells[0].Value.ToString();
-
-			CreateAndStartMapServer(mapName, mapDirectory, serverDir);
-		}
-
-		private void CheckNewStart_CheckedChanged(object sender, BunifuCheckBox.CheckedChangedEventArgs e)
-		{
-			if (e.CheckState == BunifuCheckBox.CheckStates.Checked)
-			{
-				Properties.Settings.Default.CheckNewStart = true;
-				Properties.Settings.Default.Save();
-				LogMixed("INFO: ", "New Start file on boot enabled. Settings Saved.", Color.Blue);
-			}
-			else
-			{
-				Properties.Settings.Default.CheckNewStart = false;
-				Properties.Settings.Default.Save();
-				LogMixed("INFO: ", "New Start file on boot disabled. Settings Saved.", Color.Blue);
-			}
-		}
-
-		private void CheckDeleteClientMap_CheckedChanged(object sender, BunifuCheckBox.CheckedChangedEventArgs e)
-		{
-			if (e.CheckState == BunifuCheckBox.CheckStates.Checked)
-			{
-				Properties.Settings.Default.CheckDeleteMap = true;
-				Properties.Settings.Default.Save();
-				LogMixed("INFO: ", "New Start file on boot enabled. Settings Saved.", Color.Blue);
-			}
-			else
-			{
-				Properties.Settings.Default.CheckDeleteMap = false;
-				Properties.Settings.Default.Save();
-				LogMixed("INFO: ", "New Start file on boot disabled. Settings Saved.", Color.Blue);
-			}
-		}
-
-		private void RustGameDirbox_OnIconLeftClick(object sender, EventArgs e)
-		{
-			SelectDirectory(RustGameDirbox);
-			UpdateSettings();
-		}
-
-		private void SetupRustGameDirbox_OnIconLeftClick(object sender, EventArgs e)
-		{
-			SelectDirectory(SetupRustGameDirbox);
-			UpdateSettings();
-		}
-
-
-
-		private void RustGameDirbox_TextChange(object sender, EventArgs e)
-		{
-			UpdateSettings();
-		}
-
-		private void ServerFilesDirbox_TextChange(object sender, EventArgs e)
-		{
-			UpdateSettings();
-		}
-
-		private void SteamCMDBox_TextChange(object sender, EventArgs e)
-		{
-			UpdateSettings();
-		}
-
-		private void MapDirBox_TextChange(object sender, EventArgs e)
-		{
-			UpdateSettings();
-		}
-
-		private void openClientMapsDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			try
-			{
-				//string fullPath = Properties.Settings.Default.RustFilesDir;
-				string Serverdirectory = Properties.Settings.Default.ClientMapsDir;
-
-				if (Directory.Exists(Serverdirectory))
-				{
-					LogMixed("INFO: ", "Client maps path opened in explorer", Color.Blue);
-					Process.Start("explorer.exe", Serverdirectory);
-				}
-				else
-				{
-					HandleError(new DirectoryNotFoundException("Folder not found"), "opening client maps directory");
-				}
-			}
-			catch (Exception ex)
-			{
-				HandleError(ex, "opening map directory");
-			}
-		}
-
-		private void CheckToolTips_CheckedChanged(object sender, BunifuCheckBox.CheckedChangedEventArgs e)
-		{
-			if (e.CheckState == BunifuCheckBox.CheckStates.Checked)
-			{
-				Properties.Settings.Default.CheckToolTips = true;
-				Properties.Settings.Default.Save();
-				LogMixed("INFO: ", "Tool tips Enabled.", Color.Blue);
-
-				MainToolTip.Active = true;
-
-			}
-			else
-			{
-				Properties.Settings.Default.CheckToolTips = false;
-				Properties.Settings.Default.Save();
-				LogMixed("INFO: ", "Tool tips Disabled.", Color.Blue);
-
-				MainToolTip.Active = false;
-			}
-		}
-
-		private void createPrefabStartFileAndStartServerToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			string serverDir = Properties.Settings.Default.RustFilesDir;
-			string mapDirectory = MapsDataGridView.SelectedRows[0].Cells[1].Value.ToString();
-			string mapName = MapsDataGridView.SelectedRows[0].Cells[0].Value.ToString();
-
-			CreateAndStartMapServerTest(mapName, mapDirectory, serverDir);
-		}
-
-		private void HelpReadmeBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
-		{
-
-		}
-
-		private void CheckHelpTooltips_CheckedChanged(object sender, BunifuCheckBox.CheckedChangedEventArgs e)
-		{
-			if (CheckHelpTooltips.Checked == true)
-			{
-				// Show the help tooltips
-				CheckToolTips.Checked = true;
-				LogMixed("INFO: ", "Help tooltips enabled.", Color.Blue);
-			}
-			else
-			{
-				// Hide the help tooltips
-				CheckToolTips.Checked = false;
-				LogMixed("INFO: ", "Help tooltips disabled.", Color.Blue);
-			}
-		}
-
-
-		private void TabsFoundMaps_SelectedIndexChanged(object sender, EventArgs e)
-		{
-			if (TabsFoundMaps.SelectedTab == HelpTab)
-			{
-				BottomConsolePanel.Visible = false;
-			}
-			else
-			{
-				BottomConsolePanel.Visible = true;
-			}
-		}
-
-		private void CheckCarbonInstall_CheckedChanged(object sender, BunifuCheckBox.CheckedChangedEventArgs e)
-		{
-
-
-        }
-
-		private void CheckUmodInstall_CheckedChanged(object sender, BunifuCheckBox.CheckedChangedEventArgs e)
-		{
-		
-		}
-
-        private void CheckNoPlugins_CheckedChanged(object sender, BunifuCheckBox.CheckedChangedEventArgs e)
-        {
-			if (CheckNoPlugins.Checked == true)
-
-			{
-				RadioCarbon.Checked = false;
-				RadioUmod.Checked = false;
-				CheckRusteditDLL.Checked = false;
-            }
-        }
-
-
-
-        private void RadioUmod_Click(object sender, EventArgs e)
-        {
-            if (CheckNoPlugins.Checked == true)
-            {
-                CheckNoPlugins.Checked = false;
-				RadioUmod.Checked = true;
-            }
-        }
-
-        private void RadioCarbon_Click(object sender, EventArgs e)
-        {
-            if (CheckNoPlugins.Checked == true)
-            {
-                CheckNoPlugins.Checked = false;
-				RadioCarbon.Checked = true;
-            }
-        }
-
-        private void CheckRusteditDLL_Click(object sender, EventArgs e)
-        {
-            if (CheckNoPlugins.Checked == true)
-            {
-                CheckNoPlugins.Checked = false;
-            }
-
-            // check if radiocarbon or radioUmod is checked otherwise check radiocarbon
-            if (RadioCarbon.Checked == false && RadioUmod.Checked == false)
-            {
-                RadioCarbon.Checked = true;
-            }
-        }
-
-        private void SetupLabel_Click(object sender, EventArgs e)
-        {
-            HelpPanelHeader_Click(sender, e);
-
-
-            if (HelpVideosPanel.Height == 400)
-            {
-                HelpVideosPicbutton.Visible = true;
+                Properties.Settings.Default.CheckDesktopNoti = true;
+                Properties.Settings.Default.Save();
+                LogMixed("INFO: ", "Desktop notifications enabled. Settings Saved.", Color.Blue);
             }
             else
             {
-                HelpVideosPicbutton.Visible = false;
+                Properties.Settings.Default.CheckDesktopNoti = false;
+                Properties.Settings.Default.Save();
+                LogMixed("INFO: ", "Desktop notifications disabled. Settings Saved.", Color.Blue);
             }
         }
 
-        private void TestingMaplabel_Click(object sender, EventArgs e)
+        private void CheckHelpTooltips_CheckedChanged(object sender, BunifuCheckBox.CheckedChangedEventArgs e)
         {
-            HelpPanelHeader_Click(sender, e);
+            if (CheckHelpTooltips.Checked == true)
+            {
+                // Show the help tooltips
+                CheckToolTips.Checked = true;
+                LogMixed("INFO: ", "Help tooltips enabled.", Color.Blue);
+            }
+            else
+            {
+                // Hide the help tooltips
+                CheckToolTips.Checked = false;
+                LogMixed("INFO: ", "Help tooltips disabled.", Color.Blue);
+            }
         }
 
-        private void FilewatcherLabel_Click(object sender, EventArgs e)
+        private void CheckToolTips_CheckedChanged(object sender, BunifuCheckBox.CheckedChangedEventArgs e)
         {
-            HelpPanelHeader_Click(sender, e);
+            if (e.CheckState == BunifuCheckBox.CheckStates.Checked)
+            {
+                Properties.Settings.Default.CheckToolTips = true;
+                Properties.Settings.Default.Save();
+                LogMixed("INFO: ", "Tool tips Enabled.", Color.Blue);
+
+                MainToolTip.Active = true;
+
+            }
+            else
+            {
+                Properties.Settings.Default.CheckToolTips = false;
+                Properties.Settings.Default.Save();
+                LogMixed("INFO: ", "Tool tips Disabled.", Color.Blue);
+
+                MainToolTip.Active = false;
+            }
+        }
+
+
+        private void CheckCarbonInstall_CheckedChanged(object sender, BunifuCheckBox.CheckedChangedEventArgs e)
+        {
+
+
+        }
+
+        private void CheckUmodInstall_CheckedChanged(object sender, BunifuCheckBox.CheckedChangedEventArgs e)
+        {
+
+        }
+
+        private void CheckNoPlugins_CheckedChanged(object sender, BunifuCheckBox.CheckedChangedEventArgs e)
+        {
+            if (CheckNoPlugins.Checked == true)
+
+            {
+                RadioCarbon.Checked = false;
+                RadioUmod.Checked = false;
+                CheckRusteditDLL.Checked = false;
+            }
         }
 
         private void CheckNoTesting_CheckedChanged(object sender, BunifuCheckBox.CheckedChangedEventArgs e)
@@ -3036,37 +3109,6 @@ namespace EasyMapTestRust
             }
         }
 
-        private void CheckRunExampleStart_Click(object sender, EventArgs e)
-        {
-            if (CheckRunExampleStart.Checked == true)
-            {
-                CheckNoTesting.Checked = false;
-            }
-        }
-
-        private void CheckCopyConnect_Click(object sender, EventArgs e)
-        {
-            if (CheckNoTesting.Checked == true)
-            {
-                CheckNoTesting.Checked = false;
-            }
-        }
-
-        private void CheckOpenReadme_Click(object sender, EventArgs e)
-        {
-            if (CheckNoHelp.Checked == true)
-            {
-                CheckNoHelp.Checked = false;
-            }
-        }
-
-        private void CheckHelpTooltips_Click(object sender, EventArgs e)
-        {
-            if (CheckNoHelp.Checked == true)
-            {
-                CheckNoHelp.Checked = false;
-            }
-        }
 
         private void CheckNoHelp_CheckedChanged(object sender, BunifuCheckBox.CheckedChangedEventArgs e)
         {
@@ -3077,186 +3119,97 @@ namespace EasyMapTestRust
             }
         }
 
-        private void CheckNoHelp_Click(object sender, EventArgs e)
+        #endregion
+
+        #region Text Changed
+        private void SetupServerTextbox_TextChange(object sender, EventArgs e)
         {
-            if (CheckNoHelp.Checked == true)
-            {
-                CheckOpenReadme.Checked = false;
-                CheckHelpTooltips.Checked = false;
-            }
+            UpdateSettings();
         }
 
-        private void FirstRunOneClick_Click(object sender, EventArgs e)
+        private void SetupMapsDirectory_TextChanged(object sender, EventArgs e)
         {
-            RadioCarbon.Checked = true;
-            RadioUmod.Checked = false;
-
-            string path = Directory.GetCurrentDirectory();
-
-            DropDownBranches.SelectedIndex = 0;
-            SettingsBranchDropdown.SelectedIndex = 0;
-
-            SetupServerTextbox.Text = Properties.Settings.Default.RustFilesDir;
-            SetupMapsDirectory.Text = Properties.Settings.Default.MapsFilesDir;
-            SetupCMDdir.Text = Properties.Settings.Default.SteamCMDDir;
-
-            if (SetupServerTextbox.Text == "" ||
-                SetupMapsDirectory.Text == "" ||
-                SetupCMDdir.Text == "")
-            {
-                Properties.Settings.Default.RustFilesDir = path + "\\Server_Files";
-                Properties.Settings.Default.MapsFilesDir = path + "\\Maps";
-                Properties.Settings.Default.SteamCMDDir = path + "\\SteamCMD";
-                Properties.Settings.Default.Save();
-
-                SetupServerTextbox.Text = Properties.Settings.Default.RustFilesDir;
-                SetupMapsDirectory.Text = Properties.Settings.Default.MapsFilesDir;
-                SetupCMDdir.Text = Properties.Settings.Default.SteamCMDDir;
-            }
-            else
-            {
-                //go to setup page
-                MainPages.SetPage(5);
-            }
-
-            //go to main page
-            MainPages.SetPage(5);
-
-
-            //call SetupDirNextButton_Click to start the setup process
-            SetupDirNextButton_Click(this, EventArgs.Empty);
-
-
-
+            UpdateSettings();
         }
 
-        private void FirstRunCustomInstall_Click(object sender, EventArgs e)
+        private void CMDDownloadText_TextChanged(object sender, EventArgs e)
         {
-            RadioCarbon.Checked = true;
-            RadioUmod.Checked = false;
-
-            string path = Directory.GetCurrentDirectory();
-
-            DropDownBranches.SelectedIndex = 0;
-            SettingsBranchDropdown.SelectedIndex = 0;
-
-            SetupServerTextbox.Text = Properties.Settings.Default.RustFilesDir;
-            SetupMapsDirectory.Text = Properties.Settings.Default.MapsFilesDir;
-            SetupCMDdir.Text = Properties.Settings.Default.SteamCMDDir;
-
-            if (SetupServerTextbox.Text == "" ||
-                SetupMapsDirectory.Text == "" ||
-                SetupCMDdir.Text == "")
+            if (CMDDownloadText.Text.Contains("Connecting anonymously to Steam Public"))
             {
-                Properties.Settings.Default.RustFilesDir = path + "\\Server_Files";
-                Properties.Settings.Default.MapsFilesDir = path + "\\Maps";
-                Properties.Settings.Default.SteamCMDDir = path + "\\SteamCMD";
-                Properties.Settings.Default.Save();
-
-                SetupServerTextbox.Text = Properties.Settings.Default.RustFilesDir;
-                SetupMapsDirectory.Text = Properties.Settings.Default.MapsFilesDir;
-                SetupCMDdir.Text = Properties.Settings.Default.SteamCMDDir;
-            }
-            else
-            {
-                //go to setup page
-                MainPages.SetPage(2);
+                SetupStepsLabel.Text = "Step\n2/8";
             }
 
-            //go to main page
-            MainPages.SetPage(2);
 
-
-            //call SetupDirNextButton_Click to start the setup process
-            //SetupDirNextButton_Click(this, EventArgs.Empty);
-
-        }
-        // Pseudocode plan:
-        // 1. Get the app directory and "maps" folder path.
-        // 2. Ensure the "maps" folder exists.
-        // 3. Generate a unique file name in the "maps" folder (append a number if needed).
-        // 4. Move the file to the "maps" folder with the unique name.
-
-        private void MoveClientMapToAppMapsFolder(string clientMapPath)
-        {
-            try
+            if (CMDDownloadText.Text.Contains("[----] Verifying installation..."))
             {
-                // 1. Get app directory and maps folder path
-                string appDir = Application.StartupPath;
-                string mapsDir = Path.Combine(appDir, "maps");
+                SetupStepsLabel.Text = "Step\n3/8";
+            }
 
-                // 2. Ensure maps folder exists
-                if (!Directory.Exists(mapsDir))
-                    Directory.CreateDirectory(mapsDir);
+            if (CMDDownloadText.Text.Contains("SteamCMD updated. Now downloading Rust server files..."))
+            {
+                SetupStepsLabel.Text = "Step\n4/8";
+            }
 
-                // 3. Generate unique file name
-                string fileName = Path.GetFileName(clientMapPath);
-                string destPath = Path.Combine(mapsDir, fileName);
-                string nameWithoutExt = Path.GetFileNameWithoutExtension(fileName);
-                string ext = Path.GetExtension(fileName);
-                int count = 1;
-                while (File.Exists(destPath))
+            if (CMDDownloadText.Text.Contains("Waiting for user info...OK"))
+            {
+                SetupStepsLabel.Text = "Step\n5/8";
+            }
+
+
+            if (CMDDownloadText.Text.Contains("Update state (0x5) verifying install, progress:"))
+            {
+                SetupStepsLabel.Text = "Step\n6/8";
+            }
+
+
+            if (CMDDownloadText.Text.Contains("Update state (0x5) verifying install, progress: 5"))
+            {
+                SetupStepsLabel.Text = "Step\n7/8";
+            }
+
+
+            //if textbox contains "Process completed!" then enable next button
+            if (CMDDownloadText.Text.Contains("App '258550' fully installed."))
+            {
+                SetupCMDNextButton.Enabled = true;
+                SetupCMDNextButton.Visible = true;
+                SetupCMDNextButton.Refresh();
+
+                CMDStatusLabel.Text = "Rust files downloaded, Click next.";
+
+                SetupStepsLabel.Text = "Step\n8/8";
+
+                if (DropDownBranches.SelectedIndex == 0)
                 {
-                    destPath = Path.Combine(mapsDir, $"{nameWithoutExt}_{count}{ext}");
-                    count++;
+                    LogMixed("FILES: ", "Downloaded main branch files to: " + Properties.Settings.Default.RustFilesDir, Color.Goldenrod);
+                }
+                else
+                {
+                    LogMixed("FILES: ", "Downloaded beta branch files to: " + Properties.Settings.Default.RustFilesDir, Color.Goldenrod);
                 }
 
-                // 4. Move the file
-                File.Move(clientMapPath, destPath);
+                if (AutoNextSetupCheck.Checked == true)
+                {
+                    SetupCMDNextButton.PerformClick();
+                }
 
-                LogMixed("FILES: ", $"Client map moved to: {destPath}", Color.Goldenrod);
+                Properties.Settings.Default.FirstRun = false;
+                Properties.Settings.Default.Save();
+
+                string rustPath = @"C:\Program Files (x86)\Steam\steamapps\common\Rust";
+                string rustClientPath = Path.Combine(rustPath, "RustClient.exe");
+
+                if (File.Exists(rustClientPath))
+                {
+                    FinishRustGameDirbox.Text = rustPath;
+                }
+
             }
-            catch (Exception ex)
+
+            if (CMDDownloadText.Text.Contains("SteamCMD updated. Now downloading Rust server files..."))
             {
-                HandleError(ex, "moving client map to maps folder");
+                CMDStatusLabel.Text = "Downloading Rust files, Please wait.";
             }
-        }
-
-        private void DiscordPiclink_Click(object sender, EventArgs e)
-        {
-            //open the default browser and go to the discord link
-            Process.Start(new ProcessStartInfo
-            {
-                FileName = "https://discord.gg/hbXD2YArdV",
-                UseShellExecute = true
-            });
-        }
-
-        private void GithubPageLink_Click(object sender, EventArgs e)
-        {
-            //open the default browser and go to the discord link
-            Process.Start(new ProcessStartInfo
-            {
-                FileName = "https://github.com/tedpommes/Rust-DropLaunch",
-                UseShellExecute = true
-            });
-        }
-
-        private void ImageButtonDiscord_Click(object sender, EventArgs e)
-        {
-
-            //open the default browser and go to the discord link
-            Process.Start(new ProcessStartInfo
-            {
-                FileName = "https://discord.gg/hbXD2YArdV",
-                UseShellExecute = true
-            });
-        }
-
-        private void ImageButtonGithub_Click(object sender, EventArgs e)
-        {
-            //open the default browser and go to the discord link
-            Process.Start(new ProcessStartInfo
-            {
-                FileName = "https://github.com/tedpommes/Rust-DropLaunch",
-                UseShellExecute = true
-            });
-        }
-
-        private void FinishRustGameDirbox_OnIconLeftClick(object sender, EventArgs e)
-        {
-            SelectDirectory(FinishRustGameDirbox);
-            UpdateSettings();
         }
 
         private void FinishRustGameDirbox_TextChange(object sender, EventArgs e)
@@ -3264,56 +3217,72 @@ namespace EasyMapTestRust
             UpdateSettings();
         }
 
-        private void FirstRunHomeButton_Click(object sender, EventArgs e)
+        private void RustGameDirbox_TextChange(object sender, EventArgs e)
         {
-			if (Properties.Settings.Default.FirstRun == true)
-                MainSnackbar.Show(this, "Are you sure you want to cancel the setup?", BunifuSnackbar.MessageTypes.Warning, 20000, "Yes",
-              BunifuSnackbar.Positions.TopCenter).Then((result) =>
-              {
-                  if (result == BunifuSnackbar.SnackbarResult.ActionClicked)
-                  {
-                      MainPages.SetPage(0);
-                  }
+            UpdateSettings();
+        }
 
-              });
+        private void ServerFilesDirbox_TextChange(object sender, EventArgs e)
+        {
+            UpdateSettings();
+        }
 
-            else
+        private void SteamCMDBox_TextChange(object sender, EventArgs e)
+        {
+            UpdateSettings();
+        }
+
+        private void MapDirBox_TextChange(object sender, EventArgs e)
+        {
+            UpdateSettings();
+        }
+        private void SetupCMDdir_TextChanged(object sender, EventArgs e)
+        {
+            UpdateSettings();
+        }
+        #endregion
+
+        #region misc
+        private void MapsContextMenu_Opening(object sender, CancelEventArgs e)
+		{
+
+		}
+
+		private void MapsDataGridView_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
+		{
+			SyncRunHistoryWithGridView();
+
+
+			//LoadRunHistoryToGrid();
+		}
+
+        private void HistoryDataView_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
+		{
+			SyncRunHistoryWithGridView();
+		}
+
+		private void HelpReadmeBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+		{
+
+		}
+
+		private void TabsFoundMaps_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (TabsFoundMaps.SelectedTab == HelpTab)
 			{
-                MainPages.SetPage(0);
+				BottomConsolePanel.Visible = false;
+				HelpVideosPicbutton.Visible = false;
+
             }
-        }
+			else
+			{
+				BottomConsolePanel.Visible = true;
+			}
+		}
 
+        #endregion
 
-        private void ThumbPicButtonStart_Click(object sender, EventArgs e)
-        {
-            //open the default browser and go to the discord link
-            Process.Start(new ProcessStartInfo
-            {
-                FileName = "https://youtu.be/072XwfL8YqY",
-                UseShellExecute = true
-            });
-        }
-
-        private void NextStepsHelpLabel_Click(object sender, EventArgs e)
-        {
-            HelpPanelHeader_Click(sender, e);
-        }
-
-        private void PrefabHelpLabel_Click(object sender, EventArgs e)
-        {
-            HelpPanelHeader_Click(sender, e);
-        }
-
-        private void HelpVideosPicbutton_Click(object sender, EventArgs e)
-        {
-            //open the default browser and go to the discord link
-            Process.Start(new ProcessStartInfo
-            {
-                FileName = "https://youtu.be/072XwfL8YqY",
-                UseShellExecute = true
-            });
-        }
-
+        #region Affilite links
         private void ApexAff_Click(object sender, EventArgs e)
         {
             //open the default browser and go to the discord link
@@ -3393,6 +3362,7 @@ namespace EasyMapTestRust
                 UseShellExecute = true
             });
         }
+        #endregion
     }
 
 
